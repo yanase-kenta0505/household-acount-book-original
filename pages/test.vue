@@ -1,12 +1,12 @@
 <template>
   <v-app>
-    <post-dialog></post-dialog>
+    <follow-dialog></follow-dialog>
   </v-app>
 </template>
 
 <script>
-import PostDialog from "~/components/postDialog.vue";
+import FollowDialog from "~/components/followDialog.vue";
 export default {
-  components: { PostDialog },
+  components: { FollowDialog },
 };
 </script>
