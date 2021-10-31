@@ -24,7 +24,8 @@
 
         <v-list>
           <post-dialog></post-dialog>
-          <v-list-item v-for="link in links" :key="link.text" link>
+          <follow-dialog></follow-dialog>
+          <!-- <v-list-item v-for="link in links" :key="link.text" link>
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
             </v-list-item-icon>
@@ -32,23 +33,11 @@
             <v-list-item-content>
               <v-list-item-title>{{ link.text }}</v-list-item-title>
             </v-list-item-content>
-          </v-list-item>
+          </v-list-item> -->
         </v-list>
       </v-navigation-drawer>
 
-      <v-main
-        id="main"
-        class="d-flex align-center justify-center"
-        style="height: 100%"
-      >
-        <v-card
-          width="550px"
-          height="100px"
-          class="d-flex mx-auto transparent"
-          flat
-        >
-        </v-card>
-      </v-main>
+      <v-main id="main" style="height: 100%"> </v-main>
 
       <v-expand-transition>
         <v-card
@@ -71,9 +60,10 @@
 </template>
 
 <script>
-import PostDialog from "~/components/postDialog.vue"
+import PostDialog from "~/components/postDialog.vue";
+import FollowDialog from "~/components/followDialog.vue";
 export default {
-  components:{PostDialog},
+  components: { PostDialog, FollowDialog },
   data: () => ({
     cards: ["Today", "Yesterday"],
     drawer: false,
@@ -82,10 +72,10 @@ export default {
       //   icon: "mdi-send",
       //   text: "投稿",
       // },
-      {
-        icon: "mdi-account-heart-outline",
-        text: "フォロー",
-      },
+      // {
+      //   icon: "mdi-account-heart-outline",
+      //   text: "フォロー",
+      // },
       {
         icon: "mdi-thumb-up",
         text: "お気に入り",
@@ -142,5 +132,9 @@ export default {
     z-index: 2 !important;
     position: absolute;
   }
+}
+
+.v-list ::v-deep .v-application--wrap {
+  min-height: unset !important;
 }
 </style>
