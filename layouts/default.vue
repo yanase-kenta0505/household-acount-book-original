@@ -4,7 +4,7 @@
       <v-system-bar app height="80px" color="#CFD8DC">
         <v-icon large class="ml-5" @click="drawer = !drawer">mdi-menu</v-icon>
         <v-spacer></v-spacer>
-        <h3 class="mr-10 white--text text-bold">ログイン</h3>
+        <p class="mr-10 mt-5 pa-5 white--text text-subtitle-1 " id="moveLogin" @click="moveLogin">ログインページへ</p>
       </v-system-bar>
 
       <v-navigation-drawer v-model="drawer" app>
@@ -31,52 +31,17 @@
         </v-list>
       </v-navigation-drawer>
 
-      <!-- <v-main>
-      <v-container class="py-8 px-6" fluid>
-        <v-row>
-          <v-col v-for="card in cards" :key="card" cols="12">
-            <v-card>
-              <v-subheader>{{ card }}</v-subheader>
-
-              <v-list two-line>
-                <template v-for="n in 6">
-                  <v-list-item :key="n">
-                    <v-list-item-avatar color="grey darken-1">
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Message {{ n }}</v-list-item-title>
-
-                      <v-list-item-subtitle>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Nihil repellendus distinctio similique
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-divider
-                    v-if="n !== 6"
-                    :key="`divider-${n}`"
-                    inset
-                  ></v-divider>
-                </template>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main> -->
-
-      <v-main id="main" class="d-flex align-center justify-center " style="height:100%" >
+      <v-main
+        id="main"
+        class="d-flex align-center justify-center"
+        style="height: 100%"
+      >
         <v-card
           width="550px"
           height="100px"
-          class="d-flex  mx-auto transparent"
+          class="d-flex mx-auto transparent"
           flat
         >
-          <v-card-text class="text-h4 text-center white--text "
-            >ログインしてください</v-card-text
-          >
         </v-card>
       </v-main>
     </div>
@@ -115,6 +80,9 @@ export default {
     errorDialog() {
       alert("ログインしてください");
     },
+    moveLogin(){
+      this.$router.push('/login')
+    }
   },
 };
 </script>
@@ -126,9 +94,13 @@ export default {
   background-image: url("/money-manege.jpg");
   background-position: bottom center;
   background-size: cover;
+  & #moveLogin{
+    &:hover{
+      cursor: pointer;
+    }
+  }
   & .v-system-bar {
     background-color: rgba(165, 160, 160, 0.4) !important;
   }
-  
 }
 </style>
