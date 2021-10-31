@@ -50,6 +50,23 @@
         >
         </v-card>
       </v-main>
+
+      <v-expand-transition>
+        <v-card
+          v-if="expand"
+          height="100%"
+          width="100%"
+          class="
+            mx-auto
+            secondary
+            d-flex
+            transition-fast-in-fast-out
+            orange
+            darken-2
+            v-card--reveal
+          "
+        ></v-card>
+      </v-expand-transition>
     </div>
   </v-app>
 </template>
@@ -81,7 +98,14 @@ export default {
         text: "アカウント編集",
       },
     ],
+    expand: true,
   }),
+
+  created() {
+    setTimeout(() => {
+      this.expand = false;
+    }, 500);
+  },
   methods: {
     errorDialog() {
       alert("ログインしてください");
@@ -100,6 +124,7 @@ export default {
   background-image: url("/money-manege.jpg");
   background-position: bottom center;
   background-size: cover;
+  position: relative;
   & #moveLogin {
     &:hover {
       cursor: pointer;
@@ -107,6 +132,15 @@ export default {
   }
   & .v-system-bar {
     background-color: rgba(165, 160, 160, 0.4) !important;
+    z-index: 1 !important;
+  }
+
+  & .v-card--reveal {
+    align-items: center;
+    top: 0;
+    justify-content: center;
+    z-index: 2 !important;
+    position: absolute;
   }
 }
 </style>
