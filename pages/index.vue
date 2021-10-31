@@ -33,13 +33,20 @@ export default {
       expand: false,
     };
   },
+  watch:{
+    expand(){
+      console.log('change')
+    }
+  },
   methods: {
     changeExpand() {
       this.expand = true;
       setTimeout(() => {
         this.$router.push("/myPage");
-        this.expand = false;
-      }, 500);
+        setTimeout(() => {
+          this.expand = false;
+        }, 500);
+      }, 200);
     },
   },
 };
