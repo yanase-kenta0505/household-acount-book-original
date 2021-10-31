@@ -17,21 +17,20 @@
         <v-sheet class="pa-4" color="#ECEFF1">
           <v-avatar class="mb-4" color="grey darken-1" size="64"></v-avatar>
 
-          <div>非ログインユーザーです</div>
+          <div v-text="userName[this.index]"></div>
         </v-sheet>
 
         <v-divider></v-divider>
 
         <v-list>
+          <post-dialog></post-dialog>
           <v-list-item v-for="link in links" :key="link.text" link>
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title @click="errorDialog">{{
-                link.text
-              }}</v-list-item-title>
+              <v-list-item-title>{{ link.text }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -61,7 +60,7 @@
             secondary
             d-flex
             transition-fast-in-fast-out
-            orange
+            black
             darken-2
             v-card--reveal
           "
@@ -72,15 +71,17 @@
 </template>
 
 <script>
+import PostDialog from "~/components/postDialog.vue"
 export default {
+  components:{PostDialog},
   data: () => ({
     cards: ["Today", "Yesterday"],
     drawer: false,
     links: [
-      {
-        icon: "mdi-send",
-        text: "投稿",
-      },
+      // {
+      //   icon: "mdi-send",
+      //   text: "投稿",
+      // },
       {
         icon: "mdi-account-heart-outline",
         text: "フォロー",
@@ -98,7 +99,9 @@ export default {
         text: "アカウント編集",
       },
     ],
+    userName: ["kenta0505@gmai....", "非ログインユーザー"],
     expand: true,
+    index: 1,
   }),
 
   created() {
@@ -107,9 +110,6 @@ export default {
     }, 500);
   },
   methods: {
-    errorDialog() {
-      alert("ログインしてください");
-    },
     moveLogin() {
       this.$router.push("/login");
     },
