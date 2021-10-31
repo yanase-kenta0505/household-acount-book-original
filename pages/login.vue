@@ -27,12 +27,11 @@
         </v-form>
       </v-card-text>
     </v-card>
-    <p class="mx-auto mt-10 ">会員登録はこちらから</p>
+    <p class="mx-auto mt-10">会員登録はこちらから</p>
   </v-app>
 </template>
 <script>
 export default {
-  layout: "simple",
   data() {
     return {
       showPassWord: false,

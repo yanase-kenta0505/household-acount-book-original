@@ -4,7 +4,13 @@
       <v-system-bar app height="80px" color="#CFD8DC">
         <v-icon large class="ml-5" @click="drawer = !drawer">mdi-menu</v-icon>
         <v-spacer></v-spacer>
-        <p class="mr-10 mt-5 pa-5 white--text text-subtitle-1 " id="moveLogin" @click="moveLogin">ログインページへ</p>
+        <p
+          class="mr-10 mt-5 pa-5 white--text text-subtitle-1"
+          id="moveLogin"
+          @click="moveLogin"
+        >
+          ログインページへ
+        </p>
       </v-system-bar>
 
       <v-navigation-drawer v-model="drawer" app>
@@ -80,9 +86,9 @@ export default {
     errorDialog() {
       alert("ログインしてください");
     },
-    moveLogin(){
-      this.$router.push('/login')
-    }
+    moveLogin() {
+      this.$router.push("/login");
+    },
   },
 };
 </script>
@@ -94,8 +100,8 @@ export default {
   background-image: url("/money-manege.jpg");
   background-position: bottom center;
   background-size: cover;
-  & #moveLogin{
-    &:hover{
+  & #moveLogin {
+    &:hover {
       cursor: pointer;
     }
   }
