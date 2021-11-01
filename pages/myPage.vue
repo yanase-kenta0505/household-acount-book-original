@@ -26,6 +26,7 @@
           <post-dialog></post-dialog>
           <follow-dialog></follow-dialog>
           <like-dialog></like-dialog>
+          <direct-message></direct-message>
           <!-- <v-list-item v-for="link in links" :key="link.text" link>
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
@@ -64,8 +65,9 @@
 import PostDialog from "~/components/postDialog.vue";
 import FollowDialog from "~/components/followDialog.vue";
 import LikeDialog from "~/components/likeDialog.vue";
+import DirectMessage from "~/components/directMessage.vue";
 export default {
-  components: { PostDialog, FollowDialog, LikeDialog },
+  components: { PostDialog, FollowDialog, LikeDialog, DirectMessage },
   data: () => ({
     cards: ["Today", "Yesterday"],
     drawer: false,
@@ -82,10 +84,10 @@ export default {
       //   icon: "mdi-thumb-up",
       //   text: "お気に入り",
       // },
-      {
-        icon: "mdi-human-greeting-proximity",
-        text: "DM",
-      },
+      // {
+      //   icon: "mdi-human-greeting-proximity",
+      //   text: "DM",
+      // },
       {
         icon: "mdi-account-edit",
         text: "アカウント編集",
@@ -139,4 +141,6 @@ export default {
 .v-list ::v-deep .v-application--wrap {
   min-height: unset !important;
 }
+
+
 </style>
