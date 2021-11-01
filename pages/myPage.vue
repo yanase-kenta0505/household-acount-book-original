@@ -25,6 +25,7 @@
         <v-list>
           <post-dialog></post-dialog>
           <follow-dialog></follow-dialog>
+          <like-dialog></like-dialog>
           <!-- <v-list-item v-for="link in links" :key="link.text" link>
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
@@ -62,8 +63,9 @@
 <script>
 import PostDialog from "~/components/postDialog.vue";
 import FollowDialog from "~/components/followDialog.vue";
+import LikeDialog from "~/components/likeDialog.vue";
 export default {
-  components: { PostDialog, FollowDialog },
+  components: { PostDialog, FollowDialog, LikeDialog },
   data: () => ({
     cards: ["Today", "Yesterday"],
     drawer: false,
@@ -76,10 +78,10 @@ export default {
       //   icon: "mdi-account-heart-outline",
       //   text: "フォロー",
       // },
-      {
-        icon: "mdi-thumb-up",
-        text: "お気に入り",
-      },
+      // {
+      //   icon: "mdi-thumb-up",
+      //   text: "お気に入り",
+      // },
       {
         icon: "mdi-human-greeting-proximity",
         text: "DM",
