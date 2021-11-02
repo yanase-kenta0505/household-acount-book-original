@@ -1,37 +1,65 @@
 <template>
   <v-app>
-    <div class="text-center" >
-      <v-dialog v-model="dialog" width="500">
-        <template v-slot:activator="{ on, attrs }">
-          <!-- <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on">
-            Click Me
-          </v-btn> -->
+    <v-list>
+      <v-list-group :value="true" color="black">
+        <template v-slot:activator>
+          <v-list-item-icon>
+            <v-icon>mdi-send</v-icon>
+          </v-list-item-icon>
 
-          <v-list-item link v-bind="attrs" v-on="on" grey>
-            <v-list-item-icon>
-              <v-icon>mdi-send</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>投稿</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>投稿</v-list-item-title>
+          </v-list-item-content>
         </template>
 
-        <v-card>
-          <v-card-title class="text-h5 grey lighten-2"> 投稿画面 </v-card-title>
+        <v-dialog v-model="dialog" width="500">
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-group
+              :value="true"
+              no-action
+              sub-group　link
+              v-bind="attrs"
+              v-on="on"
+              grey
+              color="black"
+            >
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>新規投稿作成</v-list-item-title>
+                </v-list-item-content>
+              </template>
+            </v-list-group>
+          </template>
+          <v-card>
+            <v-card-title class="text-h5 grey lighten-2">
+              投稿画面
+            </v-card-title>
 
-          <v-textarea placeholder="メッセージを入力してください" outlined style="width: 90%" class="mx-auto mt-10"></v-textarea>
+            <v-textarea
+              placeholder="メッセージを入力してください"
+              outlined
+              style="width: 90%"
+              class="mx-auto mt-10"
+            ></v-textarea>
 
-          <v-divider></v-divider>
+            <v-divider></v-divider>
 
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false"> 投稿 </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </div>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text @click="dialog = false"> 投稿 </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-list-group no-action sub-group color="black">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>投稿一覧</v-list-item-title>
+            </v-list-item-content>
+          </template>
+        </v-list-group>
+      </v-list-group>
+    </v-list>
   </v-app>
 </template>
 
@@ -46,7 +74,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-list-item__content {
+::v-deep .mdi-menu-down::before {
+  content: none !important;
+}
+
+.v-list-item__title {
   flex: initial;
+}
+
+.v-application .primary--text {
+  color: grey;
+}
+.v-list .v-list-item--active{
+  color: grey;
 }
 </style>
