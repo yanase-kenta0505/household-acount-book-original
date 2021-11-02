@@ -6,21 +6,12 @@
           <v-list-item-icon>
             <v-icon>mdi-send</v-icon>
           </v-list-item-icon>
-
           <v-list-item-content>
             <v-list-item-title>投稿</v-list-item-title>
           </v-list-item-content>
         </template>
-
         <create-post-message />
-        
-        <v-list-group no-action sub-group color="black">
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>投稿一覧</v-list-item-title>
-            </v-list-item-content>
-          </template>
-        </v-list-group>
+        <post-list />
       </v-list-group>
     </v-list>
   </v-app>
@@ -28,9 +19,11 @@
 
 <script>
 import CreatePostMessage from "~/components/createPostMessage.vue";
+import PostList from "~/components/postList.vue";
 export default {
   components: {
     CreatePostMessage,
+    PostList,
   },
   data() {
     return {
