@@ -27,15 +27,7 @@
           <follow-dialog></follow-dialog>
           <like-dialog></like-dialog>
           <direct-message></direct-message>
-          <!-- <v-list-item v-for="link in links" :key="link.text" link>
-            <v-list-item-icon>
-              <v-icon>{{ link.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>{{ link.text }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item> -->
+          <acount-edit-dialog></acount-edit-dialog>
         </v-list>
       </v-navigation-drawer>
 
@@ -66,33 +58,18 @@ import PostDialog from "~/components/postDialog.vue";
 import FollowDialog from "~/components/followDialog.vue";
 import LikeDialog from "~/components/likeDialog.vue";
 import DirectMessage from "~/components/directMessage.vue";
+import AcountEditDialog from "~/components/acountEditDialog.vue";
 export default {
-  components: { PostDialog, FollowDialog, LikeDialog, DirectMessage },
+  components: {
+    PostDialog,
+    FollowDialog,
+    LikeDialog,
+    DirectMessage,
+    AcountEditDialog,
+  },
   data: () => ({
     cards: ["Today", "Yesterday"],
     drawer: false,
-    links: [
-      // {
-      //   icon: "mdi-send",
-      //   text: "投稿",
-      // },
-      // {
-      //   icon: "mdi-account-heart-outline",
-      //   text: "フォロー",
-      // },
-      // {
-      //   icon: "mdi-thumb-up",
-      //   text: "お気に入り",
-      // },
-      // {
-      //   icon: "mdi-human-greeting-proximity",
-      //   text: "DM",
-      // },
-      {
-        icon: "mdi-account-edit",
-        text: "アカウント編集",
-      },
-    ],
     userName: ["kenta0505@gmai....", "非ログインユーザー"],
     expand: true,
     index: 1,
@@ -141,6 +118,4 @@ export default {
 .v-list ::v-deep .v-application--wrap {
   min-height: unset !important;
 }
-
-
 </style>
