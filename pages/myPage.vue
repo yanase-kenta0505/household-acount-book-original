@@ -23,11 +23,12 @@
         <v-divider></v-divider>
 
         <v-list>
-          <post-dialog></post-dialog>
-          <follow-dialog></follow-dialog>
-          <like-dialog></like-dialog>
-          <direct-message></direct-message>
-          <acount-edit-dialog></acount-edit-dialog>
+          <household-acount-book />
+          <post-dialog />
+          <follow-dialog />
+          <like-dialog />
+          <direct-message />
+          <acount-edit-dialog/>
         </v-list>
       </v-navigation-drawer>
 
@@ -54,6 +55,7 @@
 </template>
 
 <script>
+import HouseholdAcountBook from "~/components/householdacountbook.vue";
 import PostDialog from "~/components/postDialog.vue";
 import FollowDialog from "~/components/followDialog.vue";
 import LikeDialog from "~/components/likeDialog.vue";
@@ -66,6 +68,7 @@ export default {
     LikeDialog,
     DirectMessage,
     AcountEditDialog,
+    HouseholdAcountBook
   },
   data: () => ({
     cards: ["Today", "Yesterday"],
