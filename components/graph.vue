@@ -13,13 +13,13 @@
         >
           <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title>新規投稿作成</v-list-item-title>
+              <v-list-item-title>推移グラフ</v-list-item-title>
             </v-list-item-content>
           </template>
         </v-list-group>
       </template>
       <v-card>
-        <v-card-title class="text-h5 grey lighten-2"> 投稿画面 </v-card-title>
+        <v-card-title class="text-h5 grey lighten-2"> 推移グラフ </v-card-title>
 
         <v-textarea
           placeholder="メッセージを入力してください"
@@ -38,6 +38,7 @@
     </v-dialog>
   </v-app>
 </template>
+
 <script>
 export default {
   data() {

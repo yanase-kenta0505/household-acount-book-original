@@ -13,7 +13,7 @@
         >
           <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title>新規投稿作成</v-list-item-title>
+              <v-list-item-title>収支入力</v-list-item-title>
             </v-list-item-content>
           </template>
         </v-list-group>
@@ -38,6 +38,7 @@
     </v-dialog>
   </v-app>
 </template>
+
 <script>
 export default {
   data() {
