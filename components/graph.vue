@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="dialog" width="1000px">
       <template v-slot:activator="{ on, attrs }">
         <v-list-group
           :value="true"
@@ -18,33 +18,54 @@
           </template>
         </v-list-group>
       </template>
-      <v-card>
+      <v-card width="1000px">
         <v-card-title class="text-h5 grey lighten-2"> 推移グラフ </v-card-title>
+        <v-tabs v-model="tab" grow>
+          <v-tab
+            v-for="(item, index) in items"
+            :key="item"
+            class="grey lighten-4"
+          >
+            <p
+              style="width: 100%; height: 100%"
+              class="pt-5"
+              @click="changeIndex(index)"
+            >
+              {{ item }}
+            </p>
+          </v-tab>
+        </v-tabs>
 
-        <v-textarea
-          placeholder="メッセージを入力してください"
-          outlined
-          style="width: 90%"
-          class="mx-auto mt-10"
-        ></v-textarea>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="dialog = false"> 投稿 </v-btn>
-        </v-card-actions>
+        <v-tabs-items v-model="tab">
+          <v-tab-item v-for="item in items" :key="item">
+            <pie-chart v-show="index === 1" />
+            <column-chart v-show="index === 2" />
+            <line-chart v-show="index === 3" />
+          </v-tab-item>
+        </v-tabs-items>
       </v-card>
     </v-dialog>
   </v-app>
 </template>
 
 <script>
+import ColumnChart from "~/components/columnChart.vue";
+import PieChart from "~/components/pieChart.vue";
+import LineChart from "~/components/lineChaart.vue";
 export default {
+  components: { ColumnChart, PieChart, LineChart },
   data() {
     return {
       dialog: false,
+      tab: null,
+      items: ["カレンダー","円グラフ", "棒グラフ", "折れ線グラフ"],
+      index: 0,
     };
+  },
+  methods: {
+    changeIndex(index) {
+      this.index = index;
+    },
   },
 };
 </script>
