@@ -40,26 +40,33 @@
                   @change="updateRange"
                   @click:day="day"
                   @click:event="stop"
-                ></v-calendar>
+                >
+                  <template v-slot:event="{ event }">
+                    <div
+                      id="event"
+                      :class="event.state === 'plus' ? 'plus' : 'minus'"
+                    >
+                      {{ `￥ ${event.amount.toLocaleString()}` }}
+                    </div>
+                  </template>
+                </v-calendar>
               </div>
             </template>
             <v-card width="500px" height="300px">
               <v-card-title>{{ selectDay }} </v-card-title>
+
               <v-text-field
                 style="width: 80%"
                 class="mx-auto"
-                placeholder="名前"
-                v-model="eventName"
-              ></v-text-field>
-              <v-text-field
-                style="width: 80%"
-                class="mx-auto"
-                placeholder="金額"
+                label="金額"
                 type="number"
                 v-model="amount"
               ></v-text-field>
 
-              <v-btn @click="addEvent">追加</v-btn>
+              <div class="text-center">
+                <v-btn @click="increment">+</v-btn>
+                <v-btn @click="decrement">ー</v-btn>
+              </div>
             </v-card>
           </v-dialog>
           <v-menu
@@ -117,9 +124,16 @@ export default {
     selectDay: null,
     eventName: "",
     amount: null,
+    // incrementDone: false,
+    // decrementDone: false,
   }),
   mounted() {
     this.$refs.calendar.checkChange();
+  },
+  watch: {
+    events() {
+      console.log(this.events);
+    },
   },
   methods: {
     getEventColor(event) {
@@ -141,20 +155,80 @@ export default {
       this.events = events;
     },
     day({ date }) {
-      console.log(new Date(date));
-      this.selectDay = new Date(date);
+      // this.selectDay = new Date(date);
+      this.selectDay = date;
+      // console.log(this.events);
     },
-    addEvent() {
-      console.log(this.amount, this.selectDay);
-      this.events.push({
-        name: this.amount,
-        start: this.selectDay,
+    increment() {
+      const target = this.events.find((event) => {
+        console.log(event.start.getTime());
+        console.log(new Date(this.selectDay).getTime());
+        console.log(
+          event.start.getTime() === new Date(this.selectDay).getTime()
+        );
+        return (
+          event.state === "plus" &&
+          event.start.getTime() === new Date(this.selectDay).getTime()
+        );
       });
+
+      console.log(target);
+
+      if (target) {
+        console.log(target.amount + Number(this.amount));
+        target.amount = target.amount + Number(this.amount);
+      } else {
+        this.events.push({
+          // name: `￥ ${Number(this.amount).toLocaleString()}`,
+          amount: Number(this.amount),
+          start: new Date(this.selectDay),
+          state: "plus",
+        });
+        // this.incrementDone = true;
+      }
       this.dialog = false;
+      this.amount = null;
     },
-    stop({ nativeEvent }) {
-      console.log("stop");
+    decrement() {
+      const target = this.events.find((event) => {
+        console.log(event.start.getTime());
+        console.log(new Date(this.selectDay).getTime());
+        console.log(
+          event.start.getTime() === new Date(this.selectDay).getTime()
+        );
+        return (
+          event.state === "minus" &&
+          event.start.getTime() === new Date(this.selectDay).getTime()
+        );
+      });
+
+      console.log(target);
+
+      if (target) {
+        console.log(target.amount + Number(-this.amount));
+        target.amount = target.amount + Number(-this.amount);
+      } else {
+        this.events.push({
+          // name: `￥ ${Number(this.amount).toLocaleString()}`,
+          amount: Number(-this.amount),
+          start: new Date(this.selectDay),
+          state: "minus",
+        });
+        // this.incrementDone = true;
+      }
+      this.dialog = false;
+      this.amount = null;
+    },
+
+    stop({ nativeEvent, event, day }) {
+      console.log(day);
+      console.log(event);
+      // console.log(nativeEvent);
+      console.log("stop", event);
       nativeEvent.stopPropagation();
+    },
+    foo() {
+      alert("foo");
     },
   },
 };
@@ -164,8 +238,17 @@ export default {
 ::v-deep .v-calendar .v-event {
   color: white !important;
   font-size: 14px;
-  background-color: grey;
-  width: 100%;
+  width: 90% !important;
   z-index: 3 !important;
+  text-align: center;
+  margin: 5px auto 5px;
+  color: black !important;
+  padding: 0;
+  & .plus {
+    background-color: rgb(234, 247, 234) !important;
+  }
+  & .minus {
+    background-color: rgb(243, 207, 207) !important;
+  }
 }
 </style>
