@@ -37,10 +37,11 @@
         </v-tabs>
 
         <v-tabs-items v-model="tab">
-          <v-tab-item v-for="item in items" :key="item">
-            <pie-chart v-show="index === 1" />
-            <column-chart v-show="index === 2" />
-            <line-chart v-show="index === 3" />
+          <v-tab-item
+            v-for="componentsItem in componentsItems"
+            :key="componentsItem"
+          >
+            <component :is="componentsItem" />
           </v-tab-item>
         </v-tabs-items>
       </v-card>
@@ -52,14 +53,16 @@
 import ColumnChart from "~/components/columnChart.vue";
 import PieChart from "~/components/pieChart.vue";
 import LineChart from "~/components/lineChaart.vue";
+import Calendar from "~/components/calendarDialog.vue";
 export default {
-  components: { ColumnChart, PieChart, LineChart },
+  components: { ColumnChart, PieChart, LineChart, Calendar },
   data() {
     return {
       dialog: false,
       tab: null,
-      items: ["カレンダー","円グラフ", "棒グラフ", "折れ線グラフ"],
+      items: ["カレンダー", "円グラフ", "棒グラフ", "折れ線グラフ"],
       index: 0,
+      componentsItems: ["Calendar", "PieChart", "ColumnChart", "LineChart"],
     };
   },
   methods: {
