@@ -35,7 +35,6 @@
                   v-model="focus"
                   color="primary"
                   :events="events"
-                  :event-color="getEventColor"
                   :type="type"
                   @change="updateRange"
                   @click:day="day"
@@ -54,7 +53,12 @@
             </template>
             <v-card width="500px" height="300px">
               <v-card-title>{{ selectDay }} </v-card-title>
-
+              <v-select
+                :items="selectItems"
+                label="分類"
+                style="width: 80%"
+                class="mx-auto"
+              ></v-select>
               <v-text-field
                 style="width: 80%"
                 class="mx-auto"
@@ -100,6 +104,13 @@
             </v-card>
           </v-menu>
         </v-sheet>
+        <v-dialog
+          width="500px"
+          v-model="dialog2"
+          @click:outside="dialog2 = false"
+        >
+          <v-card width="500px" height="300px"> </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
   </v-app>
@@ -124,8 +135,18 @@ export default {
     selectDay: null,
     eventName: "",
     amount: null,
-    // incrementDone: false,
-    // decrementDone: false,
+    dialog2: false,
+    selectItems: [
+      "",
+      "食費",
+      "通信費",
+      "家賃",
+      "電気代",
+      "水道代",
+      "車関係",
+      "保険",
+      "その他",
+    ],
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -155,6 +176,7 @@ export default {
       this.events = events;
     },
     day({ date }) {
+      console.log("day");
       // this.selectDay = new Date(date);
       this.selectDay = date;
       // console.log(this.events);
@@ -221,14 +243,9 @@ export default {
     },
 
     stop({ nativeEvent, event, day }) {
-      console.log(day);
-      console.log(event);
-      // console.log(nativeEvent);
-      console.log("stop", event);
+      this.dialog2 = true;
+      console.log("stop");
       nativeEvent.stopPropagation();
-    },
-    foo() {
-      alert("foo");
     },
   },
 };
