@@ -51,58 +51,13 @@
                 </v-calendar>
               </div>
             </template>
-            <v-card width="500px" height="300px">
-              <v-card-title>{{ selectDay }} </v-card-title>
-              <v-select
-                :items="selectItems"
-                label="分類"
-                style="width: 80%"
-                class="mx-auto"
-              ></v-select>
-              <v-text-field
-                style="width: 80%"
-                class="mx-auto"
-                label="金額"
-                type="number"
-                v-model="amount"
-              ></v-text-field>
 
-              <div class="text-center">
-                <v-btn @click="increment">+</v-btn>
-                <v-btn @click="decrement">ー</v-btn>
-              </div>
-            </v-card>
+            <add-calendar-event-card
+              :events="events"
+              :selectDay="selectDay"
+              @close="close"
+            />
           </v-dialog>
-          <v-menu
-            v-model="selectedOpen"
-            :close-on-content-click="false"
-            :activator="selectedElement"
-            offset-x
-          >
-            <v-card color="grey lighten-4" min-width="350px" flat>
-              <v-toolbar :color="selectedEvent.color" dark>
-                <v-btn icon>
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-btn icon>
-                  <v-icon>mdi-heart</v-icon>
-                </v-btn>
-                <v-btn icon>
-                  <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
-              </v-toolbar>
-              <v-card-text>
-                <span v-html="selectedEvent.details"></span>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn text color="secondary" @click="selectedOpen = false">
-                  Cancel
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-menu>
         </v-sheet>
         <v-dialog
           width="500px"
@@ -117,7 +72,11 @@
 </template>
 
 <script>
+import AddCalendarEventCard from "~/components/addCalendarEventCard.vue";
 export default {
+  components: {
+    AddCalendarEventCard,
+  },
   data: () => ({
     focus: "",
     type: "month",
@@ -134,19 +93,8 @@ export default {
     dialog: false,
     selectDay: null,
     eventName: "",
-    amount: null,
+
     dialog2: false,
-    selectItems: [
-      "",
-      "食費",
-      "通信費",
-      "家賃",
-      "電気代",
-      "水道代",
-      "車関係",
-      "保険",
-      "その他",
-    ],
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -179,73 +127,16 @@ export default {
       console.log("day");
       // this.selectDay = new Date(date);
       this.selectDay = date;
-      // console.log(this.events);
-    },
-    increment() {
-      const target = this.events.find((event) => {
-        console.log(event.start.getTime());
-        console.log(new Date(this.selectDay).getTime());
-        console.log(
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-        return (
-          event.state === "plus" &&
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-      });
-
-      console.log(target);
-
-      if (target) {
-        console.log(target.amount + Number(this.amount));
-        target.amount = target.amount + Number(this.amount);
-      } else {
-        this.events.push({
-          // name: `￥ ${Number(this.amount).toLocaleString()}`,
-          amount: Number(this.amount),
-          start: new Date(this.selectDay),
-          state: "plus",
-        });
-        // this.incrementDone = true;
-      }
-      this.dialog = false;
-      this.amount = null;
-    },
-    decrement() {
-      const target = this.events.find((event) => {
-        console.log(event.start.getTime());
-        console.log(new Date(this.selectDay).getTime());
-        console.log(
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-        return (
-          event.state === "minus" &&
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-      });
-
-      console.log(target);
-
-      if (target) {
-        console.log(target.amount + Number(-this.amount));
-        target.amount = target.amount + Number(-this.amount);
-      } else {
-        this.events.push({
-          // name: `￥ ${Number(this.amount).toLocaleString()}`,
-          amount: Number(-this.amount),
-          start: new Date(this.selectDay),
-          state: "minus",
-        });
-        // this.incrementDone = true;
-      }
-      this.dialog = false;
-      this.amount = null;
+      console.log(typeof date);
     },
 
     stop({ nativeEvent, event, day }) {
       this.dialog2 = true;
       console.log("stop");
       nativeEvent.stopPropagation();
+    },
+    close() {
+      this.dialog = false;
     },
   },
 };
@@ -267,5 +158,9 @@ export default {
   & .minus {
     background-color: rgb(243, 207, 207) !important;
   }
+}
+
+::v-deep .v-application--wrap {
+  min-height: initial;
 }
 </style>
