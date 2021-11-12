@@ -13,13 +13,13 @@
         >
           <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title>推移グラフ</v-list-item-title>
+              <v-list-item-title>収支入力・確認</v-list-item-title>
             </v-list-item-content>
           </template>
         </v-list-group>
       </template>
       <v-card width="1000px">
-        <v-card-title class="text-h5 grey lighten-2"> 推移グラフ </v-card-title>
+        <v-card-title class="text-h5 grey lighten-2"> 収支入力・確認 </v-card-title>
         <v-tabs v-model="tab" grow>
           <v-tab
             v-for="(item, index) in items"

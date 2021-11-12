@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-card width="500px" height="300px">
-      <v-card-title>{{ selectDay }} </v-card-title>
+    <v-card width="500px" height="500px">
+      <v-card-title class="grey lighten-3">{{ selectDay }} </v-card-title>
       <v-select
         :items="selectItems"
         label="分類"
@@ -15,10 +15,11 @@
         type="number"
         v-model="amount"
       ></v-text-field>
+      <v-textarea outlined style="width: 80%" class="mx-auto mt-5"> </v-textarea>
 
       <div class="text-center">
-        <v-btn @click="increment">+</v-btn>
-        <v-btn @click="decrement">ー</v-btn>
+        <v-btn @click="increment" class="mr-5">+</v-btn>
+        <v-btn @click="decrement" class="ml-5">ー</v-btn>
       </div>
     </v-card>
   </v-app>
