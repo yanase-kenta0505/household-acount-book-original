@@ -10,7 +10,7 @@
             <v-list-item-title>家計簿</v-list-item-title>
           </v-list-item-content>
         </template>
-        <balance-of-payment />
+        <!-- <balance-of-payment /> -->
         <graph />
       </v-list-group>
     </v-list>
@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import BalanceOfPayment from "~/components/inputBalanceOfPayment.vue";
+// import BalanceOfPayment from "~/components/inputBalanceOfPayment.vue";
 import Graph from "~/components/graph.vue";
 
 export default {
   components: {
-    BalanceOfPayment,
+    // BalanceOfPayment,
     Graph,
   },
 };
