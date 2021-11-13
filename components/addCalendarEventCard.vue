@@ -7,6 +7,7 @@
         label="分類"
         style="width: 80%"
         class="mx-auto"
+        v-model="selectedItem"
       ></v-select>
       <v-text-field
         style="width: 80%"
@@ -15,7 +16,13 @@
         type="number"
         v-model="amount"
       ></v-text-field>
-      <v-textarea outlined style="width: 80%" class="mx-auto mt-5"> </v-textarea>
+      <v-textarea
+        outlined
+        style="width: 80%"
+        class="mx-auto mt-5"
+        v-model="comment"
+      >
+      </v-textarea>
 
       <div class="text-center">
         <v-btn @click="increment" class="mr-5">+</v-btn>
@@ -37,7 +44,6 @@ export default {
   data() {
     return {
       selectItems: [
-        "",
         "食費",
         "通信費",
         "家賃",
@@ -47,69 +53,38 @@ export default {
         "保険",
         "その他",
       ],
+      selectedItem: null,
       amount: null,
+      comment: "",
     };
   },
   methods: {
     increment() {
-      const target = this.events.find((event) => {
-        console.log(event.start.getTime());
-        console.log(new Date(this.selectDay).getTime());
-        console.log(
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-        return (
-          event.state === "plus" &&
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
+      this.$emit("add", {
+        amount: Number(this.amount),
+        start: new Date(this.selectDay),
+        classification: this.selectedItem,
+        comment: this.comment,
+        state: "plus",
       });
 
-      console.log(target);
-
-      if (target) {
-        console.log(target.amount + Number(this.amount));
-        target.amount = target.amount + Number(this.amount);
-      } else {
-        this.events.push({
-          // name: `￥ ${Number(this.amount).toLocaleString()}`,
-          amount: Number(this.amount),
-          start: new Date(this.selectDay),
-          state: "plus",
-        });
-        // this.incrementDone = true;
-      }
-
       this.amount = null;
+      this.selectedItem = "";
+      this.comment = "";
       this.$emit("close");
     },
     decrement() {
-      const target = this.events.find((event) => {
-        console.log(event.start.getTime());
-        console.log(new Date(this.selectDay).getTime());
-        console.log(
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-        return (
-          event.state === "minus" &&
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
+      this.$emit("add", {
+        amount: Number(-this.amount),
+        start: new Date(this.selectDay),
+        classification: this.selectedItem,
+        comment: this.comment,
+        state: "minus",
       });
 
-      console.log(target);
-
-      if (target) {
-        console.log(target.amount + Number(-this.amount));
-        target.amount = target.amount + Number(-this.amount);
-      } else {
-        this.events.push({
-          // name: `￥ ${Number(this.amount).toLocaleString()}`,
-          amount: Number(-this.amount),
-          start: new Date(this.selectDay),
-          state: "minus",
-        });
-        // this.incrementDone = true;
-      }
       this.amount = null;
+      this.selectedItem = "";
+      this.comment = "";
       this.$emit("close");
     },
   },
