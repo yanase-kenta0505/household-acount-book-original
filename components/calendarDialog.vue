@@ -61,11 +61,11 @@
           </v-dialog>
         </v-sheet>
         <v-dialog
-          width="500px"
-          v-model="dialog2"
-          @click:outside="dialog2 = false"
+          width="1000px"
+          v-model="dataTableDialog"
+          @click:outside="closeDataTable"
         >
-          <v-card width="500px" height="300px"> </v-card>
+          <data-table :sendEvents="sendEvents" ref="child" />
         </v-dialog>
       </v-col>
     </v-row>
@@ -74,9 +74,11 @@
 
 <script>
 import AddCalendarEventCard from "~/components/addCalendarEventCard.vue";
+import DataTable from "~/components/datatableCard.vue";
 export default {
   components: {
     AddCalendarEventCard,
+    DataTable,
   },
   data: () => ({
     focus: "",
@@ -96,7 +98,8 @@ export default {
     dialog: false,
     selectDay: null,
     eventName: "",
-    dialog2: false,
+    dataTableDialog: false,
+    sendEvents: null,
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -104,7 +107,7 @@ export default {
   },
   watch: {
     plusEvents() {
-      console.log(this.plusEvents)
+      // console.log(this.plusEvents);
       const targets = this.plusEvents.filter((event) => {
         return (
           event.state === "plus" &&
@@ -136,7 +139,7 @@ export default {
       }
     },
     minusEvents() {
-      console.log(this.minusEvents)
+      // console.log(this.minusEvents);
       const targets = this.minusEvents.filter((event) => {
         return (
           event.state === "minus" &&
@@ -190,9 +193,28 @@ export default {
     },
 
     stop({ nativeEvent, event, day }) {
-      console.log(event);
-      this.dialog2 = true;
-      console.log("stop");
+      // console.log(event.state);
+      this.selectDay = day.date;
+      // console.log(this.selectDay);
+      let sendEvents;
+      if (event.state === "plus") {
+        sendEvents = this.plusEvents.filter((plusEvent) => {
+          return (
+            plusEvent.start.getTime() === new Date(this.selectDay).getTime()
+          );
+        });
+      } else {
+        sendEvents = this.minusEvents.filter((minusEvent) => {
+          return (
+            minusEvent.start.getTime() === new Date(this.selectDay).getTime()
+          );
+        });
+      }
+
+      // console.log(sendEvents);
+      this.sendEvents = sendEvents;
+      // console.log(this.sendEvents);
+      this.dataTableDialog = true;
       nativeEvent.stopPropagation();
     },
     add(addItem) {
@@ -205,6 +227,10 @@ export default {
     },
     close() {
       this.dialog = false;
+    },
+    closeDataTable() {
+      this.$refs.child.searchInitialize();
+      this.dataTableDialog = false;
     },
   },
 };
