@@ -58,9 +58,7 @@ export default {
       comment: "",
     };
   },
-  mounted() {
-    this.$store.dispatch("db/calendarSnapshot");
-  },
+  
   methods: {
     increment() {
       this.$store.dispatch("db/add", {
