@@ -58,11 +58,14 @@ export default {
       comment: "",
     };
   },
+  mounted() {
+    this.$store.dispatch("db/calendarSnapshot");
+  },
   methods: {
     increment() {
-      this.$emit("add", {
+      this.$store.dispatch("db/add", {
         amount: Number(this.amount),
-        start: new Date(this.selectDay),
+        start: this.selectDay,
         classification: this.selectedItem,
         comment: this.comment,
         state: "plus",
@@ -74,9 +77,9 @@ export default {
       this.$emit("close");
     },
     decrement() {
-      this.$emit("add", {
-        amount: Number(-this.amount),
-        start: new Date(this.selectDay),
+      this.$store.dispatch("db/add", {
+        amount: Number(this.amount),
+        start: this.selectDay,
         classification: this.selectedItem,
         comment: this.comment,
         state: "minus",

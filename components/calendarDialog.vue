@@ -55,7 +55,6 @@
             <add-calendar-event-card
               :events="events"
               :selectDay="selectDay"
-              @add="add"
               @close="close"
             />
           </v-dialog>
@@ -93,8 +92,8 @@ export default {
     selectedElement: null,
     selectedOpen: false,
     events: [],
-    plusEvents: [],
-    minusEvents: [],
+    // plusEvents: [],
+    // minusEvents: [],
     dialog: false,
     selectDay: null,
     eventName: "",
@@ -105,70 +104,84 @@ export default {
     this.$refs.calendar.checkChange();
     // console.log(this.events);
   },
+  computed: {
+    calendarPlusEvent() {
+      return this.$store.getters["db/calendarPlusEvent"];
+    },
+    calendarMinusEvent() {
+      return this.$store.getters["db/calendarMinusEvent"];
+    },
+  },
   watch: {
-    plusEvents() {
-      // console.log(this.plusEvents);
-      const targets = this.plusEvents.filter((event) => {
-        return (
-          event.state === "plus" &&
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-      });
-
-      let plusNum = Number(0);
-      targets.forEach((target) => {
-        plusNum += target.amount;
-      });
-      // console.log(plusNum);
-
-      const eventsArrayTarget = this.events.find((event) => {
-        return (
-          event.state === "plus" &&
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-      });
-
-      if (eventsArrayTarget) {
-        eventsArrayTarget.amount = plusNum;
+    calendarPlusEvent() {
+      if (this.calendarPlusEvent.length === 0) {
+        return;
       } else {
-        this.events.push({
-          amount: plusNum,
-          start: new Date(this.selectDay),
-          state: "plus",
+        const targets = this.calendarPlusEvent.filter((event) => {
+          return (
+            new Date(event.start).getTime() ===
+            new Date(this.selectDay).getTime()
+          );
         });
+        let plusNum = Number(0);
+        targets.forEach((target) => {
+          plusNum += target.amount;
+        });
+
+        const eventsArrayTarget = this.events.find((event) => {
+          return (
+            event.state === "plus" &&
+            new Date(event.start).getTime() ===
+              new Date(this.selectDay).getTime()
+          );
+        });
+
+        if (eventsArrayTarget) {
+          eventsArrayTarget.amount = plusNum;
+        } else {
+          this.events.push({
+            amount: plusNum,
+            start: new Date(this.selectDay),
+            state: "plus",
+          });
+        }
       }
     },
-    minusEvents() {
-      // console.log(this.minusEvents);
-      const targets = this.minusEvents.filter((event) => {
-        return (
-          event.state === "minus" &&
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-      });
-
-      let minusNum = Number(0);
-      targets.forEach((target) => {
-        minusNum += target.amount;
-      });
-
-      const eventsArrayTarget = this.events.find((event) => {
-        return (
-          event.state === "minus" &&
-          event.start.getTime() === new Date(this.selectDay).getTime()
-        );
-      });
-
-      if (eventsArrayTarget) {
-        eventsArrayTarget.amount = minusNum;
+    calendarMinusEvent() {
+      if (this.calendarMinusEvent.length === 0) {
+        return;
       } else {
-        this.events.push({
-          amount: minusNum,
-          start: new Date(this.selectDay),
-          state: "minus",
+        const targets = this.calendarMinusEvent.filter((event) => {
+          return (
+            new Date(event.start).getTime() ===
+            new Date(this.selectDay).getTime()
+          );
         });
+        let minusNum = Number(0);
+        targets.forEach((target) => {
+          minusNum += target.amount;
+        });
+
+        const eventsArrayTarget = this.events.find((event) => {
+          return (
+            event.state === "minus" &&
+            new Date(event.start).getTime() ===
+              new Date(this.selectDay).getTime()
+          );
+        });
+
+        if (eventsArrayTarget) {
+          eventsArrayTarget.amount = minusNum;
+        } else {
+          this.events.push({
+            amount: minusNum,
+            start: new Date(this.selectDay),
+            state: "minus",
+          });
+        }
       }
     },
+    
   },
   methods: {
     getEventColor(event) {
@@ -217,14 +230,14 @@ export default {
       this.dataTableDialog = true;
       nativeEvent.stopPropagation();
     },
-    add(addItem) {
-      // console.log(addItem);
-      if (addItem.state === "plus") {
-        this.plusEvents.push(addItem);
-      } else {
-        this.minusEvents.push(addItem);
-      }
-    },
+    // add(addItem) {
+    //   // console.log(addItem);
+    //   if (addItem.state === "plus") {
+    //     this.plusEvents.push(addItem);
+    //   } else {
+    //     this.minusEvents.push(addItem);
+    //   }
+    // },
     close() {
       this.dialog = false;
     },
