@@ -196,17 +196,18 @@ export default {
 
     stop({ nativeEvent, event, day }) {
       this.selectDay = day.date;
+      
       let sendEvents;
       if (event.state === "plus") {
-        sendEvents = this.plusEvents.filter((plusEvent) => {
+        sendEvents = this.plusEvent.filter((event) => {
           return (
-            plusEvent.start.getTime() === new Date(this.selectDay).getTime()
+            event.start.getTime() === new Date(this.selectDay).getTime()
           );
         });
       } else {
-        sendEvents = this.minusEvents.filter((minusEvent) => {
+        sendEvents = this.minusEvent.filter((event) => {
           return (
-            minusEvent.start.getTime() === new Date(this.selectDay).getTime()
+            event.start.getTime() === new Date(this.selectDay).getTime()
           );
         });
       }
