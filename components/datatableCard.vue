@@ -113,6 +113,7 @@ export default {
     },
     close() {
       this.dialog = false;
+      this.$emit('close')
     },
   },
 };
