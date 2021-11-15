@@ -74,7 +74,6 @@
 <script>
 import AddCalendarEventCard from "~/components/addCalendarEventCard.vue";
 import DataTable from "~/components/datatableCard.vue";
-import moment from "moment";
 export default {
   components: {
     AddCalendarEventCard,
@@ -110,7 +109,7 @@ export default {
       const a = JSON.parse(
         JSON.stringify(this.$store.getters["db/calendarEvent"])
       );
-      console.log(a);
+      // console.log(a);
       return a;
     },
   },
@@ -123,7 +122,7 @@ export default {
         this.minusEvent = [];
         this.calendarEvents.forEach((calendarEvent) => {
           calendarEvent.start = new Date(calendarEvent.start);
-          console.log(calendarEvent.start);
+          // console.log(calendarEvent.start);
           if (calendarEvent.state === "plus") {
             this.plusEvent.push(calendarEvent);
           } else {
@@ -134,13 +133,13 @@ export default {
         this.events = [];
 
         const plus = this.plusEvent.reduce((arr, { start, amount, state }) => {
-          console.log(arr);
+          // console.log(arr);
           // const target = arr.find((it) => it.start === start);
           const target = arr.find((it) => {
-            console.log(it.start.getTime() === start.getTime());
+            // console.log(it.start.getTime() === start.getTime());
             return it.start.getTime() === start.getTime();
           });
-          console.log(target);
+          // console.log(target);
           if (target) {
             target.amount += amount;
           } else {
@@ -151,12 +150,12 @@ export default {
 
         const minus = this.minusEvent.reduce(
           (arr, { start, amount, state }) => {
-            console.log(arr);
+            // console.log(arr);
             // const target = arr.find((it) => it.start === start);
             const target = arr.find((it) => {
               return it.start.getTime() === start.getTime();
             });
-            console.log(target);
+            // console.log(target);
             if (target) {
               target.amount += amount;
             } else {
