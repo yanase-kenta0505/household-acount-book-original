@@ -64,7 +64,7 @@
           v-model="dataTableDialog"
           @click:outside="closeDataTable"
         >
-          <data-table :sendEvents="sendEvents" ref="child" />
+          <data-table :sendEvents="sendEvents" ref="child" @close="closeDataTable" />
         </v-dialog>
       </v-col>
     </v-row>
@@ -195,19 +195,15 @@ export default {
 
     stop({ nativeEvent, event, day }) {
       this.selectDay = day.date;
-      
+
       let sendEvents;
       if (event.state === "plus") {
         sendEvents = this.plusEvent.filter((event) => {
-          return (
-            event.start.getTime() === new Date(this.selectDay).getTime()
-          );
+          return event.start.getTime() === new Date(this.selectDay).getTime();
         });
       } else {
         sendEvents = this.minusEvent.filter((event) => {
-          return (
-            event.start.getTime() === new Date(this.selectDay).getTime()
-          );
+          return event.start.getTime() === new Date(this.selectDay).getTime();
         });
       }
 
