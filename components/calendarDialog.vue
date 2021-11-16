@@ -64,7 +64,7 @@
           v-model="dataTableDialog"
           @click:outside="closeDataTable"
         >
-          <data-table :sendEvents="sendEvents" ref="child" @close="closeDataTable" :plusEvent="plusEvent"  :minusEvent="minusEvent"/>
+          <data-table :sendEvents="sendEvents" ref="child" @close="closeDataTable" />
         </v-dialog>
       </v-col>
     </v-row>

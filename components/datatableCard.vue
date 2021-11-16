@@ -39,16 +39,11 @@
 
 <script>
 import EditEventCard from "~/components/editEventCard.vue";
+import { state } from "~/store/db";
 export default {
   components: { EditEventCard },
   props: {
     sendEvents: {
-      type: Array,
-    },
-    plusEvent: {
-      type: Array,
-    },
-    minusEvent: {
       type: Array,
     },
   },
@@ -90,41 +85,45 @@ export default {
       ],
       dialog: false,
       editTarget: {},
+      state: "",
+      start: null,
     };
   },
   mounted() {
     this.list = this.sendEvents;
+    this.state = this.list[0].state;
+    this.start = this.list[0].start;
+  },
+  computed: {
+    calendarEvents() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.getters["db/calendarEvent"])
+      );
+      // console.log(a);
+      return a;
+    },
   },
 
-  // computed: {
-  //   calendarEvents() {
-  //     const a = JSON.parse(
-  //       JSON.stringify(this.$store.getters["db/calendarEvent"])
-  //     );
-  //     // console.log(a);
-  //     return a;
-  //   },
-  // },
   watch: {
     sendEvents(newEvents, oldEvents) {
-      console.log("change");
-      this.list = newEvents;
-    },
-    plusEvent(newEvents, oldEvents) {
       console.log(newEvents);
       this.list = newEvents;
+      this.state = newEvents[0].state;
+      this.start = newEvents[0].start;
+      console.log(this.start, this.status);
     },
-    minusEvent(newEvents, oldEvents) {
+    calendarEvents(newEvents, oldEvents) {
       console.log(newEvents);
-      this.list = newEvents;
+      const updateEvents = newEvents.filter((event) => {
+        console.log(event.start, this.start);
+        return (
+          event.state === this.state &&
+          new Date(event.start).getTime() === this.start.getTime()
+        );
+      });
+      console.log(updateEvents);
+      this.list = updateEvents;
     },
-    // sendEvents: {
-    //   handler(newEvents, oldEvents) {
-    //     console.log("change");
-    //     this.list = newEvents;
-    //   },
-    //   deep: true,
-    // },
   },
   methods: {
     searchInitialize() {
@@ -134,6 +133,11 @@ export default {
       // console.log(item);
       this.editTarget = item;
       this.dialog = true;
+    },
+    deleteItem(item) {
+      if (confirm("本当に消しても良いですか？")) {
+        this.$store.dispatch("db/delete", item);
+      }
     },
     close() {
       this.dialog = false;
