@@ -64,7 +64,7 @@
           v-model="dataTableDialog"
           @click:outside="closeDataTable"
         >
-          <data-table :sendEvents="sendEvents" ref="child" @close="closeDataTable" />
+          <data-table :sendEvents="sendEvents" ref="child" @close="closeDataTable" :plusEvent="plusEvent"  :minusEvent="minusEvent"/>
         </v-dialog>
       </v-col>
     </v-row>
@@ -217,7 +217,7 @@ export default {
     },
     closeDataTable() {
       this.$refs.child.searchInitialize();
-      this.dataTableDialog = false;
+      // this.dataTableDialog = false;
     },
   },
 };
