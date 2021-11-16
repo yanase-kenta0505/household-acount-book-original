@@ -46,6 +46,10 @@ export const actions = {
       comment: item.comment,
     });
   },
+  delete(context, item) {
+    // console.log(item)
+    calendarEventRef.doc(item.id).delete();
+  },
 };
 
 export const mutations = {
