@@ -45,6 +45,12 @@ export default {
     sendEvents: {
       type: Array,
     },
+    plusEvent: {
+      type: Array,
+    },
+    minusEvent: {
+      type: Array,
+    },
   },
   data() {
     return {
@@ -89,18 +95,36 @@ export default {
   mounted() {
     this.list = this.sendEvents;
   },
+
+  // computed: {
+  //   calendarEvents() {
+  //     const a = JSON.parse(
+  //       JSON.stringify(this.$store.getters["db/calendarEvent"])
+  //     );
+  //     // console.log(a);
+  //     return a;
+  //   },
+  // },
   watch: {
-    // sendEvents(newEvents, oldEvents) {
-    //   console.log("change");
-    //   this.list = newEvents;
-    // },
-    sendEvents: {
-      handler(newEvents, oldEvents) {
-        console.log("change");
-        this.list = newEvents;
-      },
-      deep: true,
+    sendEvents(newEvents, oldEvents) {
+      console.log("change");
+      this.list = newEvents;
     },
+    plusEvent(newEvents, oldEvents) {
+      console.log(newEvents);
+      this.list = newEvents;
+    },
+    minusEvent(newEvents, oldEvents) {
+      console.log(newEvents);
+      this.list = newEvents;
+    },
+    // sendEvents: {
+    //   handler(newEvents, oldEvents) {
+    //     console.log("change");
+    //     this.list = newEvents;
+    //   },
+    //   deep: true,
+    // },
   },
   methods: {
     searchInitialize() {
@@ -113,7 +137,7 @@ export default {
     },
     close() {
       this.dialog = false;
-      this.$emit('close')
+      this.$emit("close");
     },
   },
 };
