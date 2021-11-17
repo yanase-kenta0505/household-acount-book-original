@@ -19,7 +19,9 @@
         </v-list-group>
       </template>
       <v-card width="1000px">
-        <v-card-title class="text-h5 grey lighten-2"> 収支入力・確認 </v-card-title>
+        <v-card-title class="text-h5 grey lighten-2">
+          収支入力・確認
+        </v-card-title>
         <v-tabs v-model="tab" grow>
           <v-tab
             v-for="(item, index) in items"
@@ -40,8 +42,15 @@
           <v-tab-item
             v-for="componentsItem in componentsItems"
             :key="componentsItem"
+            style="height: 600px"
           >
-            <component :is="componentsItem" />
+            <component
+              :is="componentsItem"
+              :class="{
+                pieGraph: index === 1,
+                otherGraph: index === 2 || index === 3,
+              }"
+            />
           </v-tab-item>
         </v-tabs-items>
       </v-card>
@@ -72,3 +81,17 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.pieGraph {
+  width: 60%;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.otherGraph {
+  width: 60%;
+  margin-left: 50px;
+  margin-top: 30px;
+}
+</style>
