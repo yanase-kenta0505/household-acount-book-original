@@ -64,7 +64,11 @@
           v-model="dataTableDialog"
           @click:outside="closeDataTable"
         >
-          <data-table :sendEvents="sendEvents" ref="child" @close="closeDataTable" />
+          <data-table
+            :sendEvents="sendEvents"
+            ref="child"
+            @close="closeDataTable"
+          />
         </v-dialog>
       </v-col>
     </v-row>
@@ -170,6 +174,9 @@ export default {
         this.events.push(...minus);
       }
     },
+    minusEvent() {
+      this.$store.dispatch("db/setMInusEvent", this.minusEvent);
+    },
   },
   methods: {
     getEventColor(event) {
@@ -197,15 +204,31 @@ export default {
       this.selectDay = day.date;
 
       let sendEvents;
+      let targets;
       if (event.state === "plus") {
-        sendEvents = this.plusEvent.filter((event) => {
+        targets = this.plusEvent.filter((event) => {
           return event.start.getTime() === new Date(this.selectDay).getTime();
         });
       } else {
-        sendEvents = this.minusEvent.filter((event) => {
+        targets = this.minusEvent.filter((event) => {
           return event.start.getTime() === new Date(this.selectDay).getTime();
         });
       }
+
+      sendEvents = targets.reduce(
+        (arr, { start, amount, state, classification }) => {
+          const target = arr.find((it) => {
+            return it.classification === classification;
+          });
+          if (target) {
+            target.amount += amount;
+          } else {
+            arr.push({ start, amount, state, classification });
+          }
+          return arr;
+        },
+        []
+      );
 
       this.sendEvents = sendEvents;
       this.dataTableDialog = true;
