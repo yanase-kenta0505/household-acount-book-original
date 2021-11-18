@@ -216,14 +216,14 @@ export default {
       }
 
       sendEvents = targets.reduce(
-        (arr, { start, amount, state, classification }) => {
+        (arr, { start, amount, state, classification, comment }) => {
           const target = arr.find((it) => {
             return it.classification === classification;
           });
           if (target) {
             target.amount += amount;
           } else {
-            arr.push({ start, amount, state, classification });
+            arr.push({ start, amount, state, classification, comment });
           }
           return arr;
         },
