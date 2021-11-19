@@ -42,7 +42,7 @@
           <v-tab-item
             v-for="componentsItem in componentsItems"
             :key="componentsItem"
-            style="height: 600px"
+            :class="(index === 0) ? 'calendarHeight': 'otherHeight'"
           >
             <component
               :is="componentsItem"
@@ -93,5 +93,13 @@ export default {
   width: 60%;
   margin-left: 50px;
   margin-top: 30px;
+  width: 500px !important;
+}
+
+.calendarHeight {
+  height: 700px;
+}
+.otherHeight {
+  height: 500px;
 }
 </style>
