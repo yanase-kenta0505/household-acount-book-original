@@ -39,7 +39,7 @@ export const actions = {
   },
   update(context, item) {
     // console.log(typeof item.amount);
-
+    // console.log(item.id)
     calendarEventRef.doc(item.id).update({
       classification: item.classification,
       amount: item.amount,

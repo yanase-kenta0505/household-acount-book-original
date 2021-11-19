@@ -113,9 +113,9 @@ export default {
       console.log(this.start, this.status);
     },
     calendarEvents(newEvents, oldEvents) {
-      console.log(newEvents);
+      console.log('foo');
       const updateEvents = newEvents.filter((event) => {
-        console.log(event.start, this.start);
+        // console.log(event.start, this.start);
         return (
           event.state === this.state &&
           new Date(event.start).getTime() === this.start.getTime()
@@ -130,7 +130,7 @@ export default {
       this.search = "";
     },
     editItem(item) {
-      // console.log(item);
+      console.log(item);
       this.editTarget = item;
       this.dialog = true;
     },

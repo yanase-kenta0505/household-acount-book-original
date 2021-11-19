@@ -54,22 +54,26 @@ export default {
       comment: "",
       day: null,
       amount: null,
+      id: null,
     };
   },
   watch: {
     editTarget() {
+      console.log(this.editTarget);
       this.day = moment(this.editTarget.start).format("YYYY-MM-DD");
       this.selectedItem = this.editTarget.classification;
       this.amount = this.editTarget.amount;
       this.comment = this.editTarget.comment;
+      this.id = this.editTarget.id;
     },
   },
   mounted() {
-    // console.log(this.editTarget);
+    console.log(this.editTarget);
     this.day = moment(this.editTarget.start).format("YYYY-MM-DD");
     this.selectedItem = this.editTarget.classification;
     this.amount = this.editTarget.amount;
     this.comment = this.editTarget.comment;
+    this.id = this.editTarget.id;
   },
 
   methods: {
@@ -78,7 +82,7 @@ export default {
         classification: this.selectedItem,
         amount: Number(this.amount),
         comment: this.comment,
-        id: this.editTarget.id,
+        id: this.id,
       });
       this.$emit("close");
     },

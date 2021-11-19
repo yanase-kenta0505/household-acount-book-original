@@ -119,7 +119,9 @@ export default {
   },
   watch: {
     calendarEvents() {
+      // console.log('delete',this.calendarEvents.length)
       if (this.calendarEvents.length === 0) {
+        this.events = [];
         return;
       } else {
         this.plusEvent = [];
@@ -174,9 +176,6 @@ export default {
         this.events.push(...minus);
       }
     },
-    minusEvent() {
-      this.$store.dispatch("db/setMInusEvent", this.minusEvent);
-    },
   },
   methods: {
     getEventColor(event) {
@@ -216,14 +215,14 @@ export default {
       }
 
       sendEvents = targets.reduce(
-        (arr, { start, amount, state, classification, comment }) => {
+        (arr, { start, amount, state, classification, comment, id }) => {
           const target = arr.find((it) => {
             return it.classification === classification;
           });
           if (target) {
             target.amount += amount;
           } else {
-            arr.push({ start, amount, state, classification, comment });
+            arr.push({ start, amount, state, classification, comment, id });
           }
           return arr;
         },
