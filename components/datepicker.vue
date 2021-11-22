@@ -26,7 +26,7 @@
               @input="menu2 = false"
               type="month"
               locale="ja"
-              @change="foo"
+              @change="changeDate"
             ></v-date-picker>
           </div>
         </v-menu>
@@ -44,12 +44,15 @@ export default {
     modal: false,
     menu2: false,
   }),
-  methods:{
-      foo(){
-          console.log(this.date)
-      }
-  }
+  mounted() {
+    console.log(this.date);
+    localStorage.setItem("selectedDate", this.date);
+  },
+  methods: {
+    changeDate() {
+      console.log(this.date);
+      localStorage.setItem("selectedDate", this.date);
+    },
+  },
 };
 </script>
-
-

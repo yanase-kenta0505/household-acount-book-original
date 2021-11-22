@@ -35,7 +35,6 @@
                   v-model="focus"
                   color="primary"
                   :events="events"
-                  
                   :type="type"
                   @click:day="day"
                   @click:event="stop"
@@ -119,17 +118,6 @@ export default {
     },
   },
   watch: {
-    events() {
-      console.log(this.events);
-      // localStorage.setItem(
-      //   "event",
-      //   JSON.stringify({
-      //     amount: this.events.amount,
-      //     start: this.events.start,
-      //     state: this.events.state,
-      //   })
-      // );
-    },
     calendarEvents() {
       // console.log('delete',this.calendarEvents.length)
       if (this.calendarEvents.length === 0) {

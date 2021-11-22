@@ -42,7 +42,7 @@
           <v-tab-item
             v-for="componentsItem in componentsItems"
             :key="componentsItem"
-            :class="(index === 0) ? 'calendarHeight': 'otherHeight'"
+            :class="index === 0 ? 'calendarHeight' : 'otherHeight'"
           >
             <component
               :is="componentsItem"
@@ -51,6 +51,9 @@
                 otherGraph: index === 2 || index === 3,
               }"
             />
+
+            <date-picker v-if="index === 1" />
+            <!-- <v-btn>fooo</v-btn> -->
           </v-tab-item>
         </v-tabs-items>
       </v-card>
@@ -63,8 +66,9 @@ import ColumnChart from "~/components/columnChart.vue";
 import PieChart from "~/components/pieChart.vue";
 import LineChart from "~/components/lineChaart.vue";
 import Calendar from "~/components/calendarDialog.vue";
+import DatePicker from "~/components/datepicker.vue";
 export default {
-  components: { ColumnChart, PieChart, LineChart, Calendar },
+  components: { ColumnChart, PieChart, LineChart, Calendar, DatePicker },
   data() {
     return {
       dialog: false,
