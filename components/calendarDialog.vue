@@ -35,8 +35,8 @@
                   v-model="focus"
                   color="primary"
                   :events="events"
+                  
                   :type="type"
-                  @change="updateRange"
                   @click:day="day"
                   @click:event="stop"
                 >
@@ -78,6 +78,7 @@
 <script>
 import AddCalendarEventCard from "~/components/addCalendarEventCard.vue";
 import DataTable from "~/components/datatableCard.vue";
+
 export default {
   components: {
     AddCalendarEventCard,
@@ -118,6 +119,17 @@ export default {
     },
   },
   watch: {
+    events() {
+      console.log(this.events);
+      // localStorage.setItem(
+      //   "event",
+      //   JSON.stringify({
+      //     amount: this.events.amount,
+      //     start: this.events.start,
+      //     state: this.events.state,
+      //   })
+      // );
+    },
     calendarEvents() {
       // console.log('delete',this.calendarEvents.length)
       if (this.calendarEvents.length === 0) {
@@ -178,23 +190,17 @@ export default {
     },
   },
   methods: {
-    getEventColor(event) {
-      return event.color;
-    },
     setToday() {
       this.focus = "";
     },
     prev() {
       this.$refs.calendar.prev();
+      // console.log(this.$refs.calendar.prev());
     },
     next() {
       this.$refs.calendar.next();
     },
 
-    updateRange({ start, end }) {
-      const events = [];
-      this.events = events;
-    },
     day({ date }) {
       this.selectDay = date;
     },
