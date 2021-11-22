@@ -1,4 +1,5 @@
 <script>
+import moment from "moment";
 import { Pie } from "vue-chartjs";
 export default {
   extends: Pie,
@@ -19,7 +20,7 @@ export default {
           {
             label: ["Data One"],
             backgroundColor: "#f87979",
-            data: [40, 30, 50, 60],
+            data: [],
           },
         ],
       },
@@ -29,8 +30,73 @@ export default {
       },
     };
   },
+
   mounted() {
+    // console.log(this.$store.getters["db/displayEvent"])
+    this.displayPieChart();
     this.renderChart(this.chartdata, this.options);
+  },
+  computed: {
+    calendarEvent() {
+      // return this.$store.getters["db/calendarEvent"]
+      const a = JSON.parse(
+        JSON.stringify(this.$store.getters["db/calendarEvent"])
+      );
+      // console.log(a);
+      return a;
+    },
+  },
+  watch: {
+    calendarEvent() {},
+  },
+  methods: {
+    displayPieChart() {
+      const filteringEvent = this.calendarEvent.filter((event) => {
+        return (
+          moment(event.start).format("YYYY-MM") ===
+            localStorage.getItem("selectedDate") && event.state === "minus"
+        );
+      });
+
+      console.log(filteringEvent);
+      const tallyEvent = filteringEvent.reduce(
+        (arr, { amount, classification }) => {
+          const target = arr.find((it) => {
+            return it.classification === classification;
+          });
+          if (target) {
+            target.amount += amount;
+          } else {
+            arr.push({ amount, classification });
+          }
+          return arr;
+        },
+        []
+      );
+      console.log(tallyEvent);
+
+      const classifications = [];
+      tallyEvent.forEach((event) => {
+        classifications.push(event.classification);
+      });
+      const amounts = [];
+      tallyEvent.forEach((event) => {
+        amounts.push(event.amount);
+      });
+
+      console.log(classifications, amounts);
+
+      console.log(this.chartdata.labels);
+
+      this.chartdata.datasets.forEach((dataset) => {
+        console.log(dataset.data);
+        amounts.forEach((amount) => {
+          dataset.data.push(amount);
+        });
+      });
+
+      this.chartdata.labels = classifications;
+    },
   },
 };
 </script>
