@@ -5,11 +5,15 @@ const calendarEventRef = db.collection("calendarEvent");
 
 export const state = () => ({
   calendarEvent: [],
+  selectedDate: null,
 });
 
 export const getters = {
   calendarEvent(state) {
     return state.calendarEvent;
+  },
+  selectedDate(state) {
+    return state.selectedDate;
   },
 };
 
@@ -50,10 +54,16 @@ export const actions = {
     // console.log(item)
     calendarEventRef.doc(item.id).delete();
   },
+  selectedDate(context, date) {
+    context.commit("selectedDate", date);
+  },
 };
 
 export const mutations = {
   changecalendarEvent(state, events) {
     state.calendarEvent = events;
+  },
+  selectedDate(state, date) {
+    state.selectedDate = date;
   },
 };
