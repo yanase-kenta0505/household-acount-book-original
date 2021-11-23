@@ -19,7 +19,14 @@ export default {
         datasets: [
           {
             label: ["Data One"],
-            backgroundColor: "#f87979",
+            backgroundColor: [
+              "blue",
+              "red",
+              "green",
+              "pink",
+              "brown",
+              "yellow",
+            ],
             data: [],
           },
         ],
@@ -45,20 +52,33 @@ export default {
       // console.log(a);
       return a;
     },
+    selectedDate() {
+      // return this.$store.getters["db/selectedDate"]
+      const a = JSON.parse(
+        JSON.stringify(this.$store.getters["db/selectedDate"])
+      );
+      // console.log(a);
+      return a;
+    },
   },
   watch: {
-    calendarEvent() {},
+    selectedDate() {
+      this.displayPieChart();
+      this.renderChart(this.chartdata, this.options);
+    },
   },
+
   methods: {
     displayPieChart() {
       const filteringEvent = this.calendarEvent.filter((event) => {
+        // console.log(moment(event.start).format("YYYY-MM"));
+        // console.log(this.selectedDate);
         return (
-          moment(event.start).format("YYYY-MM") ===
-            localStorage.getItem("selectedDate") && event.state === "minus"
+          moment(event.start).format("YYYY-MM") === this.selectedDate &&
+          event.state === "minus"
         );
       });
 
-      console.log(filteringEvent);
       const tallyEvent = filteringEvent.reduce(
         (arr, { amount, classification }) => {
           const target = arr.find((it) => {
@@ -73,7 +93,7 @@ export default {
         },
         []
       );
-      console.log(tallyEvent);
+      // console.log(tallyEvent);
 
       const classifications = [];
       tallyEvent.forEach((event) => {
@@ -84,17 +104,17 @@ export default {
         amounts.push(event.amount);
       });
 
-      console.log(classifications, amounts);
+      // console.log(classifications, amounts);
 
-      console.log(this.chartdata.labels);
+      // console.log(this.chartdata.labels);
 
       this.chartdata.datasets.forEach((dataset) => {
-        console.log(dataset.data);
+        dataset.data = [];
         amounts.forEach((amount) => {
           dataset.data.push(amount);
         });
       });
-
+      this.chartdata.labels = [];
       this.chartdata.labels = classifications;
     },
   },

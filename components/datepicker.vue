@@ -45,13 +45,13 @@ export default {
     menu2: false,
   }),
   mounted() {
-    console.log(this.date);
-    localStorage.setItem("selectedDate", this.date);
+    // localStorage.setItem("selectedDate", this.date);
+    this.$store.dispatch('db/selectedDate', this.date);
   },
   methods: {
     changeDate() {
-      console.log(this.date);
-      localStorage.setItem("selectedDate", this.date);
+      // localStorage.setItem("selectedDate", this.date);
+      this.$store.dispatch('db/selectedDate', this.date);
     },
   },
 };
