@@ -57,6 +57,9 @@ export const actions = {
   selectedDate(context, date) {
     context.commit("selectedDate", date);
   },
+  selectedColumnChartDate(context, date) {
+    console.log(date);
+  },
 };
 
 export const mutations = {

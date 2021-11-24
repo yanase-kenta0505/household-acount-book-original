@@ -52,8 +52,8 @@
               }"
             />
 
-            <date-picker v-if="index === 1" />
-            <!-- <v-btn>fooo</v-btn> -->
+            <pie-chart-datepicker v-if="index === 1" class="ml-10" />
+            <column-chart-datepicker v-if="index === 2" class="ml-10"/>
           </v-tab-item>
         </v-tabs-items>
       </v-card>
@@ -66,9 +66,17 @@ import ColumnChart from "~/components/columnChart.vue";
 import PieChart from "~/components/pieChart.vue";
 import LineChart from "~/components/lineChaart.vue";
 import Calendar from "~/components/calendarDialog.vue";
-import DatePicker from "~/components/datepicker.vue";
+import PieChartDatepicker from "~/components/PieChartDatepicker.vue";
+import ColumnChartDatepicker from "~/components/columnChartDatePicker.vue";
 export default {
-  components: { ColumnChart, PieChart, LineChart, Calendar, DatePicker },
+  components: {
+    ColumnChart,
+    PieChart,
+    LineChart,
+    Calendar,
+    PieChartDatepicker,
+    ColumnChartDatepicker,
+  },
   data() {
     return {
       dialog: false,
@@ -94,16 +102,15 @@ export default {
 }
 
 .otherGraph {
-  width: 60%;
   margin-left: 50px;
   margin-top: 30px;
-  width: 500px !important;
+  width: 80% !important;
 }
 
 .calendarHeight {
   height: 700px;
 }
 .otherHeight {
-  height: 500px;
+  height: 700px;
 }
 </style>

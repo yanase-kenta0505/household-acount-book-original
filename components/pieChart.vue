@@ -53,11 +53,9 @@ export default {
       return a;
     },
     selectedDate() {
-      // return this.$store.getters["db/selectedDate"]
       const a = JSON.parse(
         JSON.stringify(this.$store.getters["db/selectedDate"])
       );
-      // console.log(a);
       return a;
     },
   },
@@ -71,8 +69,6 @@ export default {
   methods: {
     displayPieChart() {
       const filteringEvent = this.calendarEvent.filter((event) => {
-        // console.log(moment(event.start).format("YYYY-MM"));
-        // console.log(this.selectedDate);
         return (
           moment(event.start).format("YYYY-MM") === this.selectedDate &&
           event.state === "minus"
@@ -93,7 +89,6 @@ export default {
         },
         []
       );
-      // console.log(tallyEvent);
 
       const classifications = [];
       tallyEvent.forEach((event) => {
@@ -104,9 +99,6 @@ export default {
         amounts.push(event.amount);
       });
 
-      // console.log(classifications, amounts);
-
-      // console.log(this.chartdata.labels);
 
       this.chartdata.datasets.forEach((dataset) => {
         dataset.data = [];
