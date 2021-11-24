@@ -45,12 +45,10 @@ export default {
     menu2: false,
   }),
   mounted() {
-    // localStorage.setItem("selectedDate", this.date);
     this.$store.dispatch('db/selectedDate', this.date);
   },
   methods: {
     changeDate() {
-      // localStorage.setItem("selectedDate", this.date);
       this.$store.dispatch('db/selectedDate', this.date);
     },
   },
