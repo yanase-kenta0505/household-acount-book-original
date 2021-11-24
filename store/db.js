@@ -3,9 +3,11 @@ import firebase from "~/plugins/firebase";
 const db = firebase.firestore();
 const calendarEventRef = db.collection("calendarEvent");
 
+
 export const state = () => ({
   calendarEvent: [],
   selectedDate: null,
+  postMessage: [],
 });
 
 export const getters = {
@@ -14,6 +16,9 @@ export const getters = {
   },
   selectedDate(state) {
     return state.selectedDate;
+  },
+  postMessage(state) {
+    return state.postMessage;
   },
 };
 
@@ -60,6 +65,7 @@ export const actions = {
   selectedColumnChartDate(context, date) {
     console.log(date);
   },
+  
 };
 
 export const mutations = {
@@ -69,4 +75,5 @@ export const mutations = {
   selectedDate(state, date) {
     state.selectedDate = date;
   },
+ 
 };

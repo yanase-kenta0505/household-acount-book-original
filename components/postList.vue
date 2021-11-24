@@ -18,7 +18,7 @@
           </template>
         </v-list-group>
       </template>
-      <v-card width="600px" height="700px">
+      <v-card width="600px" height="auto" class="pb-10">
         <v-card-title class="text-h5 grey lighten-2"> 投稿一覧 </v-card-title>
 
         <v-card
@@ -26,14 +26,14 @@
           width="90%"
           height="auto"
           class="mx-auto mt-10"
+          v-for="message in postMessage"
+          :key="message"
         >
           <v-card-title>
             <v-avatar size="50" color="grey"></v-avatar>
             <span class="text-subtitle-1 ml-5">けんたけんた</span>
           </v-card-title>
-          <v-card-text class="mb-5"
-            >ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
-          </v-card-text>
+          <v-card-text class="mb-5"> {{ message }}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-icon @click="dialog = false" class="mr-10 mb-5" color="pink"
@@ -55,6 +55,14 @@ export default {
     return {
       dialog: false,
     };
+  },
+  computed: {
+    postMessage() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.getters["postDB/postMessage"])
+      );
+      return a;
+    },
   },
 };
 </script>

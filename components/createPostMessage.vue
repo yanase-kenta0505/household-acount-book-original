@@ -26,13 +26,14 @@
           outlined
           style="width: 90%"
           class="mx-auto mt-10"
+          v-model="message"
         ></v-textarea>
 
         <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="dialog = false"> 投稿 </v-btn>
+          <v-btn color="primary" text @click="post"> 投稿 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -43,7 +44,15 @@ export default {
   data() {
     return {
       dialog: false,
+      message: "",
     };
+  },
+  methods: {
+    post() {
+      this.$store.dispatch("postDB/postMessage", this.message);
+      this.message = "";
+      this.dialog = false;
+    },
   },
 };
 </script>
