@@ -1,25 +1,54 @@
 import firebase from "~/plugins/firebase";
+import moment from "moment";
 
 const db = firebase.firestore();
-const postMessageRef = db.collection("postMessage");
+const usersRef = db.collection("users");
+// const postMessageRef = db.collection("postMessage");
 
 export const state = () => ({
-  postMessage: [],
+  postMessages: [],
 });
 
 export const getters = {
-  postMessage(state) {
-    return state.postMessage;
+  postMessages(state) {
+    return state.postMessages;
   },
 };
 
 export const actions = {
-  postMessage(context, message) {
-    context.commit("postMessage", message);
+  messageSnapshot(context, uid) {
+    usersRef
+      .doc(uid)
+      .collection("message")
+      .orderBy("timeStamp", "desc")
+      .onSnapshot((snapshot) => {
+        let messages = [];
+        snapshot.forEach((doc) => {
+          if (doc.data().Timestamp === null) {
+            console.log("null");
+            return;
+          } else {
+            // console.log(doc.data());
+            let id = doc.id;
+            let data = doc.data();
+            data.id = id;
+            messages.push(data);
+          }
+        });
+        context.commit("changeMessages", messages);
+      });
+  },
+  postMessageAdd(context, postItem) {
+    console.log(new Date());
+    usersRef.doc(postItem.uid).collection("message").add({
+      message: postItem.message,
+      timeStamp: firebase.firestore.Timestamp.now(),
+    });
+    // context.commit("postMessage", postItem);
   },
 };
 export const mutations = {
-  postMessage(state, message) {
-    state.postMessage.push(message);
+  changeMessages(state, messages) {
+    state.postMessages = messages;
   },
 };

@@ -49,7 +49,10 @@ export default {
   },
   methods: {
     post() {
-      this.$store.dispatch("postDB/postMessage", this.message);
+      this.$store.dispatch("postDB/postMessageAdd", {
+        message: this.message,
+        uid: localStorage.getItem("uid"),
+      });
       this.message = "";
       this.dialog = false;
     },

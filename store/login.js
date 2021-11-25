@@ -4,7 +4,6 @@ export const state = () => ({
   login: false,
   errorMessage: "",
   uid: "",
- 
 });
 
 export const getters = {
@@ -47,6 +46,7 @@ export const actions = {
         // }
 
         console.log(res.user.uid);
+        localStorage.setItem("uid", res.user.uid);
         context.commit("changeUid", {
           uid: res.user.uid,
           router: key.router,
@@ -63,7 +63,7 @@ export const actions = {
       .then(() => {
         console.log("signOut");
         context.commit("signOut");
-        router.push("/");
+        router.push("/login");
       });
   },
   signUp(context, key) {
