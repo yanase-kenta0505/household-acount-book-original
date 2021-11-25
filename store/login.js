@@ -51,7 +51,6 @@ export const actions = {
           uid: res.user.uid,
           router: key.router,
         });
-        key.router.push({ name: "users-id", params: { id: this.state.uid } });
       })
       .catch(() => {
         alert("新規登録をしてください。");
@@ -103,6 +102,6 @@ export const mutations = {
   },
   changeUid(state, item) {
     state.uid = item.uid;
-    // item.router.push({ name: "users-id", params: { id: state.uid } });
+    item.router.push({ name: "users-id", params: { id: state.uid } });
   },
 };
