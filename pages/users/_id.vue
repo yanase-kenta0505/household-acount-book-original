@@ -7,9 +7,9 @@
         <p
           class="mr-10 mt-5 pa-5 white--text text-subtitle-1"
           id="moveLogin"
-          @click="moveLogin"
+          @click="signOut"
         >
-          ログインページへ
+          サインアウト
         </p>
       </v-system-bar>
 
@@ -84,8 +84,9 @@ export default {
     }, 500);
   },
   methods: {
-    moveLogin() {
-      this.$router.push("/login");
+    signOut() {
+      // this.$router.push("/login");
+      this.$store.dispatch('login/signOut', this.$router);
     },
   },
 };

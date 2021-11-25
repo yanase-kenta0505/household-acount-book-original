@@ -26,14 +26,14 @@
           width="90%"
           height="auto"
           class="mx-auto mt-10"
-          v-for="message in postMessage"
-          :key="message"
+          v-for="message in postMessages"
+          :key="message.id"
         >
           <v-card-title>
             <v-avatar size="50" color="grey"></v-avatar>
             <span class="text-subtitle-1 ml-5">けんたけんた</span>
           </v-card-title>
-          <v-card-text class="mb-5"> {{ message }}</v-card-text>
+          <v-card-text class="mb-5"> {{ message.message }}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-icon @click="dialog = false" class="mr-10 mb-5" color="pink"
@@ -57,12 +57,15 @@ export default {
     };
   },
   computed: {
-    postMessage() {
+    postMessages() {
       const a = JSON.parse(
-        JSON.stringify(this.$store.getters["postDB/postMessage"])
+        JSON.stringify(this.$store.getters["postDB/postMessages"])
       );
       return a;
     },
+  },
+  mounted() {
+    this.$store.dispatch("postDB/messageSnapshot", localStorage.getItem("uid"));
   },
 };
 </script>
