@@ -22,12 +22,14 @@
             v-model="password"
           />
           <v-card-actions>
-            <v-btn class="info">登録</v-btn>
+            <v-btn class="info" @click="signUp">登録</v-btn>
           </v-card-actions>
         </v-form>
       </v-card-text>
     </v-card>
-    <nuxt-link to="/login" class="mx-auto mt-10">ログインはこちらから</nuxt-link>
+    <nuxt-link to="/login" class="mx-auto mt-10"
+      >ログインはこちらから</nuxt-link
+    >
   </v-app>
 </template>
 <script>
@@ -42,6 +44,15 @@ export default {
         (v) => /.+@.+/.test(v) || "E-mail must be valid",
       ],
     };
+  },
+  methods: {
+    signUp() {
+      this.$store.dispatch("login/signUp", {
+        mail: this.mail,
+        password: this.password,
+        router : this.$router
+      });
+    },
   },
 };
 </script>
