@@ -22,14 +22,14 @@
 
         <v-divider></v-divider>
 
-        <v-list>
+        <!-- <v-list>
           <household-acount-book />
           <post-dialog />
           <follow-dialog />
           <like-dialog />
           <direct-message />
           <acount-edit-dialog/>
-        </v-list>
+        </v-list> -->
       </v-navigation-drawer>
 
       <v-main id="main" style="height: 100%"> </v-main>
