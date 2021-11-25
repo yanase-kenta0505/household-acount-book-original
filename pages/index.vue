@@ -42,7 +42,7 @@ export default {
     changeExpand() {
       this.expand = true;
       setTimeout(() => {
-        this.$router.push("/myPage");
+        this.$router.push("/initialMyPage");
         setTimeout(() => {
           this.expand = false;
         }, 500);
