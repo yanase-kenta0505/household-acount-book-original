@@ -21,6 +21,12 @@
             @click:append="showPassWord = !showPassWord"
             v-model="password"
           />
+          <v-text-field
+            label="ニックネーム"
+            prepend-icon="mdi-account"
+            v-model="nickname"
+          />
+
           <v-card-actions>
             <v-btn class="info" @click="signUp">登録</v-btn>
           </v-card-actions>
@@ -39,6 +45,7 @@ export default {
       showPassWord: false,
       mail: "",
       password: "",
+      nickname: "",
       emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+/.test(v) || "E-mail must be valid",
@@ -50,7 +57,8 @@ export default {
       this.$store.dispatch("login/signUp", {
         mail: this.mail,
         password: this.password,
-        router : this.$router
+        router: this.$router,
+        nickname: this.nickname,
       });
     },
   },
