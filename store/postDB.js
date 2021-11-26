@@ -46,6 +46,11 @@ export const actions = {
     });
     // context.commit("postMessage", postItem);
   },
+  deleteMessage(context, ids) {
+    usersRef.doc(ids.uid).collection("message").doc(ids.id).delete().then(()=>{
+      console.log('delete')
+    })
+  },
 };
 export const mutations = {
   changeMessages(state, messages) {
