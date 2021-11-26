@@ -26,12 +26,15 @@
           width="90%"
           height="auto"
           class="mx-auto mt-10"
-          v-for="message in postMessages"
+          v-for="(message, index) in postMessages"
           :key="message.id"
         >
           <v-card-title>
             <v-avatar size="50" color="grey"></v-avatar>
             <span class="text-subtitle-1 ml-5">けんたけんた</span>
+            <v-icon class="ml-auto" @click="deleteMessage(index)"
+              >mdi-close-thick</v-icon
+            >
           </v-card-title>
           <v-card-text class="mb-5"> {{ message.message }}</v-card-text>
           <v-card-actions>
@@ -66,6 +69,14 @@ export default {
   },
   mounted() {
     this.$store.dispatch("postDB/messageSnapshot", localStorage.getItem("uid"));
+  },
+  methods: {
+    deleteMessage(index) {
+      this.$store.dispatch("postDB/deleteMessage", {
+        uid: localStorage.getItem("uid"),
+        id: this.postMessages[index].id,
+      });
+    },
   },
 };
 </script>
