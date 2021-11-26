@@ -17,7 +17,7 @@
         <v-sheet class="pa-4" color="#ECEFF1">
           <v-avatar class="mb-4" color="grey darken-1" size="64"></v-avatar>
 
-          <div v-text="userName[this.index]"></div>
+          <h1>{{ userName }}様</h1>
         </v-sheet>
 
         <v-divider></v-divider>
@@ -73,7 +73,7 @@ export default {
   data: () => ({
     cards: ["Today", "Yesterday"],
     drawer: false,
-    userName: ["kenta0505@gmai....", "非ログインユーザー"],
+    userName: localStorage.getItem("nickname"),
     expand: true,
     index: 1,
   }),
@@ -86,7 +86,7 @@ export default {
   methods: {
     signOut() {
       // this.$router.push("/login");
-      this.$store.dispatch('login/signOut', this.$router);
+      this.$store.dispatch("login/signOut", this.$router);
     },
   },
 };

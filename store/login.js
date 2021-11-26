@@ -67,14 +67,16 @@ export const actions = {
       });
   },
   signUp(context, key) {
-    console.log(key);
+    // console.log(key);
     // context.commit("blocksignUp", key);
     firebase
       .auth()
       .createUserWithEmailAndPassword(key.mail, key.password)
       .then((res) => {
-        console.log(res.user);
+        // console.log(res.user);
+        localStorage.setItem('nickname', key.nickname)
         key.router.push("/login");
+
         // res.user.sendEmailVerification().then(() => {
         //   alert(
         //     "登録のメールアドレスに確認用のメールをお送りしました。確認してください。"
