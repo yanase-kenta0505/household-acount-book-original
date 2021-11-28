@@ -7,7 +7,7 @@
       <img :src="url" alt="" />
     </div> -->
     <v-file-input
-      class="pink d-flex justify-center align-center"
+      class="grey lighten-2 d-flex justify-center align-center"
       style="width: 50px; height: 50px"
       hide-input
       prepend-icon="mdi-camera-plus"
@@ -29,7 +29,6 @@ export default {
       const a = JSON.parse(
         JSON.stringify(this.$store.getters["profile/imageUrl"])
       );
-      // console.log(a);
       return a;
     },
   },
@@ -62,9 +61,10 @@ export default {
 
   methods: {
     setImage(e) {
+      //   let file = e.target.files[0];
+      //   console.log(file);
       console.log(e);
-      let file = e.target.files[0];
-      console.log(file);
+      let file = e;
       let strage = firebase.storage().ref();
       strage
         .child(`test/${file.name}`)
