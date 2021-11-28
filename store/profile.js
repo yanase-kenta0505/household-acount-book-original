@@ -1,25 +1,44 @@
 import firebase from "~/plugins/firebase";
 
 const db = firebase.firestore();
-const profileRef = db.collection("profile");
+const usersRef = db.collection("users");
 
 export const state = () => ({
-  imageUrl: "",
+  headerImg: [],
 });
 
 export const getters = {
-  imageUrl(state) {
-    return state.imageUrl;
+  headerImg(state) {
+    return state.headerImg;
   },
 };
 
 export const actions = {
-  setImage(context, url) {
-    context.commit("setImage", url);
+  profileSnapshot(context, uid) {
+    usersRef
+      .doc(uid)
+      .collection("profile")
+      .onSnapshot((snapshot) => {
+        let headerImg = [];
+        snapshot.forEach((doc) => {
+          // console.log(doc.data().headerImgUrl);
+          headerImg.push({
+            id: doc.id,
+            url: doc.data().headerImgUrl,
+          });
+        });
+        context.commit("changeHeaderImage", headerImg);
+      });
+  },
+  setImage(context, items) {
+    console.log(items.uid);
+    usersRef.doc(items.uid).collection("profile").add({
+      headerImgUrl: items.url,
+    });
   },
 };
 export const mutations = {
-  setImage(state, url) {
-    state.imageUrl = url;
+  changeHeaderImage(state, headerImg) {
+    state.headerImg = headerImg;
   },
 };

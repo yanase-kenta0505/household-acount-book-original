@@ -25,16 +25,17 @@ export default {
     };
   },
   computed: {
-    imageUrl() {
+    headerImg() {
       const a = JSON.parse(
-        JSON.stringify(this.$store.getters["profile/imageUrl"])
+        JSON.stringify(this.$store.getters["profile/headerImg"])
       );
       return a;
     },
   },
   watch: {
-    imageUrl() {
-      if (this.imageUrl === "") {
+    headerImg() {
+      console.log(this.headerImg);
+      if (this.headerImg.length === 0) {
         return;
       } else {
         let top = firebase.storage().ref();
@@ -58,7 +59,12 @@ export default {
       }
     },
   },
-
+  mounted() {
+    this.$store.dispatch(
+      "profile/profileSnapshot",
+      localStorage.getItem("uid")
+    );
+  },
   methods: {
     setImage(e) {
       //   let file = e.target.files[0];
@@ -72,7 +78,10 @@ export default {
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
             console.log(url);
-            this.$store.dispatch("profile/setImage", url);
+            this.$store.dispatch("profile/setImage", {
+              url: url,
+              uid: localStorage.getItem("uid"),
+            });
           });
         });
     },
