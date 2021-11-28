@@ -47,6 +47,7 @@
             placeholder="自己紹介を追加しましょう"
           ></v-textarea>
         </v-card>
+        <cropper-dialog />
       </v-dialog>
     </div>
   </v-app>
@@ -54,8 +55,9 @@
 
 <script>
 import CameraPlus from "~/components/cameraPlus.vue";
+import CropperDialog from "~/components/cropperDialog.vue";
 export default {
-  components: { CameraPlus },
+  components: { CameraPlus, CropperDialog },
   data() {
     return {
       dialog: false,

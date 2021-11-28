@@ -82,6 +82,8 @@ export default {
               url: url,
               uid: localStorage.getItem("uid"),
             });
+
+            this.$store.dispatch("profile/openCropperDialog");
           });
         });
     },
