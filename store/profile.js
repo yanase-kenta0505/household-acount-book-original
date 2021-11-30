@@ -6,6 +6,7 @@ const usersRef = db.collection("users");
 export const state = () => ({
   headerImg: [],
   openCropperDialog: false,
+  croppedHeaderImgUrl: null,
 });
 
 export const getters = {
@@ -14,6 +15,9 @@ export const getters = {
   },
   openCropperDialog(state) {
     return state.openCropperDialog;
+  },
+  croppedHeaderImgUrl(state) {
+    return state.croppedHeaderImgUrl;
   },
 };
 
@@ -43,6 +47,9 @@ export const actions = {
   openCropperDialog(context) {
     context.commit("openCropperDialog");
   },
+  displayHeaderImg(context, croppedHeaderImgUrl) {
+    context.commit("displayHeaderImg", croppedHeaderImgUrl);
+  },
 };
 export const mutations = {
   changeHeaderImage(state, headerImg) {
@@ -50,5 +57,8 @@ export const mutations = {
   },
   openCropperDialog(state) {
     state.openCropperDialog = true;
+  },
+  displayHeaderImg(state, croppedHeaderImgUrl) {
+    state.croppedHeaderImgUrl = croppedHeaderImgUrl;
   },
 };
