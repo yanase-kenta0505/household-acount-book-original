@@ -4,8 +4,8 @@
       <v-card width="100%" height="500px">
         <!-- <v-img :src="url" width="100%" height="100%"></v-img> -->
         <cropper
+          ref="cropper"
           :src="url"
-          @change="change"
           id="cropper"
           :stencil-props="{
             handlers: {},
@@ -17,11 +17,12 @@
           }"
           image-restriction="stencil"
           :stencil-size="{
-            width: 280,
-            height: 50,
+            width: 500,
+            height: 150,
           }"
         />
       </v-card>
+      <v-btn @click="crop">CROP</v-btn>
     </v-dialog>
   </v-app>
 </template>
@@ -36,7 +37,13 @@ export default {
     return {
       dialog: false,
       url: "",
-      img: "https://images.pexels.com/photos/4323307/pexels-photo-4323307.jpeg",
+      // coordinates: {
+      //   width: 0,
+      //   height: 0,
+      //   left: 0,
+      //   top: 0,
+      // // },
+      // croppedImage: null,
     };
   },
   computed: {
@@ -66,11 +73,21 @@ export default {
     openCropperDialog() {
       this.dialog = this.openCropperDialog;
     },
-    
   },
   methods: {
-    change({ coordinates, canvas }) {
-      console.log(coordinates, canvas);
+    // change({ coordinates, canvas }) {
+    //   console.log(coordinates, canvas);
+    // },
+    crop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      // this.coordinates = coordinates;
+      // You able to do different manipulations at a canvas
+      // but there we just get a cropped image, that can be used
+      // as src for <img/> to preview result
+      let croppedHeaderImgUrl = canvas.toDataURL();
+
+      this.$store.dispatch("profile/displayHeaderImg", croppedHeaderImgUrl);
+      this.dialog = false;
     },
   },
 };

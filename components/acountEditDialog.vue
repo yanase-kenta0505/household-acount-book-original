@@ -24,9 +24,10 @@
             id="backImg"
             class="grey lighten-2 d-flex justify-center align-center"
             style="width: 100%; height: 150px"
+            :style="{ backgroundImage: `url(${croppedHeaderImgUrl})` }"
           >
             <!-- <v-icon large>mdi-camera-plus</v-icon> -->
-            <camera-plus />
+            <camera-plus v-show="headerImgUrl === null" />
             <div
               id="whiteCircle"
               class="white d-flex justify-center align-center"
@@ -61,7 +62,21 @@ export default {
   data() {
     return {
       dialog: false,
+      headerImgUrl: null,
     };
+  },
+  computed: {
+    croppedHeaderImgUrl() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.getters["profile/croppedHeaderImgUrl"])
+      );
+      return a;
+    },
+  },
+  watch: {
+    croppedHeaderImgUrl() {
+      this.headerImgUrl = this.croppedHeaderImgUrl;
+    },
   },
 };
 </script>
@@ -73,6 +88,7 @@ export default {
 
 #backImg {
   position: relative;
+  background-size: cover;
   & #whiteCircle {
     width: 70px;
     height: 70px;
