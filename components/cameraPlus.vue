@@ -21,50 +21,45 @@ import firebase from "~/plugins/firebase";
 export default {
   data() {
     return {
-      url: "",
+     
     };
   },
-  computed: {
-    headerImg() {
-      const a = JSON.parse(
-        JSON.stringify(this.$store.getters["profile/headerImg"])
-      );
-      return a;
-    },
-  },
-  watch: {
-    headerImg() {
-      console.log(this.headerImg);
-      if (this.headerImg.length === 0) {
-        return;
-      } else {
-        let top = firebase.storage().ref();
-        console.log(top);
-        top.listAll().then((res) => {
-          console.log(res);
-          res.prefixes.forEach((prefixe) => {
-            console.log(prefixe.name);
-          });
-          res.items.forEach((item) => {
-            console.log(item.name);
-          });
-        });
+  // computed: {
+  //   headerImg() {
+  //     const a = JSON.parse(
+  //       JSON.stringify(this.$store.getters["profile/headerImg"])
+  //     );
+  //     return a;
+  //   },
+  // },
+  // watch: {
+  //   headerImg() {
+  //     console.log(this.headerImg);
+  //     if (this.headerImg === null) {
+  //       return;
+  //     } else {
+  //       let top = firebase.storage().ref();
+  //       console.log(top);
+  //       top.listAll().then((res) => {
+  //         console.log(res);
+  //         res.prefixes.forEach((prefixe) => {
+  //           console.log(prefixe.name);
+  //         });
+  //         res.items.forEach((item) => {
+  //           console.log(item.name);
+  //         });
+  //       });
 
-        let child = top.child("test/outgoing.png");
-        console.log(child);
-        child.getDownloadURL().then((url) => {
-          console.log(url);
-          this.url = url;
-        });
-      }
-    },
-  },
-  mounted() {
-    this.$store.dispatch(
-      "profile/profileSnapshot",
-      localStorage.getItem("uid")
-    );
-  },
+  //       let child = top.child("test/outgoing.png");
+  //       console.log(child);
+  //       child.getDownloadURL().then((url) => {
+  //         console.log(url);
+  //         this.url = url;
+  //       });
+  //     }
+  //   },
+  // },
+  
   methods: {
     setImage(e) {
       //   let file = e.target.files[0];
@@ -78,10 +73,7 @@ export default {
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
             console.log(url);
-            this.$store.dispatch("profile/setImage", {
-              url: url,
-              uid: localStorage.getItem("uid"),
-            });
+            this.$store.dispatch("profile/setImage", url);
 
             this.$store.dispatch("profile/openCropperDialog");
           });
