@@ -37,13 +37,6 @@ export default {
     return {
       dialog: false,
       url: "",
-      // coordinates: {
-      //   width: 0,
-      //   height: 0,
-      //   left: 0,
-      //   top: 0,
-      // // },
-      // croppedImage: null,
     };
   },
   computed: {
@@ -62,12 +55,10 @@ export default {
   },
   watch: {
     headerImg() {
-      if (this.headerImg.length === 0) {
+      if (this.headerImg === null) {
         return;
       } else {
-        console.log(this.headerImg);
-        this.url = this.headerImg[0].url;
-        console.log(this.url);
+        this.url = this.headerImg;
       }
     },
     openCropperDialog() {
@@ -75,15 +66,9 @@ export default {
     },
   },
   methods: {
-    // change({ coordinates, canvas }) {
-    //   console.log(coordinates, canvas);
-    // },
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
-      // this.coordinates = coordinates;
-      // You able to do different manipulations at a canvas
-      // but there we just get a cropped image, that can be used
-      // as src for <img/> to preview result
+
       let croppedHeaderImgUrl = canvas.toDataURL();
 
       this.$store.dispatch("profile/displayHeaderImg", croppedHeaderImgUrl);
