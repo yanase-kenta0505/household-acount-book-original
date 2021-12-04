@@ -40,36 +40,34 @@ export default {
     };
   },
   computed: {
-    // headerImg() {
+    // mainImg() {
     //   const a = JSON.parse(
-    //     JSON.stringify(this.$store.getters["profile/headerImg"])
+    //     JSON.stringify(this.$store.getters["profile/mainImg"])
     //   );
     //   return a;
     // },
-    openCropperDialog() {
+    openMainCropperDialog() {
       const a = JSON.parse(
-        JSON.stringify(this.$store.getters["profile/openCropperDialog"])
+        JSON.stringify(this.$store.getters["profile/openMainCropperDialog"])
       );
       return a;
     },
   },
   watch: {
-    // headerImg() {
-    //   if (this.headerImg.length === 0) {
+    // mainImg() {
+    //   if (this.mainImg === null) {
     //     return;
     //   } else {
-    //     this.url = this.headerImg[0].url
+    //     this.url = this.mainImg;
     //   }
     // },
-    openCropperDialog() {
-      this.dialog = this.openCropperDialog;
-      let headerImageItems = JSON.parse(
-        localStorage.getItem("headerImageItems")
-      );
-      if (headerImageItems === null || undefined) {
+    openMainCropperDialog() {
+      this.dialog = this.openMainCropperDialog;
+      let mainImageItems = JSON.parse(localStorage.getItem("mainImageItems"));
+      if (mainImageItems === null || undefined) {
         return;
       } else {
-        this.url = headerImageItems.url;
+        this.url = mainImageItems.url;
       }
     },
   },
@@ -77,9 +75,9 @@ export default {
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
 
-      let croppedHeaderImgUrl = canvas.toDataURL();
+      let croppedMainImgUrl = canvas.toDataURL();
 
-      this.$store.dispatch("profile/displayHeaderImg", croppedHeaderImgUrl);
+      this.$store.dispatch("profile/displayMainImg", croppedMainImgUrl);
       this.dialog = false;
     },
   },

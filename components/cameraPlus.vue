@@ -20,9 +20,7 @@
 import firebase from "~/plugins/firebase";
 export default {
   data() {
-    return {
-     
-    };
+    return {};
   },
   // computed: {
   //   headerImg() {
@@ -59,21 +57,29 @@ export default {
   //     }
   //   },
   // },
-  
+
   methods: {
     setImage(e) {
-      //   let file = e.target.files[0];
-      //   console.log(file);
       console.log(e);
       let file = e;
       let strage = firebase.storage().ref();
       strage
-        .child(`test/${file.name}`)
+        .child(`header/${file.name}`)
         .put(file)
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
             console.log(url);
-            this.$store.dispatch("profile/setImage", url);
+            // this.$store.dispatch("profile/setImage", {
+            //   url: url,
+            //   name: file.name,
+            // });
+            localStorage.setItem(
+              "headerImageItems",
+              JSON.stringify({
+                url: url,
+                name: file.name,
+              })
+            );
 
             this.$store.dispatch("profile/openCropperDialog");
           });
