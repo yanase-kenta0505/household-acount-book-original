@@ -12,6 +12,7 @@
       hide-input
       prepend-icon="mdi-camera-plus"
       @change="setImage"
+      @click="stop"
     />
   </v-app>
 </template>
@@ -59,8 +60,11 @@ export default {
   // },
 
   methods: {
+    stop(e) {
+      e.stopPropagation();
+    },
     setImage(e) {
-      console.log(e);
+      // console.log(e);
       let file = e;
       let strage = firebase.storage().ref();
       strage

@@ -18,7 +18,9 @@
           <v-card-title class="text-h5 d-flex justify-space-between">
             <v-btn text class="text-subtitle-2">キャンセル</v-btn>
             <span class="text-h6 font-weight-bold mr-8">変更</span>
-            <v-btn text class="text-subtitle-2">保存</v-btn>
+            <v-btn text class="text-subtitle-2" @click="saveProfile"
+              >保存</v-btn
+            >
           </v-card-title>
           <div
             id="backImg"
@@ -32,6 +34,7 @@
             <div
               id="whiteCircle"
               class="white d-flex justify-center align-center"
+              @click="stop"
             >
               <div
                 id="innerImg"
@@ -43,18 +46,24 @@
               </div>
             </div>
           </div>
-          <v-text-field class="mt-10 ml-5" label="名前" style="width: 90%">
+          <v-text-field
+            class="mt-10 ml-5"
+            label="名前"
+            style="width: 90%"
+            v-model="nickname"
+          >
           </v-text-field>
           <v-textarea
             class="ml-5 mt-10"
             style="width: 90%"
             placeholder="自己紹介を追加しましょう"
+            v-model="selfIntroduction"
           ></v-textarea>
         </v-card>
         <cropper-dialog />
         <main-cropper-dialog />
         <header-img-change-or-delete-dialog ref="header" />
-        <main-img-change-or-delete-dialog ref="main"/>
+        <main-img-change-or-delete-dialog ref="main" />
       </v-dialog>
     </div>
   </v-app>
@@ -81,7 +90,21 @@ export default {
       dialog: false,
       headerImgUrl: null,
       mainImgUrl: null,
+      nickname: null,
+      selfIntroduction: "",
     };
+  },
+  created() {
+    this.$store.dispatch(
+      "profile/profileSnapshot",
+      localStorage.getItem("uid")
+    );
+    console.log(JSON.parse(localStorage.getItem("profileData")));
+  },
+  mounted() {
+    let name = JSON.parse(JSON.stringify(localStorage.getItem("nickname")));
+    console.log(name);
+    this.nickname = name;
   },
   computed: {
     croppedHeaderImgUrl() {
@@ -105,13 +128,18 @@ export default {
       this.mainImgUrl = this.croppedMainImgUrl;
     },
   },
+
   methods: {
+    stop(e) {
+      e.stopPropagation();
+    },
     headerImgChangeOrDelete(e) {
       if (this.headerImgUrl === null) {
         return;
       } else {
         this.$refs.header.openMenu(e);
       }
+      console.log("foo");
     },
     mainImgChangeOrDelete(e) {
       if (this.mainImgUrl === null) {
@@ -119,6 +147,17 @@ export default {
       } else {
         this.$refs.main.openMenu(e);
       }
+      console.log("hoo");
+    },
+    saveProfile() {
+      this.$store.dispatch("profile/saveProfile", {
+        headerImgUrl: this.headerImgUrl,
+        mainImgUrl: this.mainImgUrl,
+        nickname: this.nickname,
+        selfIntroduction: this.selfIntroduction,
+        uid: localStorage.getItem("uid"),
+      });
+      this.dialog = false;
     },
   },
 };

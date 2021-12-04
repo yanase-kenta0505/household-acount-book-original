@@ -8,6 +8,7 @@ export const state = () => ({
   openMainCropperDialog: false,
   croppedHeaderImgUrl: null,
   croppedMainImgUrl: null,
+  profileData: null,
 });
 
 export const getters = {
@@ -23,9 +24,28 @@ export const getters = {
   croppedMainImgUrl(state) {
     return state.croppedMainImgUrl;
   },
+  profileData(state) {
+    return state.profileData;
+  },
 };
 
 export const actions = {
+  profileSnapshot(context, uid) {
+    console.log(uid);
+    usersRef
+      .doc(uid)
+      .collection("profile")
+      .onSnapshot((snapshot) => {
+        let profileData;
+        snapshot.forEach((doc) => {
+          profileData = doc.data();
+          let id = doc.id;
+          profileData.id = id;
+        });
+        // console.log(profileData);
+        context.commit("changeProfile", profileData);
+      });
+  },
   openCropperDialog(context) {
     context.commit("openCropperDialog");
   },
@@ -43,6 +63,15 @@ export const actions = {
   },
   deleteMainImg(context) {
     context.commit("deleteMainImg");
+  },
+  saveProfile(context, profileItems) {
+    console.log(profileItems);
+    usersRef.doc(profileItems.uid).collection("profile").add({
+      headerImgUrl: profileItems.headerImgUrl,
+      mainImgUrl: profileItems.mainImgUrl,
+      nickname: profileItems.nickname,
+      selfIntroduction: profileItems.selfIntroduction,
+    });
   },
 };
 export const mutations = {
@@ -63,5 +92,21 @@ export const mutations = {
   },
   deleteMainImg(state) {
     state.croppedMainImgUrl = null;
+  },
+  changeProfile(state, profileData) {
+    if (profileData === undefined) {
+      return;
+    } else {
+      state.profileData = profileData;
+      localStorage.setItem(
+        "profileData",
+        JSON.stringify({
+          headerImgUrl: profileData.headerImgUrl,
+          mainImgUrl: profileData.mainImgUrl,
+          nickname: profileData.nickname,
+          selfIntroduction: profileData.selfIntroduction,
+        })
+      );
+    }
   },
 };
