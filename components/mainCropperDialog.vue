@@ -5,6 +5,7 @@
         <!-- <v-img :src="url" width="100%" height="100%"></v-img> -->
         <cropper
           ref="cropper"
+          stencil-component="circle-stencil"
           :src="url"
           id="cropper"
           :stencil-props="{
@@ -17,8 +18,8 @@
           }"
           image-restriction="stencil"
           :stencil-size="{
-            width: 500,
-            height: 150,
+            width: 60,
+            height: 60,
           }"
         />
       </v-card>
