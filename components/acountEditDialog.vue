@@ -25,6 +25,7 @@
             class="grey lighten-2 d-flex justify-center align-center"
             style="width: 100%; height: 150px"
             :style="{ backgroundImage: `url(${croppedHeaderImgUrl})` }"
+            @click="headerImgChangeOrDelete"
           >
             <!-- <v-icon large>mdi-camera-plus</v-icon> -->
             <camera-plus v-show="headerImgUrl === null" />
@@ -34,9 +35,11 @@
             >
               <div
                 id="innerImg"
-                class="grey lighten-2 d-flex justify-center align-center"
+                class="grey lighten-2 d-flex justify-center align-center pl-1"
+                :style="{ backgroundImage: `url(${croppedMainImgUrl})` }"
+                @click="mainImgChangeOrDelete"
               >
-                <v-icon>mdi-camera-plus</v-icon>
+                <main-img-camera-plus v-show="mainImgUrl === null" />
               </div>
             </div>
           </div>
@@ -49,6 +52,9 @@
           ></v-textarea>
         </v-card>
         <cropper-dialog />
+        <main-cropper-dialog />
+        <header-img-change-or-delete-dialog ref="header" />
+        <main-img-change-or-delete-dialog ref="main"/>
       </v-dialog>
     </div>
   </v-app>
@@ -57,12 +63,24 @@
 <script>
 import CameraPlus from "~/components/cameraPlus.vue";
 import CropperDialog from "~/components/cropperDialog.vue";
+import MainImgCameraPlus from "~/components/mainImgCameraPlus.vue";
+import MainCropperDialog from "~/components/mainCropperDialog.vue";
+import HeaderImgChangeOrDeleteDialog from "~/components/headerImgChangeOrDeleteDialog.vue";
+import MainImgChangeOrDeleteDialog from "~/components/mainImgChangeOrDeleteDialog.vue";
 export default {
-  components: { CameraPlus, CropperDialog },
+  components: {
+    CameraPlus,
+    CropperDialog,
+    MainImgCameraPlus,
+    MainCropperDialog,
+    HeaderImgChangeOrDeleteDialog,
+    MainImgChangeOrDeleteDialog,
+  },
   data() {
     return {
       dialog: false,
       headerImgUrl: null,
+      mainImgUrl: null,
     };
   },
   computed: {
@@ -72,10 +90,35 @@ export default {
       );
       return a;
     },
+    croppedMainImgUrl() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.getters["profile/croppedMainImgUrl"])
+      );
+      return a;
+    },
   },
   watch: {
     croppedHeaderImgUrl() {
       this.headerImgUrl = this.croppedHeaderImgUrl;
+    },
+    croppedMainImgUrl() {
+      this.mainImgUrl = this.croppedMainImgUrl;
+    },
+  },
+  methods: {
+    headerImgChangeOrDelete(e) {
+      if (this.headerImgUrl === null) {
+        return;
+      } else {
+        this.$refs.header.openMenu(e);
+      }
+    },
+    mainImgChangeOrDelete(e) {
+      if (this.mainImgUrl === null) {
+        return;
+      } else {
+        this.$refs.main.openMenu(e);
+      }
     },
   },
 };
@@ -100,6 +143,7 @@ export default {
       width: 60px;
       height: 60px;
       border-radius: 50%;
+      background-size: cover;
     }
   }
 }
