@@ -29,7 +29,7 @@ export default {
 
   methods: {
     openMenu(e) {
-      //   e.preventDefault();
+      e.preventDefault();
       this.showMenu = false;
       this.x = e.clientX;
       this.y = e.clientY;
@@ -41,9 +41,7 @@ export default {
       if (index === 0) {
       } else {
         let strage = firebase.storage().ref();
-        let mainImageItems = JSON.parse(
-          localStorage.getItem("mainImageItems")
-        );
+        let mainImageItems = JSON.parse(localStorage.getItem("mainImageItems"));
         strage
           .child(`main/${mainImageItems.name}`)
           .delete()

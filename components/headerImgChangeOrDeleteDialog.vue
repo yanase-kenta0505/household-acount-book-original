@@ -29,7 +29,7 @@ export default {
 
   methods: {
     openMenu(e) {
-      //   e.preventDefault();
+      e.preventDefault();
       this.showMenu = false;
       this.x = e.clientX;
       this.y = e.clientY;
