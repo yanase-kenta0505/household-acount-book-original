@@ -26,7 +26,7 @@
             id="backImg"
             class="grey lighten-2 d-flex justify-center align-center"
             style="width: 100%; height: 150px"
-            :style="{ backgroundImage: `url(${croppedHeaderImgUrl})` }"
+            :style="{ backgroundImage: `url(${headerImgUrl})` }"
             @click="headerImgChangeOrDelete"
           >
             <!-- <v-icon large>mdi-camera-plus</v-icon> -->
@@ -39,7 +39,7 @@
               <div
                 id="innerImg"
                 class="grey lighten-2 d-flex justify-center align-center pl-1"
-                :style="{ backgroundImage: `url(${croppedMainImgUrl})` }"
+                :style="{ backgroundImage: `url(${mainImgUrl})` }"
                 @click="mainImgChangeOrDelete"
               >
                 <main-img-camera-plus v-show="mainImgUrl === null" />
@@ -94,18 +94,25 @@ export default {
       selfIntroduction: "",
     };
   },
-  created() {
+  mounted() {
     this.$store.dispatch(
       "profile/profileSnapshot",
       localStorage.getItem("uid")
     );
-    console.log(JSON.parse(localStorage.getItem("profileData")));
-  },
-  mounted() {
     let name = JSON.parse(JSON.stringify(localStorage.getItem("nickname")));
     console.log(name);
     this.nickname = name;
+    let profileData = JSON.parse(localStorage.getItem("profileData"));
+    if (profileData === null || undefined) {
+      return;
+    } else {
+      this.headerImgUrl = profileData.headerImgUrl;
+      this.mainImgUrl = profileData.mainImgUrl;
+      this.nickname = profileData.nickname;
+      this.selfIntroduction = profileData.selfIntroduction;
+    }
   },
+
   computed: {
     croppedHeaderImgUrl() {
       const a = JSON.parse(
@@ -127,6 +134,9 @@ export default {
     croppedMainImgUrl() {
       this.mainImgUrl = this.croppedMainImgUrl;
     },
+    headerImgUrl(){
+      console.log('change')
+    }
   },
 
   methods: {
