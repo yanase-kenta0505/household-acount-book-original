@@ -17,26 +17,26 @@ export const getters = {
 
 export const actions = {
   messageSnapshot(context, uid) {
-    usersRef
-      .doc(uid)
-      .collection("message")
-      .orderBy("timeStamp", "desc")
-      .onSnapshot((snapshot) => {
-        let messages = [];
-        snapshot.forEach((doc) => {
-          if (doc.data().Timestamp === null) {
-            console.log("null");
-            return;
-          } else {
-            // console.log(doc.data());
-            let id = doc.id;
-            let data = doc.data();
-            data.id = id;
-            messages.push(data);
-          }
-        });
-        context.commit("changeMessages", messages);
-      });
+    // usersRef
+    //   .doc(uid)
+    //   .collection("message")
+    //   .orderBy("timeStamp", "desc")
+    //   .onSnapshot((snapshot) => {
+    //     let messages = [];
+    //     snapshot.forEach((doc) => {
+    //       if (doc.data().Timestamp === null) {
+    //         console.log("null");
+    //         return;
+    //       } else {
+    //         // console.log(doc.data());
+    //         let id = doc.id;
+    //         let data = doc.data();
+    //         data.id = id;
+    //         messages.push(data);
+    //       }
+    //     });
+    //     context.commit("changeMessages", messages);
+    //   });
   },
   postMessageAdd(context, postItem) {
     console.log(new Date());

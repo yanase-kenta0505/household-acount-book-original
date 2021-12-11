@@ -2,7 +2,6 @@
   <v-app>
     <v-dialog v-model="dialog" width="800px">
       <v-card width="100%" height="500px">
-        <!-- <v-img :src="url" width="100%" height="100%"></v-img> -->
         <cropper
           ref="cropper"
           :src="url"
@@ -39,48 +38,36 @@ export default {
       url: "",
     };
   },
+  
   computed: {
-    // headerImg() {
-    //   const a = JSON.parse(
-    //     JSON.stringify(this.$store.getters["profile/headerImg"])
-    //   );
-    //   return a;
-    // },
     openCropperDialog() {
       const a = JSON.parse(
-        JSON.stringify(this.$store.getters["profile/openCropperDialog"])
+        JSON.stringify(this.$store.state.profile.openCropperDialog)
+      );
+      return a;
+    },
+    headerImageItems() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.profile.headerImageItems)
       );
       return a;
     },
   },
   watch: {
-    // headerImg() {
-    //   if (this.headerImg.length === 0) {
-    //     return;
-    //   } else {
-    //     this.url = this.headerImg[0].url
-    //   }
-    // },
     openCropperDialog() {
       this.dialog = this.openCropperDialog;
-      let headerImageItems = JSON.parse(
-        localStorage.getItem("headerImageItems")
-      );
-      if (headerImageItems === null || undefined) {
-        return;
-      } else {
-        this.url = headerImageItems.url;
-      }
+    },
+    headerImageItems() {
+      // console.log(this.headerImageItems)
+      this.url = this.headerImageItems.url;
     },
   },
   methods: {
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
-
       let croppedHeaderImgUrl = canvas.toDataURL();
-
       this.$store.dispatch("profile/displayHeaderImg", croppedHeaderImgUrl);
-      this.dialog = false;
+      this.$store.dispatch("profile/openCropperDialog");
     },
   },
 };

@@ -26,21 +26,18 @@ export default {
       // console.log(e);
       let file = e;
       let strage = firebase.storage().ref();
+      this.$store.dispatch("profile/openMainCropperDialog");
       strage
         .child(`main/${file.name}`)
         .put(file)
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
             console.log(url);
-            // this.$store.dispatch("profile/setMainImage", url);
-            localStorage.setItem(
-              "mainImageItems",
-              JSON.stringify({
-                url: url,
-                name: file.name,
-              })
-            );
-            this.$store.dispatch("profile/openMainCropperDialog");
+            this.$store.dispatch("profile/setMainImage", {
+              url:url,
+              name:file.name
+            });
+           
           });
         });
     },

@@ -73,19 +73,35 @@ export default {
   data: () => ({
     cards: ["Today", "Yesterday"],
     drawer: false,
-    userName: localStorage.getItem("nickname"),
+    userName: "",
     expand: true,
     index: 1,
   }),
 
   created() {
+    this.$store.dispatch("profile/usersSnapshot");
     setTimeout(() => {
       this.expand = false;
     }, 500);
+    this.$store.dispatch("login/stateChange");
   },
+  computed: {
+    usersData() {
+      const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));
+      return a;
+    },
+  },
+  watch: {
+    usersData() {
+      const userData = this.usersData.find((data) => {
+        return data.uid === this.$router.currentRoute.params.id;
+      });
+      this.userName = userData.nickname;
+    },
+  },
+
   methods: {
     signOut() {
-      // this.$router.push("/login");
       this.$store.dispatch("login/signOut", this.$router);
     },
   },
