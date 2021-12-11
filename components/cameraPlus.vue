@@ -1,11 +1,5 @@
 <template>
   <v-app>
-    <!-- <div>
-      <label class="postImage-appendBtn">
-        <input type="file" data-label="画像の添付" @change="setImage" />
-      </label>
-      <img :src="url" alt="" />
-    </div> -->
     <v-file-input
       class="grey lighten-2 d-flex justify-center align-center"
       style="width: 50px; height: 50px"
@@ -23,69 +17,25 @@ export default {
   data() {
     return {};
   },
-  // computed: {
-  //   headerImg() {
-  //     const a = JSON.parse(
-  //       JSON.stringify(this.$store.getters["profile/headerImg"])
-  //     );
-  //     return a;
-  //   },
-  // },
-  // watch: {
-  //   headerImg() {
-  //     console.log(this.headerImg);
-  //     if (this.headerImg === null) {
-  //       return;
-  //     } else {
-  //       let top = firebase.storage().ref();
-  //       console.log(top);
-  //       top.listAll().then((res) => {
-  //         console.log(res);
-  //         res.prefixes.forEach((prefixe) => {
-  //           console.log(prefixe.name);
-  //         });
-  //         res.items.forEach((item) => {
-  //           console.log(item.name);
-  //         });
-  //       });
-
-  //       let child = top.child("test/outgoing.png");
-  //       console.log(child);
-  //       child.getDownloadURL().then((url) => {
-  //         console.log(url);
-  //         this.url = url;
-  //       });
-  //     }
-  //   },
-  // },
 
   methods: {
     stop(e) {
       e.stopPropagation();
     },
     setImage(e) {
-      // console.log(e);
       let file = e;
       let strage = firebase.storage().ref();
+      this.$store.dispatch("profile/openCropperDialog");
       strage
         .child(`header/${file.name}`)
         .put(file)
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
             console.log(url);
-            // this.$store.dispatch("profile/setImage", {
-            //   url: url,
-            //   name: file.name,
-            // });
-            localStorage.setItem(
-              "headerImageItems",
-              JSON.stringify({
-                url: url,
-                name: file.name,
-              })
-            );
-
-            this.$store.dispatch("profile/openCropperDialog");
+            this.$store.dispatch("profile/setHeaderImage", {
+              url: url,
+              name: file.name,
+            });
           });
         });
     },

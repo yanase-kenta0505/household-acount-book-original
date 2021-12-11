@@ -8,45 +8,57 @@ export const state = () => ({
   openMainCropperDialog: false,
   croppedHeaderImgUrl: null,
   croppedMainImgUrl: null,
-  profileData: null,
+  // profileData: null,
+  usersData: [],
+  headerImageItems: null,
+  mainImageItems: null,
 });
 
 export const getters = {
-  openCropperDialog(state) {
-    return state.openCropperDialog;
-  },
-  openMainCropperDialog(state) {
-    return state.openMainCropperDialog;
-  },
-  croppedHeaderImgUrl(state) {
-    return state.croppedHeaderImgUrl;
-  },
-  croppedMainImgUrl(state) {
-    return state.croppedMainImgUrl;
-  },
-  profileData(state) {
-    return state.profileData;
-  },
+  // openCropperDialog(state) {
+  //   return state.openCropperDialog;
+  // },
+  // openMainCropperDialog(state) {
+  //   return state.openMainCropperDialog;
+  // },
+  // croppedHeaderImgUrl(state) {
+  //   return state.croppedHeaderImgUrl;
+  // },
+  // croppedMainImgUrl(state) {
+  //   return state.croppedMainImgUrl;
+  // },
+  // profileData(state) {
+  //   return state.profileData;
+  // },
+  // usersData(state) {
+  //   // console.log(state.usersData);
+  //   return state.usersData;
+  // },
 };
 
 export const actions = {
-  profileSnapshot(context, uid) {
-    console.log(uid);
-    usersRef
-      .doc(uid)
-      .collection("profile")
-      .onSnapshot((snapshot) => {
-        let profileData;
-        snapshot.forEach((doc) => {
-          profileData = doc.data();
-          let id = doc.id;
-          profileData.id = id;
-        });
-        // console.log(profileData);
-        context.commit("changeProfile", profileData);
+  usersSnapshot(context) {
+    usersRef.onSnapshot((snapshot) => {
+      console.log("snap");
+      let usersData = [];
+      snapshot.forEach((doc) => {
+        // console.log(doc.data());
+        usersData.push(doc.data());
       });
+      // localStorage.setItem("usersData", JSON.stringify(usersData));
+      // console.log(usersData)
+      context.commit("changeUsersData", usersData);
+    });
   },
+  setMainImage(context, mainImageItems) {
+    context.commit("setMainImage", mainImageItems);
+  },
+  setHeaderImage(context, headerImageItems) {
+    context.commit("setHeaderImage", headerImageItems);
+  },
+
   openCropperDialog(context) {
+    console.log("open");
     context.commit("openCropperDialog");
   },
   openMainCropperDialog(context) {
@@ -65,16 +77,31 @@ export const actions = {
     context.commit("deleteMainImg");
   },
   saveProfile(context, profileItems) {
-    console.log(profileItems);
-    usersRef.doc(profileItems.uid).collection("profile").add({
-      headerImgUrl: profileItems.headerImgUrl,
-      mainImgUrl: profileItems.mainImgUrl,
+    // console.log(profileItems);
+    usersRef.doc(profileItems.id).update({
+      headerImg: profileItems.headerImgUrl,
+      mainImg: profileItems.mainImgUrl,
       nickname: profileItems.nickname,
       selfIntroduction: profileItems.selfIntroduction,
     });
   },
 };
+
 export const mutations = {
+  changeUsersData(state, usersData) {
+    // console.log(usersData);
+    state.usersData = [];
+    usersData.forEach((data) => {
+      state.usersData.push(data);
+    });
+  },
+  setMainImage(state, mainImageItems) {
+    state.mainImageItems = mainImageItems;
+  },
+  setHeaderImage(state, headerImageItems) {
+    state.headerImageItems = headerImageItems;
+  },
+
   openCropperDialog(state) {
     state.openCropperDialog = !state.openCropperDialog;
   },
@@ -93,20 +120,20 @@ export const mutations = {
   deleteMainImg(state) {
     state.croppedMainImgUrl = null;
   },
-  changeProfile(state, profileData) {
-    if (profileData === undefined) {
-      return;
-    } else {
-      state.profileData = profileData;
-      localStorage.setItem(
-        "profileData",
-        JSON.stringify({
-          headerImgUrl: profileData.headerImgUrl,
-          mainImgUrl: profileData.mainImgUrl,
-          nickname: profileData.nickname,
-          selfIntroduction: profileData.selfIntroduction,
-        })
-      );
-    }
-  },
+  // changeProfile(state, profileData) {
+  //   if (profileData === undefined) {
+  //     return;
+  //   } else {
+  //     state.profileData = profileData;
+  //     localStorage.setItem(
+  //       "profileData",
+  //       JSON.stringify({
+  //         headerImgUrl: profileData.headerImgUrl,
+  //         mainImgUrl: profileData.mainImgUrl,
+  //         nickname: profileData.nickname,
+  //         selfIntroduction: profileData.selfIntroduction,
+  //       })
+  //     );
+  //   }
+  // },
 };

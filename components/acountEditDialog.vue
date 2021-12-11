@@ -16,7 +16,9 @@
 
         <v-card width="500px" height="600px">
           <v-card-title class="text-h5 d-flex justify-space-between">
-            <v-btn text class="text-subtitle-2">キャンセル</v-btn>
+            <v-btn text class="text-subtitle-2" @click="close"
+              >キャンセル</v-btn
+            >
             <span class="text-h6 font-weight-bold mr-8">変更</span>
             <v-btn text class="text-subtitle-2" @click="saveProfile"
               >保存</v-btn
@@ -94,49 +96,49 @@ export default {
       selfIntroduction: "",
     };
   },
-  mounted() {
-    this.$store.dispatch(
-      "profile/profileSnapshot",
-      localStorage.getItem("uid")
-    );
-    let name = JSON.parse(JSON.stringify(localStorage.getItem("nickname")));
-    console.log(name);
-    this.nickname = name;
-    let profileData = JSON.parse(localStorage.getItem("profileData"));
-    if (profileData === null || undefined) {
-      return;
-    } else {
-      this.headerImgUrl = profileData.headerImgUrl;
-      this.mainImgUrl = profileData.mainImgUrl;
-      this.nickname = profileData.nickname;
-      this.selfIntroduction = profileData.selfIntroduction;
-    }
-  },
+  
 
   computed: {
+    usersData() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.profile.usersData)
+      );
+      return a;
+    },
     croppedHeaderImgUrl() {
       const a = JSON.parse(
-        JSON.stringify(this.$store.getters["profile/croppedHeaderImgUrl"])
+        JSON.stringify(this.$store.state.profile.croppedHeaderImgUrl)
       );
       return a;
     },
     croppedMainImgUrl() {
       const a = JSON.parse(
-        JSON.stringify(this.$store.getters["profile/croppedMainImgUrl"])
+        JSON.stringify(this.$store.state.profile.croppedMainImgUrl)
       );
       return a;
     },
   },
   watch: {
+    usersData() {
+      const userData = this.usersData.find((data) => {
+        return data.uid === this.$router.currentRoute.params.id;
+      });
+      if (userData === null || undefined) {
+        return;
+      } else {
+        console.log(userData);
+        this.headerImgUrl = userData.headerImg;
+        this.mainImgUrl = userData.mainImg;
+        this.nickname = userData.nickname;
+        this.selfIntroduction = userData.selfIntroduction;
+      }
+    },
     croppedHeaderImgUrl() {
       this.headerImgUrl = this.croppedHeaderImgUrl;
     },
     croppedMainImgUrl() {
       this.mainImgUrl = this.croppedMainImgUrl;
     },
-    headerImgUrl(){
-      console.log('change')
-    }
   },
 
   methods: {
@@ -165,8 +167,11 @@ export default {
         mainImgUrl: this.mainImgUrl,
         nickname: this.nickname,
         selfIntroduction: this.selfIntroduction,
-        uid: localStorage.getItem("uid"),
+        id: this.$router.currentRoute.params.id,
       });
+      this.dialog = false;
+    },
+    close() {
       this.dialog = false;
     },
   },
