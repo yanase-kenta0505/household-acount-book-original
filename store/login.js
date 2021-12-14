@@ -20,7 +20,9 @@ export const actions = {
           uid: res.user.uid,
           loginStatus: true,
           headerImg: null,
+          headerImgFileName: null,
           mainImg: null,
+          mainImgFileName: null,
           nickname: res.user.displayName,
           selfIntroduction: null,
         });

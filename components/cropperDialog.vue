@@ -4,7 +4,7 @@
       <v-card width="100%" height="500px">
         <cropper
           ref="cropper"
-          :src="url"
+          :src="beforeCropHeaderImgUrl"
           id="cropper"
           :stencil-props="{
             handlers: {},
@@ -35,10 +35,10 @@ export default {
   data() {
     return {
       dialog: false,
-      url: "",
+      // url: "",
     };
   },
-  
+
   computed: {
     openCropperDialog() {
       const a = JSON.parse(
@@ -46,9 +46,15 @@ export default {
       );
       return a;
     },
-    headerImageItems() {
+    headerImgFileName() {
       const a = JSON.parse(
-        JSON.stringify(this.$store.state.profile.headerImageItems)
+        JSON.stringify(this.$store.state.profile.headerImgFileName)
+      );
+      return a;
+    },
+    beforeCropHeaderImgUrl() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.profile.beforeCropHeaderImgUrl)
       );
       return a;
     },
@@ -57,16 +63,17 @@ export default {
     openCropperDialog() {
       this.dialog = this.openCropperDialog;
     },
-    headerImageItems() {
-      // console.log(this.headerImageItems)
-      this.url = this.headerImageItems.url;
-    },
+    
   },
   methods: {
     crop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       let croppedHeaderImgUrl = canvas.toDataURL();
-      this.$store.dispatch("profile/displayHeaderImg", croppedHeaderImgUrl);
+      this.$store.dispatch("profile/registerHeaderImg", {
+        croppedHeaderImgUrl: croppedHeaderImgUrl,
+        headerImgFileName: this.headerImgFileName,
+        id: this.$router.currentRoute.params.id,
+      });
       this.$store.dispatch("profile/openCropperDialog");
     },
   },

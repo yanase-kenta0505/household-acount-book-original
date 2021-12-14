@@ -8,33 +8,12 @@ export const state = () => ({
   openMainCropperDialog: false,
   croppedHeaderImgUrl: null,
   croppedMainImgUrl: null,
-  // profileData: null,
   usersData: [],
-  headerImageItems: null,
-  mainImageItems: null,
+  headerImgFileName: null,
+  beforeCropHeaderImgUrl: null,
+  mainImgFileName: null,
+  beforeCropMainImgUrl: null,
 });
-
-export const getters = {
-  // openCropperDialog(state) {
-  //   return state.openCropperDialog;
-  // },
-  // openMainCropperDialog(state) {
-  //   return state.openMainCropperDialog;
-  // },
-  // croppedHeaderImgUrl(state) {
-  //   return state.croppedHeaderImgUrl;
-  // },
-  // croppedMainImgUrl(state) {
-  //   return state.croppedMainImgUrl;
-  // },
-  // profileData(state) {
-  //   return state.profileData;
-  // },
-  // usersData(state) {
-  //   // console.log(state.usersData);
-  //   return state.usersData;
-  // },
-};
 
 export const actions = {
   usersSnapshot(context) {
@@ -42,19 +21,16 @@ export const actions = {
       console.log("snap");
       let usersData = [];
       snapshot.forEach((doc) => {
-        // console.log(doc.data());
         usersData.push(doc.data());
       });
-      // localStorage.setItem("usersData", JSON.stringify(usersData));
-      // console.log(usersData)
       context.commit("changeUsersData", usersData);
     });
   },
-  setMainImage(context, mainImageItems) {
-    context.commit("setMainImage", mainImageItems);
-  },
   setHeaderImage(context, headerImageItems) {
     context.commit("setHeaderImage", headerImageItems);
+  },
+  setMainImage(context, mainImageItems) {
+    context.commit("setMainImage", mainImageItems);
   },
 
   openCropperDialog(context) {
@@ -64,25 +40,55 @@ export const actions = {
   openMainCropperDialog(context) {
     context.commit("openMainCropperDialog");
   },
-  displayHeaderImg(context, croppedHeaderImgUrl) {
-    context.commit("displayHeaderImg", croppedHeaderImgUrl);
+  registerHeaderImg(context, items) {
+    // context.commit("displayHeaderImg", croppedHeaderImgUrl);
+    usersRef.doc(items.id).update({
+      headerImgFileName: items.headerImgFileName,
+      headerImg: items.croppedHeaderImgUrl,
+    });
   },
-  displayMainImg(context, croppedMainImgUrl) {
-    context.commit("displayMainImg", croppedMainImgUrl);
+  registerMainImg(context, items) {
+    // context.commit("displayMainImg", croppedMainImgUrl);
+    usersRef.doc(items.id).update({
+      mainImgFileName: items.mainImgFileName,
+      mainImg: items.croppedMainImgUrl,
+    });
   },
-  deleteHeaderImg(context) {
-    context.commit("deleteHeaderImg");
+
+  deleteHeaderImg(context, items) {
+    const storage = firebase.storage().ref();
+    storage
+      .child(`header/${items.userData.headerImgFileName}`)
+      .delete()
+      .then(() => {
+        console.log("delete");
+        usersRef.doc(items.id).update({
+          headerImg: null,
+          headerImgFileName: null,
+        });
+      });
   },
-  deleteMainImg(context) {
-    context.commit("deleteMainImg");
+  deleteMainImg(context, items) {
+    const storage = firebase.storage().ref();
+    storage
+      .child(`main/${items.userData.mainImgFileName}`)
+      .delete()
+      .then(() => {
+        console.log("delete");
+        usersRef.doc(items.id).update({
+          mainImg: null,
+          mainImgFileName: null,
+        });
+      });
   },
-  saveProfile(context, profileItems) {
-    // console.log(profileItems);
-    usersRef.doc(profileItems.id).update({
-      headerImg: profileItems.headerImgUrl,
-      mainImg: profileItems.mainImgUrl,
-      nickname: profileItems.nickname,
-      selfIntroduction: profileItems.selfIntroduction,
+  changeNickname(context, items) {
+    usersRef.doc(items.id).update({
+      nickname: items.nickname,
+    });
+  },
+  changeSelfIntroduction(context, items) {
+    usersRef.doc(items.id).update({
+      selfIntroduction: items.selfIntroduction,
     });
   },
 };
@@ -95,11 +101,13 @@ export const mutations = {
       state.usersData.push(data);
     });
   },
-  setMainImage(state, mainImageItems) {
-    state.mainImageItems = mainImageItems;
-  },
   setHeaderImage(state, headerImageItems) {
-    state.headerImageItems = headerImageItems;
+    state.headerImgFileName = headerImageItems.fileName;
+    state.beforeCropHeaderImgUrl = headerImageItems.url;
+  },
+  setMainImage(state, mainImageItems) {
+    state.mainImgFileName = mainImageItems.fileName;
+    state.beforeCropMainImgUrl = mainImageItems.url;
   },
 
   openCropperDialog(state) {
@@ -108,32 +116,4 @@ export const mutations = {
   openMainCropperDialog(state) {
     state.openMainCropperDialog = !state.openMainCropperDialog;
   },
-  displayHeaderImg(state, croppedHeaderImgUrl) {
-    state.croppedHeaderImgUrl = croppedHeaderImgUrl;
-  },
-  displayMainImg(state, croppedMainImgUrl) {
-    state.croppedMainImgUrl = croppedMainImgUrl;
-  },
-  deleteHeaderImg(state) {
-    state.croppedHeaderImgUrl = null;
-  },
-  deleteMainImg(state) {
-    state.croppedMainImgUrl = null;
-  },
-  // changeProfile(state, profileData) {
-  //   if (profileData === undefined) {
-  //     return;
-  //   } else {
-  //     state.profileData = profileData;
-  //     localStorage.setItem(
-  //       "profileData",
-  //       JSON.stringify({
-  //         headerImgUrl: profileData.headerImgUrl,
-  //         mainImgUrl: profileData.mainImgUrl,
-  //         nickname: profileData.nickname,
-  //         selfIntroduction: profileData.selfIntroduction,
-  //       })
-  //     );
-  //   }
-  // },
 };
