@@ -20,6 +20,7 @@ export default {
 
   methods: {
     stop(e) {
+      e.target.value = "";
       e.stopPropagation();
     },
     setImage(e) {
@@ -33,10 +34,9 @@ export default {
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
             this.$store.dispatch("profile/setMainImage", {
-              url:url,
-              fileName:file.name
+              url: url,
+              fileName: file.name,
             });
-           
           });
         });
     },

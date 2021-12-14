@@ -20,6 +20,8 @@ export default {
 
   methods: {
     stop(e) {
+      console.log(e.target.value)
+      e.target.value = "";
       e.stopPropagation();
     },
     setImage(e) {
