@@ -32,10 +32,9 @@ export default {
         .put(file)
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
-            console.log(url);
             this.$store.dispatch("profile/setMainImage", {
               url:url,
-              name:file.name
+              fileName:file.name
             });
            
           });

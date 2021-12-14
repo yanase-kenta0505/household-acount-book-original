@@ -34,7 +34,7 @@ export default {
             console.log(url);
             this.$store.dispatch("profile/setHeaderImage", {
               url: url,
-              name: file.name,
+              fileName: file.name,
             });
           });
         });
