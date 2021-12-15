@@ -30,6 +30,20 @@
           >
             <!-- <v-icon large>mdi-camera-plus</v-icon> -->
             <camera-plus v-show="headerImgUrl === null" />
+            <v-btn
+              id="headerImgClose"
+              text
+              fab
+              small
+              v-if="
+                headerCloseIcon === true &&
+                headerImgUrl &&
+                mainCloseIcon === false
+              "
+              @click="deleteHeaderImg"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
             <div
               id="whiteCircle"
               class="white d-flex justify-center align-center"
@@ -55,16 +69,6 @@
                 </v-btn>
               </div>
             </div>
-            <v-btn
-              id="headerImgClose"
-              text
-              fab
-              small
-              v-if="headerCloseIcon === true && headerImgUrl"
-              @click="deleteHeaderImg"
-            >
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
           </div>
           <v-text-field
             class="mt-10 ml-5"
@@ -198,7 +202,7 @@ export default {
     changeSelfIntroduction(e) {
       console.log(e);
       this.$store.dispatch("profile/changeSelfIntroduction", {
-       selfIntroduction: e,
+        selfIntroduction: e,
         id: this.$router.currentRoute.params.id,
       });
     },
