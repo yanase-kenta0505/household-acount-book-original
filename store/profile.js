@@ -55,6 +55,8 @@ export const actions = {
       mainImgFileName: items.mainImgFileName,
       mainImg: items.croppedMainImgUrl,
     });
+
+    context.commit("clearBeforeCropMainImgUrl");
   },
 
   deleteHeaderImg(context, items) {
@@ -121,5 +123,8 @@ export const mutations = {
 
   clearBeforeCropHeaderImgUrl(state) {
     state.beforeCropHeaderImgUrl = null;
+  },
+  clearBeforeCropMainImgUrl(state) {
+    state.beforeCropMainImgUrl = null;
   },
 };

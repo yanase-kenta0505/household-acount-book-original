@@ -1,8 +1,13 @@
 <template>
   <v-app>
     <v-dialog v-model="dialog" width="800px">
-      <v-card width="100%" height="500px">
+      <v-card
+        width="100%"
+        height="500px"
+        class="d-flex justify-center align-center"
+      >
         <cropper
+          v-if="beforeCropMainImgUrl !== null"
           ref="cropper"
           stencil-component="circle-stencil"
           :src="beforeCropMainImgUrl"
@@ -21,6 +26,12 @@
             height: 60,
           }"
         />
+
+        <v-progress-circular
+          indeterminate
+          color="primary"
+          v-if="beforeCropMainImgUrl === null"
+        ></v-progress-circular>
       </v-card>
       <v-btn @click="crop">CROP</v-btn>
     </v-dialog>
@@ -63,7 +74,6 @@ export default {
     openMainCropperDialog() {
       this.dialog = this.openMainCropperDialog;
     },
-   
   },
   methods: {
     crop() {
