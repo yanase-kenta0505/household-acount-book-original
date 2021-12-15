@@ -70,6 +70,7 @@
               </div>
             </div>
           </div>
+          
           <v-text-field
             class="mt-10 ml-5"
             label="名前"
@@ -173,7 +174,7 @@ export default {
     },
 
     headerCloseApper(e) {
-      console.log("parent");
+      // console.log("parent");
       this.headerCloseIcon = true;
       // e.stopPropagation();
     },
@@ -181,7 +182,7 @@ export default {
       this.headerCloseIcon = false;
     },
     mainCloseApper(e) {
-      console.log("child");
+      // console.log("child");
       this.mainCloseIcon = true;
       // e.stopPropagation();
     },
