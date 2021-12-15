@@ -46,6 +46,8 @@ export const actions = {
       headerImgFileName: items.headerImgFileName,
       headerImg: items.croppedHeaderImgUrl,
     });
+
+    context.commit("clearBeforeCropHeaderImgUrl");
   },
   registerMainImg(context, items) {
     // context.commit("displayMainImg", croppedMainImgUrl);
@@ -115,5 +117,9 @@ export const mutations = {
   },
   openMainCropperDialog(state) {
     state.openMainCropperDialog = !state.openMainCropperDialog;
+  },
+
+  clearBeforeCropHeaderImgUrl(state) {
+    state.beforeCropHeaderImgUrl = null;
   },
 };
