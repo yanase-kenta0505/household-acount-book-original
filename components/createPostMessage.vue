@@ -5,7 +5,8 @@
         <v-list-group
           :value="true"
           no-action
-          sub-group　link
+          sub-group
+          link
           v-bind="attrs"
           v-on="on"
           grey
@@ -51,7 +52,7 @@ export default {
     post() {
       this.$store.dispatch("postDB/postMessageAdd", {
         message: this.message,
-        uid: localStorage.getItem("uid"),
+        uid: this.$router.currentRoute.params.id,
       });
       this.message = "";
       this.dialog = false;

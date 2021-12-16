@@ -5,7 +5,8 @@
         <v-list-group
           :value="true"
           no-action
-          sub-group　link
+          sub-group
+          link
           v-bind="attrs"
           v-on="on"
           grey
@@ -26,12 +27,12 @@
           width="90%"
           height="auto"
           class="mx-auto mt-10"
-          v-for="(message, index) in postMessages"
+          v-for="(message, index) in myPostMessages"
           :key="message.id"
         >
           <v-card-title>
             <v-avatar size="50" color="grey"></v-avatar>
-            <span class="text-subtitle-1 ml-5">けんたけんた</span>
+            <span class="text-subtitle-1 ml-5"></span>
             <v-icon class="ml-auto" @click="deleteMessage(index)"
               >mdi-close-thick</v-icon
             >
@@ -57,24 +58,36 @@ export default {
   data() {
     return {
       dialog: false,
+      messages: [],
     };
   },
   computed: {
-    postMessages() {
+    myPostMessages() {
       const a = JSON.parse(
         JSON.stringify(this.$store.getters["postDB/postMessages"])
       );
-      return a;
+
+      let myPostMessages = [];
+      a.forEach((message) => {
+        if (message.uid === this.$router.currentRoute.params.id) {
+          myPostMessages.push(message);
+        }
+      });
+      return myPostMessages;
     },
   },
+ 
   mounted() {
-    this.$store.dispatch("postDB/messageSnapshot", localStorage.getItem("uid"));
+    this.$store.dispatch(
+      "postDB/messageSnapshot",
+      this.$router.currentRoute.params.id
+    );
   },
   methods: {
     deleteMessage(index) {
       this.$store.dispatch("postDB/deleteMessage", {
-        uid: localStorage.getItem("uid"),
-        id: this.postMessages[index].id,
+        uid: this.$router.currentRoute.params.id,
+        id: this.myPostMessages[index].id,
       });
     },
   },
