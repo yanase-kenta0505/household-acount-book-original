@@ -1,17 +1,13 @@
 import firebase from "~/plugins/firebase";
 
 const db = firebase.firestore();
-const postRef = db.collection("post");
+const postRef = db.collection("myPost");
+const allPostRef = db.collection("allPostRef");
 
 export const state = () => ({
   postMessages: [],
+  allPostMessages: [],
 });
-
-export const getters = {
-  postMessages(state) {
-    return state.postMessages;
-  },
-};
 
 export const actions = {
   messageSnapshot(context, uid) {
@@ -35,6 +31,23 @@ export const actions = {
         context.commit("changeMessages", messages);
       });
   },
+  allMessageSnapshot(context) {
+    allPostRef.orderBy("timeStamp", "desc").onSnapshot((snapshot) => {
+      let allMessages = [];
+      snapshot.forEach((doc) => {
+        if (doc.data().Timestamp === null) {
+          console.log("null");
+          return;
+        } else {
+          let id = doc.id;
+          let data = doc.data();
+          data.id = id;
+          allMessages.push(data);
+        }
+      });
+      context.commit("changeAllMessages", allMessages);
+    });
+  },
   postMessageAdd(context, postItem) {
     // console.log(new Date());
     postRef.doc(postItem.uid).collection("message").add({
@@ -42,10 +55,14 @@ export const actions = {
       uid: postItem.uid,
       timeStamp: firebase.firestore.Timestamp.now(),
     });
-    // context.commit("postMessage", postItem);
+    allPostRef.add({
+      message: postItem.message,
+      uid: postItem.uid,
+      timeStamp: firebase.firestore.Timestamp.now(),
+    });
   },
   deleteMessage(context, ids) {
-    console.log(ids)
+    console.log(ids);
     postRef
       .doc(ids.uid)
       .collection("message")
@@ -58,10 +75,16 @@ export const actions = {
 };
 export const mutations = {
   changeMessages(state, messages) {
-    console.log(messages)
+    // console.log(messages);
     state.postMessages = [];
     messages.forEach((message) => {
       state.postMessages.push(message);
+    });
+  },
+  changeAllMessages(state, allMessages) {
+    state.allPostMessages = [];
+    allMessages.forEach((message) => {
+      state.allPostMessages.push(message);
     });
   },
 };

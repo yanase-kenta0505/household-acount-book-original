@@ -64,7 +64,8 @@ export default {
   computed: {
     myPostMessages() {
       const a = JSON.parse(
-        JSON.stringify(this.$store.getters["postDB/postMessages"])
+        JSON.stringify(this.$store.state.postDB.postMessages)
+        // JSON.stringify(this.$store.getters["postDB/postMessages"])
       );
 
       let myPostMessages = [];
