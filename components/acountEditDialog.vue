@@ -142,7 +142,7 @@ export default {
   },
   watch: {
     userData(newItem, oldItem) {
-      console.log(newItem);
+      // console.log(newItem);
       this.headerImgUrl = newItem.headerImg;
       this.mainImgUrl = newItem.mainImg;
       this.nickname = newItem.nickname;
