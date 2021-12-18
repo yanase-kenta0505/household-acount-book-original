@@ -31,7 +31,11 @@
           :key="message.id"
         >
           <v-card-title>
-            <v-avatar size="50" color="grey"></v-avatar>
+            <v-avatar
+              size="50"
+              color="grey"
+              :style="{ backgroundImage: `url(${message.img})` }"
+            ></v-avatar>
             <span class="text-subtitle-1 ml-5"></span>
             <v-icon class="ml-auto" @click="deleteMessage(index)"
               >mdi-close-thick</v-icon
@@ -76,8 +80,7 @@ export default {
       return myPostMessages;
     },
   },
- 
- 
+
   methods: {
     deleteMessage(index) {
       this.$store.dispatch("postDB/deleteMessage", {
@@ -88,3 +91,10 @@ export default {
   },
 };
 </script>
+
+
+<style lang="scss" scoped>
+  ::v-deep .v-avatar{
+    background-size: cover;
+  }
+</style>
