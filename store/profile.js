@@ -55,6 +55,14 @@ export const actions = {
       mainImgFileName: items.mainImgFileName,
       mainImg: items.croppedMainImgUrl,
     });
+   context.dispatch(
+      "postDB/setImg",
+      {
+        id: items.id,
+        img: items.croppedMainImgUrl,
+      },
+      { root: true }
+    );
 
     context.commit("clearBeforeCropMainImgUrl");
   },

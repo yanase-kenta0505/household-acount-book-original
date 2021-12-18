@@ -78,12 +78,12 @@ export default {
     },
   },
  
-  mounted() {
-    this.$store.dispatch(
-      "postDB/messageSnapshot",
-      this.$router.currentRoute.params.id
-    );
-  },
+  // mounted() {
+  //   this.$store.dispatch(
+  //     "postDB/messageSnapshot",
+  //     this.$router.currentRoute.params.id
+  //   );
+  // },
   methods: {
     deleteMessage(index) {
       this.$store.dispatch("postDB/deleteMessage", {

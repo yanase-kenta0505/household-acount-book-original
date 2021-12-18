@@ -85,23 +85,30 @@ export default {
 
   created() {
     this.$store.dispatch("profile/usersSnapshot");
-    this.$store.dispatch("postDB/allMessageSnapshot");
+    // this.$store.dispatch("postDB/allMessageSnapshot");
+    this.$store.dispatch(
+      "postDB/messageSnapshot",
+      this.$router.currentRoute.params.id
+    );
     setTimeout(() => {
       this.expand = false;
     }, 500);
     this.$store.dispatch("login/stateChange");
   },
+
   computed: {
     usersData() {
       const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));
       return a;
     },
-    allPostMessages() {
-      const a = JSON.parse(
-        JSON.stringify(this.$store.state.postDB.allPostMessages)
-      );
-      return a;
-    },
+    // allPostMessages() {
+    //   const a = JSON.parse(
+    //     JSON.stringify(this.$store.state.postDB.postMessages)
+    //   );
+
+
+    //   // return a;
+    // },
   },
   watch: {
     usersData() {
@@ -152,7 +159,7 @@ export default {
   min-height: unset !important;
 }
 
-#main  ::v-deep .v-application--wrap {
+#main ::v-deep .v-application--wrap {
   min-height: unset !important;
 }
 </style>
