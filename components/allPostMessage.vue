@@ -37,7 +37,7 @@ export default {
   computed: {
     allPostMessages() {
       const a = JSON.parse(
-        JSON.stringify(this.$store.state.postDB.allPostMessages)
+        JSON.stringify(this.$store.state.postDB.postMessages)
       );
       return a;
     },

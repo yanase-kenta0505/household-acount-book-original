@@ -48,11 +48,23 @@ export default {
       message: "",
     };
   },
+  computed: {
+    userData() {
+      const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));
+      const userData = a.find((data) => {
+        return data.uid === this.$router.currentRoute.params.id;
+      });
+      return userData;
+    },
+  },
+ 
   methods: {
     post() {
       this.$store.dispatch("postDB/postMessageAdd", {
         message: this.message,
         uid: this.$router.currentRoute.params.id,
+        img:this.userData.mainImg,
+        name:this.userData.nickname
       });
       this.message = "";
       this.dialog = false;
