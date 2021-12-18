@@ -65,6 +65,23 @@ export const actions = {
       });
     });
   },
+  removeImg(context, items) {
+    postRef.get().then((snapshot) => {
+      // console.log(snapshot.docs)
+      snapshot.docs.forEach((doc) => {
+        // console.log(doc.id)
+        if (doc.data().uid !== items.id) {
+          // console.log("no");
+          return;
+        } else {
+          console.log(doc.id);
+          postRef.doc(doc.id).update({
+            img: null,
+          });
+        }
+      });
+    });
+  },
 };
 export const mutations = {
   changeMessages(state, messages) {
