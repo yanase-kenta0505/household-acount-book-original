@@ -86,14 +86,18 @@ export default {
   created() {
     this.$store.dispatch("profile/usersSnapshot");
     // this.$store.dispatch("postDB/allMessageSnapshot");
-    this.$store.dispatch(
-      "postDB/messageSnapshot",
-      this.$router.currentRoute.params.id
-    );
+
     setTimeout(() => {
       this.expand = false;
     }, 500);
     this.$store.dispatch("login/stateChange");
+  },
+
+  mounted() {
+    this.$store.dispatch(
+      "postDB/messageSnapshot",
+      this.$router.currentRoute.params.id
+    );
   },
 
   computed: {
@@ -105,7 +109,6 @@ export default {
     //   const a = JSON.parse(
     //     JSON.stringify(this.$store.state.postDB.postMessages)
     //   );
-
 
     //   // return a;
     // },

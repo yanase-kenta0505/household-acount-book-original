@@ -65,7 +65,6 @@ export default {
     myPostMessages() {
       const a = JSON.parse(
         JSON.stringify(this.$store.state.postDB.postMessages)
-        // JSON.stringify(this.$store.getters["postDB/postMessages"])
       );
 
       let myPostMessages = [];
@@ -78,12 +77,7 @@ export default {
     },
   },
  
-  // mounted() {
-  //   this.$store.dispatch(
-  //     "postDB/messageSnapshot",
-  //     this.$router.currentRoute.params.id
-  //   );
-  // },
+ 
   methods: {
     deleteMessage(index) {
       this.$store.dispatch("postDB/deleteMessage", {
