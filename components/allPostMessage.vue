@@ -15,7 +15,11 @@
         :key="message.id"
       >
         <v-card-title>
-          <v-avatar size="50" color="grey"></v-avatar>
+          <v-avatar
+            size="50"
+            color="grey"
+            :style="{ backgroundImage: `url(${message.img})` }"
+          ></v-avatar>
           <span class="text-subtitle-1 ml-5"></span>
         </v-card-title>
         <v-card-text class="mb-5"> {{ message.message }}</v-card-text>
@@ -41,6 +45,19 @@ export default {
       );
       return a;
     },
+    myPostMessages() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.postDB.postMessages)
+      );
+
+      let myPostMessages = [];
+      a.forEach((message) => {
+        if (message.uid === this.$router.currentRoute.params.id) {
+          myPostMessages.push(message);
+        }
+      });
+      return myPostMessages;
+    },
   },
 };
 </script>
@@ -52,5 +69,9 @@ export default {
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+::v-deep .v-avatar {
+  background-size: cover;
 }
 </style>
