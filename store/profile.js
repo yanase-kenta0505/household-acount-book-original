@@ -55,7 +55,7 @@ export const actions = {
       mainImgFileName: items.mainImgFileName,
       mainImg: items.croppedMainImgUrl,
     });
-   context.dispatch(
+    context.dispatch(
       "postDB/setImg",
       {
         id: items.id,
@@ -92,6 +92,14 @@ export const actions = {
           mainImgFileName: null,
         });
       });
+
+    context.dispatch(
+      "postDB/removeImg",
+      {
+        id: items.id,
+      },
+      { root: true }
+    );
   },
   changeNickname(context, items) {
     usersRef.doc(items.id).update({
