@@ -11,7 +11,7 @@
         width="80%"
         height="auto"
         class="mx-auto mt-10"
-        v-for="message in allPostMessages"
+        v-for="(message,index) in allPostMessages"
         :key="message.id"
       >
         <v-card-title>
@@ -19,6 +19,7 @@
             size="50"
             color="grey"
             :style="{ backgroundImage: `url(${message.img})` }"
+            @click="openDialog(index)"
           ></v-avatar>
           <span class="text-subtitle-1 ml-5"></span>
         </v-card-title>
@@ -33,11 +34,22 @@
           </v-icon>
         </v-card-actions>
       </v-card>
+      <confirm-others-data ref="child" :index="index"/>
     </v-card>
   </v-app>
 </template>
+
 <script>
+import ConfirmOthersData from '~/components/confirmOthersData.vue'
 export default {
+  components:{
+    ConfirmOthersData
+  },
+  data() {
+    return {
+      index: null,
+    };
+  },
   computed: {
     allPostMessages() {
       const a = JSON.parse(
@@ -59,6 +71,12 @@ export default {
       return myPostMessages;
     },
   },
+  methods:{
+    openDialog(index){
+       this.$refs.child.openDialog()
+       this.index = index
+    }
+  }
 };
 </script>
 
