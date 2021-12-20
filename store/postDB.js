@@ -9,7 +9,7 @@ export const state = () => ({
 
 export const actions = {
   messageSnapshot(context, uid) {
-    postRef.onSnapshot((snapshot) => {
+    postRef.orderBy("timeStamp", "desc").onSnapshot((snapshot) => {
       let messages = [];
       snapshot.forEach((doc) => {
         if (doc.data().Timestamp === null) {
@@ -57,7 +57,7 @@ export const actions = {
           // console.log("no");
           return;
         } else {
-          console.log(doc.id);
+          // console.log(doc.id);
           postRef.doc(doc.id).update({
             img: items.img,
           });
@@ -74,7 +74,7 @@ export const actions = {
           // console.log("no");
           return;
         } else {
-          console.log(doc.id);
+          // console.log(doc.id);
           postRef.doc(doc.id).update({
             img: null,
           });

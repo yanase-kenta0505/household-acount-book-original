@@ -18,7 +18,7 @@ export const state = () => ({
 export const actions = {
   usersSnapshot(context) {
     usersRef.onSnapshot((snapshot) => {
-      console.log("snap");
+      // console.log("snap");
       let usersData = [];
       snapshot.forEach((doc) => {
         usersData.push(doc.data());
