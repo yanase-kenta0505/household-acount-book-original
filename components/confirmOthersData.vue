@@ -31,7 +31,18 @@
             color="#90CAF9"
             class="white--text mt-5"
             style="margin-left: 300px"
+            @click="registFollowing"
+            v-if="followingstate === false"
             >フォローする</v-btn
+          >
+          <v-btn
+            width="150px"
+            color="#90CAF9"
+            class="white--text mt-5"
+            style="margin-left: 300px"
+            @click="deleteFollowing"
+            v-if="followingstate === true"
+            >フォロー済み</v-btn
           >
 
           <v-textarea
@@ -61,6 +72,8 @@ export default {
       mainImgUrl: null,
       nickname: null,
       selfIntroduction: "",
+      selectedUid: null,
+      followingstate: false,
     };
   },
 
@@ -77,6 +90,13 @@ export default {
 
       return a;
     },
+    followingUids() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.follow.followingUids)
+      );
+
+      return a;
+    },
   },
   watch: {
     index() {
@@ -90,7 +110,47 @@ export default {
       this.mainImgUrl = selectedUserData.mainImg;
       this.nickname = selectedUserData.nickname;
       this.selfIntroduction = selectedUserData.selfIntroduction;
+      this.selectedUid = selectedUid;
+
+      // console.log(this.followingUids);
+      // console.log(this.followingUids.includes(this.selectedUid))
+      let some = this.followingUids.some((uid) => {
+        // console.log(uid.followingUid);
+        // console.log(this.selectedUid);
+        return uid.followingUid === this.selectedUid;
+      });
+      // console.log(some);
+      if (some === false) {
+        return;
+      } else {
+        this.followingstate = true;
+      }
     },
+    followingUids() {
+      // console.log("doooo");
+      if (this.dialog === false) {
+        // console.log("return");
+        return;
+      } else {
+        // console.log(this.selectedUid);
+        let some = this.followingUids.some((uid) => {
+          // console.log(uid.followingUid);
+          // console.log(this.selectedUid);
+          return uid.followingUid === this.selectedUid;
+        });
+        if (some === false) {
+          this.followingstate = false;
+        } else {
+          this.followingstate = true;
+        }
+      }
+    },
+  },
+  created() {
+    this.$store.dispatch(
+      "follow/followingSnapshot",
+      this.$router.currentRoute.params.id
+    );
   },
 
   methods: {
@@ -101,6 +161,27 @@ export default {
     },
     close() {
       this.dialog = false;
+    },
+    registFollowing() {
+      if (this.selectedUid === this.$router.currentRoute.params.id) {
+        // console.log("No");
+        return;
+      }
+
+      this.$store.dispatch("follow/registFollowing", {
+        selectedUid: this.selectedUid,
+        id: this.$router.currentRoute.params.id,
+      });
+    },
+    deleteFollowing() {
+      let deleteItem = this.followingUids.find((uid) => {
+        return uid.followingUid === this.selectedUid;
+      });
+      // console.log(deleteItem);
+      this.$store.dispatch("follow/deleteFollowing", {
+        id: this.$router.currentRoute.params.id,
+        deleteItem: deleteItem,
+      });
     },
   },
 };
