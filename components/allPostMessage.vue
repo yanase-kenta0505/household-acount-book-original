@@ -11,7 +11,7 @@
         width="80%"
         height="auto"
         class="mx-auto mt-10"
-        v-for="(message,index) in allPostMessages"
+        v-for="(message, index) in allPostMessages"
         :key="message.id"
       >
         <v-card-title>
@@ -34,16 +34,16 @@
           </v-icon>
         </v-card-actions>
       </v-card>
-      <confirm-others-data ref="child" :index="index"/>
+      <confirm-others-data ref="child" :index="index" />
     </v-card>
   </v-app>
 </template>
 
 <script>
-import ConfirmOthersData from '~/components/confirmOthersData.vue'
+import ConfirmOthersData from "~/components/confirmOthersData.vue";
 export default {
-  components:{
-    ConfirmOthersData
+  components: {
+    ConfirmOthersData,
   },
   data() {
     return {
@@ -71,12 +71,18 @@ export default {
       return myPostMessages;
     },
   },
-  methods:{
-    openDialog(index){
-       this.$refs.child.openDialog()
-       this.index = index
-    }
-  }
+  methods: {
+    openDialog(index) {
+      if (
+        this.allPostMessages[index].uid === this.$router.currentRoute.params.id
+      ) {
+        this.$store.dispatch("profile/changeAcountEditDialog");
+      } else {
+        this.$refs.child.openDialog();
+        this.index = index;
+      }
+    },
+  },
 };
 </script>
 

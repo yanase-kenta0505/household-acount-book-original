@@ -13,6 +13,7 @@ export const state = () => ({
   beforeCropHeaderImgUrl: null,
   mainImgFileName: null,
   beforeCropMainImgUrl: null,
+  changeAcountEditDialog: false,
 });
 
 export const actions = {
@@ -111,6 +112,9 @@ export const actions = {
       selfIntroduction: items.selfIntroduction,
     });
   },
+  changeAcountEditDialog(context) {
+    context.commit("changeAcountEditDialog");
+  },
 };
 
 export const mutations = {
@@ -142,5 +146,8 @@ export const mutations = {
   },
   clearBeforeCropMainImgUrl(state) {
     state.beforeCropMainImgUrl = null;
+  },
+  changeAcountEditDialog(state) {
+    state.changeAcountEditDialog = !state.changeAcountEditDialog;
   },
 };
