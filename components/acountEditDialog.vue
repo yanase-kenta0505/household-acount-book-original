@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div class="text-center">
-      <v-dialog v-model="dialog" width="500">
+      <v-dialog v-model="dialog" width="500" @click:outside="close">
         <template v-slot:activator="{ on, attrs }">
           <v-list-item link v-bind="attrs" v-on="on" grey>
             <v-list-item-icon>
@@ -70,7 +70,7 @@
               </div>
             </div>
           </div>
-          
+
           <v-text-field
             class="mt-10 ml-5"
             label="名前"
@@ -139,6 +139,12 @@ export default {
       );
       return a;
     },
+    changeAcountEditDialog() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.profile.changeAcountEditDialog)
+      );
+      return a;
+    },
   },
   watch: {
     userData(newItem, oldItem) {
@@ -153,6 +159,9 @@ export default {
     },
     croppedMainImgUrl() {
       this.mainImgUrl = this.croppedMainImgUrl;
+    },
+    changeAcountEditDialog() {
+      this.dialog = this.changeAcountEditDialog;
     },
   },
 
@@ -192,6 +201,7 @@ export default {
 
     close() {
       this.dialog = false;
+      this.$store.dispatch("profile/changeAcountEditDialog");
     },
     changeNickname(e) {
       console.log(e);
