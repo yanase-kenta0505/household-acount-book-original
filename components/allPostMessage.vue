@@ -26,13 +26,15 @@
         <v-card-text class="mb-5"> {{ message.message }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-icon class="mr-10 mb-5" color="pink">mdi-chat-outline </v-icon>
-          <v-icon
-            class="mr-10 mb-5"
-            color="pink"
-            @click="changeLikeCount(index)"
-            >mdi-hand-heart
-          </v-icon>
+          <div>
+            <v-icon class="mr-8" color="grey">mdi-chat-outline </v-icon>
+          </div>
+          <div class="mr-7">
+            <v-icon color="grey" class="mb-1" @click="changeLikeCount(index)"
+              >mdi-hand-heart
+            </v-icon>
+            <span>{{message.likeCount}}</span>
+          </div>
         </v-card-actions>
       </v-card>
       <confirm-others-data ref="child" :index="index" />
