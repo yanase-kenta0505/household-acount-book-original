@@ -98,6 +98,7 @@ export default {
       "postDB/messageSnapshot",
       this.$router.currentRoute.params.id
     );
+    
   },
 
   computed: {

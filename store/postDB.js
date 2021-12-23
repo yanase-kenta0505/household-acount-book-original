@@ -2,6 +2,8 @@ import firebase from "~/plugins/firebase";
 
 const db = firebase.firestore();
 const postRef = db.collection("Post");
+const increment = firebase.firestore.FieldValue.increment(1);
+const decrement = firebase.firestore.FieldValue.increment(-1);
 
 export const state = () => ({
   postMessages: [],
@@ -10,6 +12,7 @@ export const state = () => ({
 export const actions = {
   messageSnapshot(context, uid) {
     postRef.orderBy("timeStamp", "desc").onSnapshot((snapshot) => {
+      console.log("snap");
       let messages = [];
       snapshot.forEach((doc) => {
         if (doc.data().Timestamp === null) {
@@ -34,6 +37,7 @@ export const actions = {
       timeStamp: firebase.firestore.Timestamp.now(),
       img: postItem.img,
       name: postItem.name,
+      likeCount: 0,
     });
   },
   deleteMessage(context, ids) {
@@ -81,6 +85,79 @@ export const actions = {
         }
       });
     });
+  },
+  changeLikeCount(context, ids) {
+    postRef
+      .doc(ids.id)
+      .collection("likedUserId")
+      .get()
+      .then((snap) => {
+        if (snap.docs.length === 0) {
+          postRef
+            .doc(ids.id)
+            .collection("likedUserId")
+            .add({
+              likedUserId: ids.uid,
+            })
+            .then(() => {
+              console.log("add1");
+              postRef.doc(ids.id).update({
+                likeCount: increment,
+              });
+            });
+        } else {
+          const a = snap.docs.find((doc) => {
+            return doc.data().likedUserId === ids.uid;
+          });
+          if (a) {
+            postRef
+              .doc(ids.id)
+              .collection("likedUserId")
+              .doc(a.id)
+              .delete()
+              .then(() => {
+                console.log("delete");
+                postRef.doc(ids.id).update({
+                  likeCount: decrement,
+                });
+              });
+          } else {
+            postRef
+              .doc(ids.id)
+              .collection("likedUserId")
+              .add({
+                likedUserId: ids.uid,
+              })
+              .then(() => {
+                console.log("add2");
+                postRef.doc(ids.id).update({
+                  likeCount: increment,
+                });
+              });
+          }
+        }
+      });
+
+    // if (doc.data().likedUserId === ids.uid) {
+    //   postRef
+    //     .doc(ids.id)
+    //     .collection("likedUserId")
+    //     .doc(doc.id)
+    //     .delete()
+    //     .then(() => {
+    //       console.log("delete");
+    //     });
+    // } else {
+    //   postRef
+    //     .doc(ids.id)
+    //     .collection("likedUserId")
+    //     .add({
+    //       likedUserId: ids.uid,
+    //     })
+    //     .then(() => {
+    //       console.log("add");
+    //     });
+    // }
   },
 };
 export const mutations = {
