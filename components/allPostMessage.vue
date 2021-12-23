@@ -33,7 +33,7 @@
             <v-icon color="grey" class="mb-1" @click="changeLikeCount(index)"
               >mdi-hand-heart
             </v-icon>
-            <span>{{message.likeCount}}</span>
+            <span>{{ message.likeCount }}</span>
           </div>
         </v-card-actions>
       </v-card>
@@ -87,6 +87,10 @@ export default {
     },
     changeLikeCount(index) {
       // console.log(this.allPostMessages[index].id);
+      // this.$store.dispatch("like/addLiking", {
+      //   id: this.allPostMessages[index].id,
+      //   uid: this.$router.currentRoute.params.id,
+      // });
       this.$store.dispatch("postDB/changeLikeCount", {
         id: this.allPostMessages[index].id,
         uid: this.$router.currentRoute.params.id,

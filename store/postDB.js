@@ -100,10 +100,12 @@ export const actions = {
               likedUserId: ids.uid,
             })
             .then(() => {
-              console.log("add1");
+              // console.log("add1");
               postRef.doc(ids.id).update({
                 likeCount: increment,
               });
+
+              context.dispatch("like/addLiking", ids, { root: true });
             });
         } else {
           const a = snap.docs.find((doc) => {
@@ -116,7 +118,8 @@ export const actions = {
               .doc(a.id)
               .delete()
               .then(() => {
-                console.log("delete");
+                // console.log("delete");
+                context.dispatch("like/deleteLiking", ids, { root: true });
                 postRef.doc(ids.id).update({
                   likeCount: decrement,
                 });
@@ -129,7 +132,8 @@ export const actions = {
                 likedUserId: ids.uid,
               })
               .then(() => {
-                console.log("add2");
+                // console.log("add2");
+                context.dispatch("like/addLiking", ids, { root: true });
                 postRef.doc(ids.id).update({
                   likeCount: increment,
                 });
