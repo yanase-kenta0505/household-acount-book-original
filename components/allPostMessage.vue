@@ -26,10 +26,11 @@
         <v-card-text class="mb-5"> {{ message.message }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-icon @click="dialog = false" class="mr-10 mb-5" color="pink"
-            >mdi-chat-outline
-          </v-icon>
-          <v-icon @click="dialog = false" class="mr-10 mb-5" color="pink"
+          <v-icon class="mr-10 mb-5" color="pink">mdi-chat-outline </v-icon>
+          <v-icon
+            class="mr-10 mb-5"
+            color="pink"
+            @click="changeLikeCount(index)"
             >mdi-hand-heart
           </v-icon>
         </v-card-actions>
@@ -81,6 +82,13 @@ export default {
         this.$refs.child.openDialog();
         this.index = index;
       }
+    },
+    changeLikeCount(index) {
+      // console.log(this.allPostMessages[index].id);
+      this.$store.dispatch("postDB/changeLikeCount", {
+        id: this.allPostMessages[index].id,
+        uid: this.$router.currentRoute.params.id,
+      });
     },
   },
 };
