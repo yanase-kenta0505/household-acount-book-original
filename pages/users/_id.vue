@@ -15,7 +15,12 @@
 
       <v-navigation-drawer v-model="drawer" app>
         <v-sheet class="pa-4" color="#ECEFF1">
-          <v-avatar class="mb-4" color="grey darken-1" size="64"></v-avatar>
+          <v-avatar
+            class="mb-4"
+            color="grey darken-1"
+            size="64"
+            :style="{ backgroundImage: `url(${userMainImg})` }"
+          ></v-avatar>
 
           <h1>{{ userName }}様</h1>
         </v-sheet>
@@ -81,6 +86,7 @@ export default {
     userName: "",
     expand: true,
     index: 1,
+    userMainImg: null,
   }),
 
   created() {
@@ -102,7 +108,6 @@ export default {
       "like/likingPostIdSnapshot",
       this.$router.currentRoute.params.id
     );
-    
   },
 
   computed: {
@@ -124,6 +129,7 @@ export default {
         return data.uid === this.$router.currentRoute.params.id;
       });
       this.userName = userData.nickname;
+      this.userMainImg = userData.mainImg;
     },
   },
 
@@ -169,5 +175,9 @@ export default {
 
 #main ::v-deep .v-application--wrap {
   min-height: unset !important;
+}
+
+::v-deep .v-avatar {
+  background-size: cover;
 }
 </style>
