@@ -3,10 +3,6 @@
     <div class="text-center">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on, attrs }">
-          <!-- <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on">
-            Click Me
-          </v-btn> -->
-
           <v-list-item link v-bind="attrs" v-on="on" grey>
             <v-list-item-icon>
               <v-icon>mdi-account-heart-outline</v-icon>
@@ -28,22 +24,27 @@
             width="90%"
             height="150px"
             class="mx-auto mt-10"
+            v-for="followingUserData in followingUserDatas"
+            :key="followingUserData.uid"
           >
             <v-card-title>
-              <v-avatar size="50" color="grey"></v-avatar>
-              <span class="text-subtitle-1 ml-5">けんたけんた</span>
+              <v-avatar
+                size="50"
+                color="grey"
+                :style="{
+                  backgroundImage: `url(${followingUserData.mainImg})`,
+                }"
+              ></v-avatar>
+              <span class="text-subtitle-1 ml-5">{{
+                followingUserData.nickname
+              }}</span>
               <v-spacer></v-spacer>
-              <v-btn height="30px">フォロー解除</v-btn>
+              <v-btn height="30px" color="#EF9A9A" class="white--text"
+                >フォロー解除</v-btn
+              >
             </v-card-title>
-            <v-card-text
-              >ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</v-card-text
-            >
+            <v-card-text>{{ followingUserData.selfIntroduction }}</v-card-text>
           </v-card>
-
-          <!-- <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false"> 投稿 </v-btn>
-          </v-card-actions> -->
         </v-card>
       </v-dialog>
     </div>
@@ -55,7 +56,34 @@ export default {
   data() {
     return {
       dialog: false,
+      // followingUserDatas: null,
     };
+  },
+  computed: {
+    followingUids() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.follow.followingUids)
+      );
+      return a;
+    },
+    usersData() {
+      const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));
+      return a;
+    },
+    followingUserDatas() {
+      //フォローしているユーザーの情報のみ取得
+      let followingUserDatas = this.usersData.filter((data) => {
+        // console.log(data);
+
+        return this.followingUids.find((uid) => {
+          // console.log(uid);
+          // console.log(uid.followingUid === data.uid);
+          return uid.followingUid === data.uid;
+        });
+      });
+
+      return followingUserDatas;
+    },
   },
 };
 </script>
@@ -73,5 +101,8 @@ export default {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+}
+::v-deep .v-avatar {
+  background-size: cover;
 }
 </style>
