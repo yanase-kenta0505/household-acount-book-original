@@ -24,13 +24,12 @@ export const actions = {
       });
   },
   addLiking(context, ids) {
-    console.log("add");
+    // console.log("add");
     likeRef.doc(ids.uid).collection("liking").add({
       likingPostId: ids.id,
     });
   },
   deleteLiking(context, ids) {
-    console.log("delete");
     likeRef
       .doc(ids.uid)
       .collection("liking")
@@ -46,13 +45,14 @@ export const actions = {
           .doc(a.id)
           .delete()
           .then(() => {
-            console.log("delete");
+            // console.log("delete");
           });
       });
   },
 };
 export const mutations = {
   changeLikingPostIds(state, likingPostIds) {
+    state.likingPostIds = [];
     likingPostIds.forEach((id) => {
       state.likingPostIds.push(id);
     });

@@ -30,9 +30,27 @@
             <v-icon class="mr-8" color="grey">mdi-chat-outline </v-icon>
           </div>
           <div class="mr-7">
-            <v-icon color="grey" class="mb-1" @click="changeLikeCount(index)"
+            <!-- <v-icon
+              v-if="chack_liking(message)"
+              color="pink"
+              class="mb-1"
+              @click="changeLikeCount(index)"
               >mdi-hand-heart
             </v-icon>
+            <v-icon
+              v-else
+              color="grey"
+              class="mb-1"
+              @click="changeLikeCount(index)"
+              >mdi-hand-heart
+            </v-icon> -->
+            <v-icon
+              :class="[chack_liking(message) ? 'pink' : 'grey']"
+              class="mb-1"
+              @click="changeLikeCount(index)"
+              >mdi-hand-heart
+            </v-icon>
+
             <span>{{ message.likeCount }}</span>
           </div>
         </v-card-actions>
@@ -73,6 +91,30 @@ export default {
       });
       return myPostMessages;
     },
+    likingPostIds() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.like.likingPostIds)
+      );
+
+      let allIds = [];
+      a.forEach((id) => {
+        allIds.push(id.likingPostId);
+      });
+      return allIds;
+    },
+    chack_liking() {
+      return function (message) {
+        // console.log('jpopopop')
+        // console.log(this.likingPostIds.includes(message.id))
+        // console.log(this.likingPostIds);
+        return this.likingPostIds.includes(message.id);
+      };
+    },
+  },
+  watch: {
+    //  chack_liking(){
+    //    console.log(this.chack_liking)
+    //  }
   },
   methods: {
     openDialog(index) {
@@ -86,11 +128,6 @@ export default {
       }
     },
     changeLikeCount(index) {
-      // console.log(this.allPostMessages[index].id);
-      // this.$store.dispatch("like/addLiking", {
-      //   id: this.allPostMessages[index].id,
-      //   uid: this.$router.currentRoute.params.id,
-      // });
       this.$store.dispatch("postDB/changeLikeCount", {
         id: this.allPostMessages[index].id,
         uid: this.$router.currentRoute.params.id,
@@ -111,5 +148,14 @@ export default {
 
 ::v-deep .v-avatar {
   background-size: cover;
+}
+
+::v-deep .theme--light.v-icon.pink {
+  color: rgb(236, 61, 90);
+  background-color: transparent !important;
+}
+::v-deep .theme--light.v-icon.grey {
+  color: grey;
+  background-color: transparent !important;
 }
 </style>

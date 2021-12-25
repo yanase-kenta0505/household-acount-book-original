@@ -12,7 +12,7 @@ export const state = () => ({
 export const actions = {
   messageSnapshot(context, uid) {
     postRef.orderBy("timeStamp", "desc").onSnapshot((snapshot) => {
-      console.log("snap");
+      // console.log("snap");
       let messages = [];
       snapshot.forEach((doc) => {
         if (doc.data().Timestamp === null) {
