@@ -35,7 +35,7 @@ export const actions = {
       .doc(items.deleteItem.id)
       .delete()
       .then(() => {
-        console.log("delete");
+        // console.log("delete");
       });
   },
 };
@@ -47,8 +47,8 @@ export const mutations = {
     if (followingUids.length === 0) {
       state.followingUids = [];
     } else {
+      state.followingUids = [];
       followingUids.forEach((uid) => {
-        // console.log("giiii");
         state.followingUids.push(uid);
       });
     }

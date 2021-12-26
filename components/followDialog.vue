@@ -24,7 +24,7 @@
             width="90%"
             height="150px"
             class="mx-auto mt-10"
-            v-for="followingUserData in followingUserDatas"
+            v-for="(followingUserData, index) in followingUserDatas"
             :key="followingUserData.uid"
           >
             <v-card-title>
@@ -39,7 +39,11 @@
                 followingUserData.nickname
               }}</span>
               <v-spacer></v-spacer>
-              <v-btn height="30px" color="#EF9A9A" class="white--text"
+              <v-btn
+                height="30px"
+                color="#EF9A9A"
+                class="white--text"
+                @click="followCancel(index)"
                 >フォロー解除</v-btn
               >
             </v-card-title>
@@ -83,6 +87,22 @@ export default {
       });
 
       return followingUserDatas;
+    },
+  },
+  methods: {
+    followCancel(index) {
+      console.log(this.followingUserDatas[index]);
+      console.log(this.followingUids);
+
+      let deleteItem = this.followingUids.find((uid) => {
+        console.log();
+        return uid.followingUid === this.followingUserDatas[index].uid;
+      });
+
+      this.$store.dispatch("follow/deleteFollowing", {
+        id: this.$router.currentRoute.params.id,
+        deleteItem: deleteItem,
+      });
     },
   },
 };

@@ -32,17 +32,17 @@
             class="white--text mt-5"
             style="margin-left: 300px"
             @click="registFollowing"
-            v-if="followingstate === false"
+            v-show="followingState === false"
             >フォローする</v-btn
           >
           <v-btn
             width="150px"
-            color="#90CAF9"
+            color="#EF9A9A"
             class="white--text mt-5"
             style="margin-left: 300px"
             @click="deleteFollowing"
-            v-if="followingstate === true"
-            >フォロー済み</v-btn
+            v-show="followingState === true"
+            >フォロー解除</v-btn
           >
 
           <v-textarea
@@ -73,7 +73,7 @@ export default {
       nickname: null,
       selfIntroduction: "",
       selectedUid: null,
-      followingstate: false,
+      // followingstate: false,
     };
   },
 
@@ -97,52 +97,42 @@ export default {
 
       return a;
     },
+
+    followingState() {
+      if (this.index === null || undefined) {
+        return;
+      } else {
+        const selectedUid = this.selectedPost[this.index].uid;
+        let matchId = this.followingUids.filter((uid) => {
+          return uid.followingUid === selectedUid;
+        });
+        // console.log(matchId);
+        if (matchId.length === 0) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
   },
   watch: {
     index() {
-      console.log(this.selectedPost[this.index].uid);
       const selectedUid = this.selectedPost[this.index].uid;
       const selectedUserData = this.selectedusersData.find((data) => {
         return data.uid === selectedUid;
       });
-      console.log(selectedUserData);
+
       this.headerImgUrl = selectedUserData.headerImg;
       this.mainImgUrl = selectedUserData.mainImg;
       this.nickname = selectedUserData.nickname;
       this.selfIntroduction = selectedUserData.selfIntroduction;
       this.selectedUid = selectedUid;
-
-      // console.log(this.followingUids);
-      // console.log(this.followingUids.includes(this.selectedUid))
-      let some = this.followingUids.some((uid) => {
-        // console.log(uid.followingUid);
-        // console.log(this.selectedUid);
-        return uid.followingUid === this.selectedUid;
-      });
-      // console.log(some);
-      if (some === false) {
-        return;
-      } else {
-        this.followingstate = true;
-      }
     },
+
     followingUids() {
-      // console.log("doooo");
       if (this.dialog === false) {
-        // console.log("return");
+        console.log("return");
         return;
-      } else {
-        // console.log(this.selectedUid);
-        let some = this.followingUids.some((uid) => {
-          // console.log(uid.followingUid);
-          // console.log(this.selectedUid);
-          return uid.followingUid === this.selectedUid;
-        });
-        if (some === false) {
-          this.followingstate = false;
-        } else {
-          this.followingstate = true;
-        }
       }
     },
   },
@@ -163,6 +153,7 @@ export default {
       this.dialog = false;
     },
     registFollowing() {
+      console.log("regist");
       if (this.selectedUid === this.$router.currentRoute.params.id) {
         // console.log("No");
         return;
@@ -174,6 +165,7 @@ export default {
       });
     },
     deleteFollowing() {
+      console.log("delete");
       let deleteItem = this.followingUids.find((uid) => {
         return uid.followingUid === this.selectedUid;
       });
