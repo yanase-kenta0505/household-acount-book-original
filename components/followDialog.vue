@@ -39,6 +39,14 @@
                 followingUserData.nickname
               }}</span>
               <v-spacer></v-spacer>
+
+              <v-btn
+                height="30px"
+                color="#80CBC4"
+                class="white--text mr-2"
+                @click="openPrivateChatDialog"
+                >チャットへ</v-btn
+              >
               <v-btn
                 height="30px"
                 color="#EF9A9A"
@@ -51,15 +59,22 @@
           </v-card>
         </v-card>
       </v-dialog>
+      <private-chat-dailog
+        :privateChatDialog="privateChatDialog"
+        @closePrivateChatDailog="openPrivateChatDialog"
+      />
     </div>
   </v-app>
 </template>
 
 <script>
+import PrivateChatDailog from "~/components/privateChatDialog.vue";
 export default {
+  components: { PrivateChatDailog },
   data() {
     return {
       dialog: false,
+      privateChatDialog: false,
       // followingUserDatas: null,
     };
   },
@@ -91,11 +106,10 @@ export default {
   },
   methods: {
     followCancel(index) {
-      console.log(this.followingUserDatas[index]);
-      console.log(this.followingUids);
+      // console.log(this.followingUserDatas[index]);
+      // console.log(this.followingUids);
 
       let deleteItem = this.followingUids.find((uid) => {
-        console.log();
         return uid.followingUid === this.followingUserDatas[index].uid;
       });
 
@@ -103,6 +117,9 @@ export default {
         id: this.$router.currentRoute.params.id,
         deleteItem: deleteItem,
       });
+    },
+    openPrivateChatDialog() {
+      this.privateChatDialog = !this.privateChatDialog;
     },
   },
 };

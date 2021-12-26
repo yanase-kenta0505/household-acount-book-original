@@ -40,40 +40,7 @@
             </v-card-actions>
           </v-card>
 
-          <v-expand-transition>
-            <v-card
-              v-click-outside="onClickOutside"
-              v-if="expand"
-              width="100%"
-              height="700px"
-              class="mx-auto transition-fast-in-fast-out v-card--reveal"
-            >
-              <v-card-title
-                class="pa-0 grey lighten-1 d-flex flex-column pt-5"
-                style="width: 100%; height: 100px"
-              >
-                <v-avatar size="40" color="grey"></v-avatar>
-                <p class="text-subtitle-1 ma-0">けんたけんた</p>
-              </v-card-title>
-              <div class="mt-10 ml-5 d-flex" style="width: 100%">
-                <v-avatar size="35" color="grey"></v-avatar>
-                <v-card style="width: 250px" class="grey lighten-1 ml-10 pa-5">
-                  ああああああああああああああああああああああああああああああああああああああああ
-                </v-card>
-              </div>
-              <div
-                class="mt-10 d-flex flex-row-reverse pr-5"
-                style="width: 100%"
-              >
-                <v-avatar size="35" color="grey"></v-avatar>
-                <v-card style="width: 250px" class="grey lighten-1 mr-10 pa-5">
-                  ああああああああああああああああああああああああああああああああああああああああ
-                </v-card>
-              </div>
-
-              <v-btn id="close-btn" @click="expand = false" text>閉じる</v-btn>
-            </v-card>
-          </v-expand-transition>
+          
         </v-card>
       </v-dialog>
     </div>
