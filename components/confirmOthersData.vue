@@ -67,13 +67,11 @@ export default {
   data() {
     return {
       dialog: false,
-      // selectedUserData: null,
       headerImgUrl: null,
       mainImgUrl: null,
       nickname: null,
       selfIntroduction: "",
       selectedUid: null,
-      // followingstate: false,
     };
   },
 
@@ -97,6 +95,13 @@ export default {
 
       return a;
     },
+    followedUids() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.follow.followedUids)
+      );
+
+      return a;
+    },
 
     followingState() {
       if (this.index === null || undefined) {
@@ -106,7 +111,6 @@ export default {
         let matchId = this.followingUids.filter((uid) => {
           return uid.followingUid === selectedUid;
         });
-        // console.log(matchId);
         if (matchId.length === 0) {
           return false;
         } else {
@@ -127,6 +131,7 @@ export default {
       this.nickname = selectedUserData.nickname;
       this.selfIntroduction = selectedUserData.selfIntroduction;
       this.selectedUid = selectedUid;
+      console.log(selectedUid);
     },
 
     followingUids() {
@@ -155,7 +160,6 @@ export default {
     registFollowing() {
       console.log("regist");
       if (this.selectedUid === this.$router.currentRoute.params.id) {
-        // console.log("No");
         return;
       }
 
@@ -165,11 +169,10 @@ export default {
       });
     },
     deleteFollowing() {
-      console.log("delete");
       let deleteItem = this.followingUids.find((uid) => {
         return uid.followingUid === this.selectedUid;
       });
-      // console.log(deleteItem);
+
       this.$store.dispatch("follow/deleteFollowing", {
         id: this.$router.currentRoute.params.id,
         deleteItem: deleteItem,
