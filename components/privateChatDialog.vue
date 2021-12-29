@@ -2,7 +2,7 @@
   <v-app>
     <v-dialog
       v-model="privateChatDialog"
-      @click:outside="closePrivateChatDailog"
+      @click:outside="changePrivateChatDialog"
     >
       <v-card width="700px" height="500px" color="#E3F2FD">
         <v-card
@@ -12,8 +12,8 @@
           color="#3949AB"
           tile
         >
-        <v-avatar size="50" color="white" class="ml-3"></v-avatar>
-        <span class="ml-3 white--text">aaaaaa</span>
+          <v-avatar size="50" color="white" class="ml-3"></v-avatar>
+          <span class="ml-3 white--text">aaaaaa</span>
         </v-card>
         <v-card width="90%" height="65%" class="mx-auto"> </v-card>
         <v-card
@@ -43,14 +43,22 @@
 
 <script>
 export default {
-  props: {
-    privateChatDialog: {
-      type: Boolean,
+  computed: {
+    privateChatDialog() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.privateChat.privateChatDialog)
+      );
+      return a;
+    },
+  },
+  watch: {
+    privateChatDialog() {
+      console.log(this.privateChatDialog);
     },
   },
   methods: {
-    closePrivateChatDailog() {
-      this.$emit("closePrivateChatDailog");
+    changePrivateChatDialog() {
+      this.$store.dispatch("privateChat/changePrivateChatDialog");
     },
   },
 };

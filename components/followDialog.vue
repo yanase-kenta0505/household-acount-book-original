@@ -47,8 +47,8 @@
                 height="30px"
                 color="#80CBC4"
                 class="white--text mr-2"
-                @click="openPrivateChatDialog"
                 :disabled="mutualFollowState(followingUserData)"
+                @click="changePrivateChatDialog"
                 >チャットへ</v-btn
               >
               <v-btn
@@ -64,10 +64,7 @@
           </v-card>
         </v-card>
       </v-dialog>
-      <private-chat-dailog
-        :privateChatDialog="privateChatDialog"
-        @closePrivateChatDailog="openPrivateChatDialog"
-      />
+      <private-chat-dailog />
     </div>
   </v-app>
 </template>
@@ -79,7 +76,7 @@ export default {
   data() {
     return {
       dialog: false,
-      privateChatDialog: false,
+      // privateChatDialog: false,
       // followingUserDatas: null,
     };
   },
@@ -101,6 +98,7 @@ export default {
       const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));
       return a;
     },
+
     followingUserDatas() {
       //フォローしているユーザーの情報のみ取得
       let followingUserDatas = this.usersData.filter((data) => {
@@ -129,10 +127,10 @@ export default {
         });
 
         if (a.includes(key) && b.includes(key)) {
-          console.log("ok");
+          // console.log("ok");
           return false;
         } else {
-          console.log("no");
+          // console.log("no");
           return true;
         }
       };
@@ -140,9 +138,6 @@ export default {
   },
   methods: {
     followCancel(index) {
-      // console.log(this.followingUserDatas[index]);
-      // console.log(this.followingUids);
-
       let deleteItem = this.followingUids.find((uid) => {
         return uid.followingUid === this.followingUserDatas[index].uid;
       });
@@ -152,8 +147,8 @@ export default {
         deleteItem: deleteItem,
       });
     },
-    openPrivateChatDialog() {
-      this.privateChatDialog = !this.privateChatDialog;
+    changePrivateChatDialog() {
+      this.$store.dispatch("privateChat/changePrivateChatDialog");
     },
   },
 };
