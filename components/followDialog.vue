@@ -17,6 +17,9 @@
         <v-card width="600px" height="700px">
           <v-card-title class="text-h5 grey lighten-2">
             フォロー中
+            <span class="red--text subtitle-2"
+              >※相互フォローをしている場合のみチャットが可能です
+            </span>
           </v-card-title>
 
           <v-card
@@ -45,6 +48,7 @@
                 color="#80CBC4"
                 class="white--text mr-2"
                 @click="openPrivateChatDialog"
+                :disabled="mutualFollowState(followingUserData)"
                 >チャットへ</v-btn
               >
               <v-btn
@@ -56,6 +60,7 @@
               >
             </v-card-title>
             <v-card-text>{{ followingUserData.selfIntroduction }}</v-card-text>
+            <!-- <pre>{{ mutualFollowState(followingUserData) }}</pre> -->
           </v-card>
         </v-card>
       </v-dialog>
@@ -85,6 +90,13 @@ export default {
       );
       return a;
     },
+    followedUids() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.follow.followedUids)
+      );
+
+      return a;
+    },
     usersData() {
       const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));
       return a;
@@ -95,13 +107,35 @@ export default {
         // console.log(data);
 
         return this.followingUids.find((uid) => {
-          // console.log(uid);
-          // console.log(uid.followingUid === data.uid);
           return uid.followingUid === data.uid;
         });
       });
 
       return followingUserDatas;
+    },
+
+    mutualFollowState() {
+      return function (followingUserData) {
+        const key = followingUserData.uid;
+        // console.log(key);
+        const a = [];
+        this.followingUids.forEach((followingUid) => {
+          a.push(followingUid.followingUid);
+        });
+        // console.log(this.followedUids);
+        const b = [];
+        this.followedUids.forEach((followedUid) => {
+          b.push(followedUid.followedUid);
+        });
+
+        if (a.includes(key) && b.includes(key)) {
+          console.log("ok");
+          return false;
+        } else {
+          console.log("no");
+          return true;
+        }
+      };
     },
   },
   methods: {
