@@ -25,25 +25,32 @@
               ></div>
             </div>
           </div>
-          <v-spacer />
-          <v-btn
-            width="150px"
-            color="#90CAF9"
-            class="white--text mt-5"
-            style="margin-left: 300px"
-            @click="registFollowing"
-            v-show="followingState === false"
-            >フォローする</v-btn
-          >
-          <v-btn
-            width="150px"
-            color="#EF9A9A"
-            class="white--text mt-5"
-            style="margin-left: 300px"
-            @click="deleteFollowing"
-            v-show="followingState === true"
-            >フォロー解除</v-btn
-          >
+          <!-- <v-spacer /> -->
+          <div class="d-flex justify-end mr-3">
+            <v-btn
+              width="150px"
+              color="#80CBC4"
+              class="white--text mt-5 mr-3"
+              :disabled="mutualFollowState"
+              >チャットへ</v-btn
+            >
+            <v-btn
+              width="150px"
+              color="#90CAF9"
+              class="white--text mt-5"
+              @click="registFollowing"
+              v-show="followingState === false"
+              >フォローする</v-btn
+            >
+            <v-btn
+              width="150px"
+              color="#EF9A9A"
+              class="white--text mt-5"
+              @click="deleteFollowing"
+              v-show="followingState === true"
+              >フォロー解除</v-btn
+            >
+          </div>
 
           <v-textarea
             class="ml-5 mt-10"
@@ -116,6 +123,27 @@ export default {
         } else {
           return true;
         }
+      }
+    },
+    mutualFollowState() {
+      const key = this.selectedUid;
+      // console.log(key);
+      const a = [];
+      this.followingUids.forEach((followingUid) => {
+        a.push(followingUid.followingUid);
+      });
+      // console.log(this.followedUids);
+      const b = [];
+      this.followedUids.forEach((followedUid) => {
+        b.push(followedUid.followedUid);
+      });
+
+      if (a.includes(key) && b.includes(key)) {
+        console.log("ok");
+        return false;
+      } else {
+        console.log("no");
+        return true;
       }
     },
   },
