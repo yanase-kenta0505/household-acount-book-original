@@ -32,6 +32,7 @@
               color="#80CBC4"
               class="white--text mt-5 mr-3"
               :disabled="mutualFollowState"
+              @click="changePrivateChatDialog"
               >チャットへ</v-btn
             >
             <v-btn
@@ -139,10 +140,10 @@ export default {
       });
 
       if (a.includes(key) && b.includes(key)) {
-        console.log("ok");
+        // console.log("ok");
         return false;
       } else {
-        console.log("no");
+        // console.log("no");
         return true;
       }
     },
@@ -164,7 +165,7 @@ export default {
 
     followingUids() {
       if (this.dialog === false) {
-        console.log("return");
+        // console.log("return");
         return;
       }
     },
@@ -205,6 +206,9 @@ export default {
         id: this.$router.currentRoute.params.id,
         deleteItem: deleteItem,
       });
+    },
+    changePrivateChatDialog() {
+      this.$store.dispatch("privateChat/changePrivateChatDialog");
     },
   },
 };
