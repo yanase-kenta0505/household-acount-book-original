@@ -108,6 +108,7 @@ export default {
       "like/likingPostIdSnapshot",
       this.$router.currentRoute.params.id
     );
+    
   },
 
   computed: {
