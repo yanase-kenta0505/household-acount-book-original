@@ -80,6 +80,7 @@ export default {
       nickname: null,
       selfIntroduction: "",
       selectedUid: null,
+      selectedUserData: null,
     };
   },
 
@@ -160,7 +161,7 @@ export default {
       this.nickname = selectedUserData.nickname;
       this.selfIntroduction = selectedUserData.selfIntroduction;
       this.selectedUid = selectedUid;
-      console.log(selectedUid);
+      this.selectedUserData = selectedUserData;
     },
 
     followingUids() {
@@ -209,6 +210,7 @@ export default {
     },
     changePrivateChatDialog() {
       this.$store.dispatch("privateChat/changePrivateChatDialog");
+      this.$store.dispatch("privateChat/changePartnerId", this.selectedUid);
     },
   },
 };
