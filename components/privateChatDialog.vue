@@ -114,7 +114,7 @@ export default {
 
       console.log(newId);
       if (this.privateChatDialog === false) {
-        return;
+        this.$store.dispatch('privateChat/unsubscribe');
       } else {
         // console.log(this.partnerId);
         this.$store.dispatch("privateChat/chatDataSnapshot", newId);
