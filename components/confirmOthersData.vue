@@ -2,7 +2,7 @@
   <v-app>
     <div class="text-center">
       <v-dialog v-model="dialog" width="500">
-        <v-card width="500px" height="600px">
+        <v-card width="500px" height="600px" style="overflow: hidden">
           <v-card-title class="d-flex justify-space-between">
             <v-btn text class="text-subtitle-2" @click="close">閉じる</v-btn>
             <span class="text-h6 font-weight-bold">{{ nickname }}</span>
@@ -209,8 +209,8 @@ export default {
       });
     },
     changePrivateChatDialog() {
-      this.$store.dispatch("privateChat/changePrivateChatDialog");
       this.$store.dispatch("privateChat/changePartnerId", this.selectedUid);
+      this.$store.dispatch("privateChat/changePrivateChatDialog");
     },
   },
 };

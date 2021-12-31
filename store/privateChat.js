@@ -2,6 +2,7 @@ import firebase from "~/plugins/firebase";
 
 const db = firebase.firestore();
 const privateChatRef = db.collection("privateChat");
+let unsubscribe;
 
 export const state = () => ({
   privateChatDialog: false,
@@ -36,26 +37,38 @@ export const actions = {
     context.commit("changePartnerId", id);
   },
   chatDataSnapshot(context, id) {
-    privateChatRef
+    unsubscribe = privateChatRef
       .doc(id)
       .collection("chatMessage")
       .orderBy("timeStamp", "asc")
       .onSnapshot((snapshot) => {
         let datas = [];
-        snapshot.forEach((doc) => {
-          if (doc.data().timeStamp === null || undefined) {
-            console.log("return");
-            return;
-          } else {
-            let id = doc.id;
-            let data = doc.data();
-            data.id = id;
-            datas.push(data);
-          }
-          // console.log(datas);
-          context.commit("changeChatData", datas);
-        });
+        console.log(snapshot);
+        if (snapshot.docs.length === 0) {
+          // context.commit("changeEmptyChatData");
+          return;
+        } else {
+          snapshot.forEach((doc) => {
+            console.log("yaa");
+            if (doc.data().timeStamp === null || undefined) {
+              console.log("return");
+              return;
+            } else {
+              let id = doc.id;
+              let data = doc.data();
+              data.id = id;
+              datas.push(data);
+            }
+            // console.log(datas);
+            context.commit("changeChatData", datas);
+          });
+        }
       });
+  },
+  unsubscribe(context) {
+    unsubscribe();
+    context.commit("changeEmptyChatData");
+    console.log("foo");
   },
 };
 
@@ -72,4 +85,9 @@ export const mutations = {
       state.chatDatas.push(data);
     });
   },
+  changeEmptyChatData(state) {
+    state.chatDatas = [];
+  },
 };
+
+
