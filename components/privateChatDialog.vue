@@ -12,8 +12,13 @@
           color="#3949AB"
           tile
         >
-          <v-avatar size="50" color="white" class="ml-3"></v-avatar>
-          <span class="ml-3 white--text">aaaaaa</span>
+          <v-avatar
+            size="50"
+            color="grey"
+            class="ml-3"
+            :style="{ backgroundImage: `url(${partnerImg})` }"
+          ></v-avatar>
+          <span class="ml-3 white--text">{{partnerName}}</span>
         </v-card>
         <v-card id="chatBox" width="90%" height="65%" class="mx-auto pt-8 pb-8">
           <div
@@ -26,6 +31,7 @@
               size="30"
               color="grey"
               v-if="myMessage(chatData) === false"
+              :style="{ backgroundImage: `url(${partnerImg})` }"
             ></v-avatar>
             <v-card
               width="30%"
@@ -46,6 +52,7 @@
             size="50"
             color="primary"
             class="mr-2 ml-2 align-self-center"
+            :style="{ backgroundImage: `url(${myImg})` }"
           ></v-avatar>
           <v-textarea outlined class="white" v-model="message"></v-textarea>
           <v-btn
@@ -67,6 +74,9 @@ export default {
   data() {
     return {
       message: "",
+      partnerImg: null,
+      partnerName: null,
+      myImg: null,
     };
   },
   computed: {
@@ -90,15 +100,16 @@ export default {
     },
     myMessage() {
       return function (chatData) {
-        // console.log(chatData.uid);
-        // console.log(this.$router.currentRoute.params.id);
-        // console.log(chatData.uid === this.$router.currentRoute.params.id);
         if (chatData.uid === this.$router.currentRoute.params.id) {
           return true;
         } else {
           return false;
         }
       };
+    },
+    allUserData() {
+      const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));
+      return a;
     },
   },
 
@@ -114,11 +125,26 @@ export default {
 
       // console.log(newId);
       if (this.privateChatDialog === false) {
-        this.$store.dispatch('privateChat/unsubscribe');
+        this.$store.dispatch("privateChat/unsubscribe");
       } else {
         // console.log(this.partnerId);
         this.$store.dispatch("privateChat/chatDataSnapshot", newId);
       }
+    },
+    partnerId() {
+      // console.log(this.partnerId)
+      // console.log(this.allUserData)
+      let selectedUserData = this.allUserData.find((userData) => {
+        return userData.uid === this.partnerId;
+      });
+      let myData = this.allUserData.find((userData) => {
+        return userData.uid === this.$router.currentRoute.params.id;
+      });
+      // console.log(selectedUserData);
+      // console.log(myData);
+      this.partnerImg = selectedUserData.mainImg;
+      this.partnerName = selectedUserData.nickname;
+      this.myImg = myData.mainImg;
     },
   },
 
@@ -169,8 +195,10 @@ export default {
   font-size: 15px;
   padding: 5px;
 }
-
 #chatBox {
   overflow-y: scroll;
+}
+::v-deep .v-avatar {
+  background-size: cover;
 }
 </style>
