@@ -112,7 +112,7 @@ export default {
         .sort()
         .join("");
 
-      console.log(newId);
+      // console.log(newId);
       if (this.privateChatDialog === false) {
         this.$store.dispatch('privateChat/unsubscribe');
       } else {

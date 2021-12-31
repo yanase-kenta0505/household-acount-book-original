@@ -48,7 +48,7 @@
                 color="#80CBC4"
                 class="white--text mr-2"
                 :disabled="mutualFollowState(followingUserData)"
-                @click="changePrivateChatDialog"
+                @click="changePrivateChatDialog(followingUserData.uid)"
                 >チャットへ</v-btn
               >
               <v-btn
@@ -147,8 +147,11 @@ export default {
         deleteItem: deleteItem,
       });
     },
-    changePrivateChatDialog() {
+    changePrivateChatDialog(selectedUid) {
+      this.$store.dispatch("privateChat/changePartnerId", selectedUid);
+      // console.log(followingUid)
       this.$store.dispatch("privateChat/changePrivateChatDialog");
+
     },
   },
 };

@@ -43,13 +43,13 @@ export const actions = {
       .orderBy("timeStamp", "asc")
       .onSnapshot((snapshot) => {
         let datas = [];
-        console.log(snapshot);
+        // console.log(snapshot);
         if (snapshot.docs.length === 0) {
           // context.commit("changeEmptyChatData");
           return;
         } else {
           snapshot.forEach((doc) => {
-            console.log("yaa");
+            // console.log("yaa");
             if (doc.data().timeStamp === null || undefined) {
               console.log("return");
               return;
@@ -68,7 +68,7 @@ export const actions = {
   unsubscribe(context) {
     unsubscribe();
     context.commit("changeEmptyChatData");
-    console.log("foo");
+    // console.log("foo");
   },
 };
 
