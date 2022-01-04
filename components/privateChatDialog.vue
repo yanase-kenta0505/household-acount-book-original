@@ -4,7 +4,7 @@
       v-model="privateChatDialog"
       @click:outside="changePrivateChatDialog"
     >
-      <v-card width="700px" height="500px" color="#E3F2FD">
+      <v-card width="700px" height="500px" color="#E3F2FD" >
         <v-card
           width="100%"
           height="12%"
