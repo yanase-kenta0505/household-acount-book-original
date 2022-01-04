@@ -91,7 +91,6 @@ export default {
 
   created() {
     this.$store.dispatch("profile/usersSnapshot");
-    // this.$store.dispatch("postDB/allMessageSnapshot");
 
     setTimeout(() => {
       this.expand = false;
@@ -108,7 +107,6 @@ export default {
       "like/likingPostIdSnapshot",
       this.$router.currentRoute.params.id
     );
-    
   },
 
   computed: {
@@ -116,15 +114,61 @@ export default {
       const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));
       return a;
     },
-    // allPostMessages() {
-    //   const a = JSON.parse(
-    //     JSON.stringify(this.$store.state.postDB.postMessages)
-    //   );
+    followingUids() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.follow.followingUids)
+      );
+      return a;
+    },
+    followedUids() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.follow.followedUids)
+      );
+      return a;
+    },
+    mutualFollowUserIds() {
+      if (this.followingUids.length === 0 || this.followedUids.length === 0) {
+        return;
+      } else {
+        const a = [];
+        const b = [];
+        this.followingUids.forEach((id) => {
+          a.push(id.followingUid);
+        });
+        this.followedUids.forEach((id) => {
+          b.push(id.followedUid);
+        });
 
-    //   // return a;
-    // },
+        const mutualFollowIds = a.filter((followingUid) => {
+          return b.find((followedUid) => {
+            return followingUid === followedUid;
+          });
+        });
+        // console.log(mutualFollowIds);
+        let newIds = [];
+
+        mutualFollowIds.forEach((mutualFollowId) => {
+          newIds.push(
+            (
+              this.$router.currentRoute.params.id.substring(0, 5) +
+              mutualFollowId.substring(0, 5)
+            )
+              .split("")
+              .sort()
+              .join("")
+          );
+        });
+        return newIds;
+      }
+    },
   },
   watch: {
+    mutualFollowUserIds() {
+      this.$store.dispatch(
+        "privateChat/setMutualFollowUserIds",
+        this.mutualFollowUserIds
+      );
+    },
     usersData() {
       const userData = this.usersData.find((data) => {
         return data.uid === this.$router.currentRoute.params.id;
@@ -156,18 +200,9 @@ export default {
       cursor: pointer;
     }
   }
-
-  // & .v-card--reveal {
-  //   align-items: center;
-  //   top: 0;
-  //   justify-content: center;
-  //   z-index: 2 !important;
-  //   position: absolute;
-  // }
 }
 ::v-deep .v-system-bar {
   background-color: rgba(165, 160, 160, 0.4) !important;
-  // z-index: 1 !important;
 }
 
 .v-list ::v-deep .v-application--wrap {

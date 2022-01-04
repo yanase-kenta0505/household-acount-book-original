@@ -24,14 +24,26 @@
             width="90%"
             height="200px"
             class="mx-auto mt-10"
+            v-for="mutualFollowUserChatList in mutualFollowUserChatLists"
+            :key="mutualFollowUserChatList.id"
           >
             <v-card-title>
-              <v-avatar size="50" color="grey"></v-avatar>
-              <span class="text-subtitle-1 ml-5">けんたけんた</span>
+              <v-avatar
+                size="50"
+                color="grey"
+                :style="{
+                  backgroundImage: `url(${partnerImg(
+                    mutualFollowUserChatList
+                  )})`,
+                }"
+              ></v-avatar>
+              <span class="text-subtitle-1 ml-5">{{
+                partnerName(mutualFollowUserChatList)
+              }}</span>
             </v-card-title>
-            <v-card-text class="text-truncate"
-              >ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</v-card-text
-            >
+            <v-card-text class="text-truncate">{{
+              mutualFollowUserChatList.message
+            }}</v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn class="mb-5" color="primary" text @click="expandChange"
@@ -39,8 +51,6 @@
               >
             </v-card-actions>
           </v-card>
-
-          
         </v-card>
       </v-dialog>
     </div>
@@ -55,13 +65,82 @@ export default {
       expand: false,
     };
   },
+  computed: {
+    mutualFollowUserIds() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.privateChat.mutualFollowUserIds)
+      );
+      return a;
+    },
+    mutualFollowUserChatLists() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.privateChat.mutualFollowUserChatLists)
+      );
+      // console.log(a)
+      return a;
+    },
+    usersData() {
+      const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));
+      // console.log(a)
+      return a;
+    },
+    partnerName() {
+      return function (mutualFollowUserChatList) {
+        // console.log(mutualFollowUserChatList);
+        const a = [];
+        a.push(mutualFollowUserChatList.uid);
+        a.push(mutualFollowUserChatList.partnerId);
+
+        const b = a.find((id) => {
+          return id !== this.$router.currentRoute.params.id;
+        });
+
+        const c = this.usersData.find((data) => {
+          return data.uid === b;
+        });
+        // console.log(c);
+
+        return c.nickname;
+      };
+    },
+    partnerImg() {
+      return function (mutualFollowUserChatList) {
+        // console.log(mutualFollowUserChatList);
+        const a = [];
+        a.push(mutualFollowUserChatList.uid);
+        a.push(mutualFollowUserChatList.partnerId);
+
+        const b = a.find((id) => {
+          return id !== this.$router.currentRoute.params.id;
+        });
+
+        const c = this.usersData.find((data) => {
+          return data.uid === b;
+        });
+        // console.log(c);
+
+        return c.mainImg;
+      };
+    },
+  },
+  watch: {
+    dialog() {
+      if (this.dialog === false) {
+        return;
+      } else {
+        this.$store.dispatch(
+          "privateChat/getMutualFollowUserChatList",
+          this.mutualFollowUserIds
+        );
+      }
+    },
+    // mutualFollowUserChatLists() {
+    //   console.log(this.mutualFollowUserChatLists)
+    // },
+  },
   methods: {
     expandChange() {
       this.expand = true;
-
-      // setTimeout(() => {
-      //   this.expand = false;
-      // }, 500);
     },
     onClickOutside() {
       this.expand = false;
@@ -83,9 +162,9 @@ export default {
     position: absolute;
     overflow-x: hidden;
 
-    & #close-btn{
+    & #close-btn {
       position: absolute;
-      bottom:60px;
+      bottom: 60px;
       right: 30px;
     }
   }

@@ -8,9 +8,14 @@ export const state = () => ({
   privateChatDialog: false,
   partnerId: null,
   chatDatas: [],
+  mutualFollowUserIds: null,
+  mutualFollowUserChatLists: [],
 });
 
 export const actions = {
+  setMutualFollowUserIds(context, mutualFollowUserId) {
+    context.commit("setMutualFollowUserIds", mutualFollowUserId);
+  },
   changePrivateChatDialog(context) {
     context.commit("changePrivateChatDialog");
   },
@@ -31,6 +36,7 @@ export const actions = {
       message: ids.message,
       timeStamp: firebase.firestore.Timestamp.now(),
       uid: ids.myId,
+      partnerId: ids.partnerId,
     });
   },
   changePartnerId(context, id) {
@@ -65,6 +71,82 @@ export const actions = {
         }
       });
   },
+  getMutualFollowUserChatList(context, IdsArray) {
+    // ダミー処理
+    function getData(id) {
+      return new Promise((resolve, reject) => {
+        privateChatRef
+          .doc(id)
+          .collection("chatMessage")
+          .orderBy("timeStamp", "desc")
+          .get()
+          .then((snap) => {
+            if (snap.docs.length === 0) {
+              return;
+            } else {
+              snap.docs.forEach((doc, index) => {
+                if (index > 0) {
+                  return;
+                } else {
+                  let id = doc.id;
+                  let data = doc.data();
+                  data.id = id;
+                  resolve(data);
+                }
+              });
+            }
+          });
+
+        // if (id) {
+        //   resolve("OK");
+        // } else {
+        //   reject("ERROR");
+        // }
+      });
+    }
+
+    (async () => {
+      // const array = [1, 2, 3];
+      const array = IdsArray;
+
+      const result = await Promise.all(
+        array.map(async (id) => {
+          const data = await getData(id);
+          return data;
+        })
+      );
+
+      // console.log(result); // ["OK", "OK", "OK"]
+
+      context.commit("getMutualFollowUserChatList", result);
+    })();
+
+    // const MutualFollowUserChatLists = [];
+    // array.forEach((mutualFollowUserId) => {
+    //   privateChatRef
+    //     .doc(mutualFollowUserId)
+    //     .collection("chatMessage")
+    //     .get()
+    //     .then((snap) => {
+    //       if (snap.docs.length === 0) {
+    //         return;
+    //       } else {
+    //         snap.docs.forEach((doc, index) => {
+    //           if (index > 0) {
+    //             return;
+    //           } else {
+    //             let id = doc.id;
+    //             let data = doc.data();
+    //             data.id = id;
+    //             MutualFollowUserChatLists.push(data);
+    //           }
+    //         });
+    //       }
+    //     })
+    // });
+
+    // console.log(MutualFollowUserChatLists.message)
+  },
   unsubscribe(context) {
     unsubscribe();
     context.commit("changeEmptyChatData");
@@ -73,6 +155,9 @@ export const actions = {
 };
 
 export const mutations = {
+  setMutualFollowUserIds(state, mutualFollowUserIds) {
+    state.mutualFollowUserIds = mutualFollowUserIds;
+  },
   changePrivateChatDialog(state) {
     state.privateChatDialog = !state.privateChatDialog;
   },
@@ -88,6 +173,12 @@ export const mutations = {
   changeEmptyChatData(state) {
     state.chatDatas = [];
   },
+
+  getMutualFollowUserChatList(state, mutualFollowUserChatLists) {
+    state.mutualFollowUserChatLists = [];
+    // console.log(mutualFollowUserChatLists);
+    mutualFollowUserChatLists.forEach((mutualFollowUserChat) => {
+      state.mutualFollowUserChatLists.push(mutualFollowUserChat);
+    });
+  },
 };
-
-
