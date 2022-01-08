@@ -11,10 +11,10 @@
             <v-list-item-content>
               <v-list-item-title>DM</v-list-item-title>
             </v-list-item-content>
-            <v-list-item-content class="ml-auto">
-              <v-avatar size="24" color="pink" class="white--text"
-                >{{unreadMessageLength}}</v-avatar
-              >
+            <v-list-item-content class="ml-auto" v-if="unreadMessageLength > 0">
+              <v-avatar size="24" color="pink" class="white--text">{{
+                unreadMessageLength
+              }}</v-avatar>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -109,11 +109,16 @@ export default {
     },
     unreadMessageLength() {
       // console.log(this.allChatDatas)
-      let unreadMessages = this.allChatDatas.filter(data=>{
-        return data.alreadyRead === false
-      })
-      // console.log(unreadMessages)
-      return unreadMessages.length
+      let unreadMessages = this.allChatDatas.filter((data) => {
+        return data.alreadyRead === false;
+      });
+      // console.log(unreadMessages);
+      let othersPostUnreadMessages = unreadMessages.filter((message) => {
+        return message.uid !== this.$router.currentRoute.params.id;
+      });
+
+      // console.log(othersPostUnreadMessages);
+      return othersPostUnreadMessages.length;
     },
     partnerName() {
       return function (mutualFollowUserChatList) {
