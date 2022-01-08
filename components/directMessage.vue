@@ -76,8 +76,15 @@ export default {
       const a = JSON.parse(
         JSON.stringify(this.$store.state.privateChat.mutualFollowUserChatLists)
       );
+      const c = a.filter((b) => {
+        if (b === undefined) {
+          return;
+        } else {
+          return b;
+        }
+      });
       // console.log(a)
-      return a;
+      return c;
     },
     usersData() {
       const a = JSON.parse(JSON.stringify(this.$store.state.profile.usersData));

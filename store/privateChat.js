@@ -72,7 +72,6 @@ export const actions = {
       });
   },
   getMutualFollowUserChatList(context, IdsArray) {
-    // ダミー処理
     function getData(id) {
       return new Promise((resolve, reject) => {
         privateChatRef
@@ -82,70 +81,44 @@ export const actions = {
           .get()
           .then((snap) => {
             if (snap.docs.length === 0) {
-              return;
+              reject();
             } else {
-              snap.docs.forEach((doc, index) => {
+              snap.docs.map((doc, index) => {
                 if (index > 0) {
-                  return;
+                  reject();
                 } else {
                   let id = doc.id;
                   let data = doc.data();
                   data.id = id;
+                  console.log(data);
                   resolve(data);
                 }
               });
             }
           });
-
-        // if (id) {
-        //   resolve("OK");
-        // } else {
-        //   reject("ERROR");
-        // }
       });
     }
 
     (async () => {
-      // const array = [1, 2, 3];
       const array = IdsArray;
-
-      const result = await Promise.all(
+      await Promise.allSettled(
         array.map(async (id) => {
           const data = await getData(id);
           return data;
         })
-      );
-
-      // console.log(result); // ["OK", "OK", "OK"]
-
-      context.commit("getMutualFollowUserChatList", result);
+      ).then((result) => {
+        const resolveData = result.map((data) => {
+          if (data.status === "fulfilled") {
+            return data.value;
+          } else {
+            return;
+          }
+        });
+        console.log(resolveData);
+        console.log("done");
+        context.commit("getMutualFollowUserChatList", resolveData);
+      });
     })();
-
-    // const MutualFollowUserChatLists = [];
-    // array.forEach((mutualFollowUserId) => {
-    //   privateChatRef
-    //     .doc(mutualFollowUserId)
-    //     .collection("chatMessage")
-    //     .get()
-    //     .then((snap) => {
-    //       if (snap.docs.length === 0) {
-    //         return;
-    //       } else {
-    //         snap.docs.forEach((doc, index) => {
-    //           if (index > 0) {
-    //             return;
-    //           } else {
-    //             let id = doc.id;
-    //             let data = doc.data();
-    //             data.id = id;
-    //             MutualFollowUserChatLists.push(data);
-    //           }
-    //         });
-    //       }
-    //     })
-    // });
-
-    // console.log(MutualFollowUserChatLists.message)
   },
   unsubscribe(context) {
     unsubscribe();
@@ -175,6 +148,8 @@ export const mutations = {
   },
 
   getMutualFollowUserChatList(state, mutualFollowUserChatLists) {
+    console.log("foo");
+    console.log(mutualFollowUserChatLists);
     state.mutualFollowUserChatLists = [];
     // console.log(mutualFollowUserChatLists);
     mutualFollowUserChatLists.forEach((mutualFollowUserChat) => {
