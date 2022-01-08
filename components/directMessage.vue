@@ -91,6 +91,13 @@ export default {
       // console.log(a)
       return a;
     },
+    allChatDatas() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.privateChat.allChatDatas)
+      );
+      // console.log(a)
+      return a;
+    },
     partnerName() {
       return function (mutualFollowUserChatList) {
         // console.log(mutualFollowUserChatList);
@@ -130,6 +137,9 @@ export default {
       };
     },
   },
+  created() {
+    this.$store.dispatch("privateChat/allChatSnapshot");
+  },
   watch: {
     dialog() {
       if (this.dialog === false) {
@@ -141,9 +151,17 @@ export default {
         );
       }
     },
-    // mutualFollowUserChatLists() {
-    //   console.log(this.mutualFollowUserChatLists)
-    // },
+    allChatDatas() {
+      if(this.mutualFollowUserIds === null){
+        return
+      }else{
+
+        this.$store.dispatch(
+          "privateChat/getMutualFollowUserChatList",
+          this.mutualFollowUserIds
+        );
+      }
+    },
   },
   methods: {
     expandChange() {
