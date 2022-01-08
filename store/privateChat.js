@@ -2,12 +2,14 @@ import firebase from "~/plugins/firebase";
 
 const db = firebase.firestore();
 const privateChatRef = db.collection("privateChat");
+const allChatRef = db.collection("allChat");
 let unsubscribe;
 
 export const state = () => ({
   privateChatDialog: false,
   partnerId: null,
   chatDatas: [],
+  allChatDatas: [],
   mutualFollowUserIds: null,
   mutualFollowUserChatLists: [],
 });
@@ -23,21 +25,29 @@ export const actions = {
     let reorganizationString =
       ids.myId.substring(0, 5) + ids.partnerId.substring(0, 5);
 
-    // console.log(reorganizationString);
-
     let stringArray = reorganizationString.split("");
-    // console.log(stringArray);
 
     let newId = stringArray.sort().join("");
-    // console.log(newId);
 
-    // console.log(ids.myId + ids.partnerId);
-    privateChatRef.doc(newId).collection("chatMessage").add({
-      message: ids.message,
-      timeStamp: firebase.firestore.Timestamp.now(),
-      uid: ids.myId,
-      partnerId: ids.partnerId,
-    });
+    privateChatRef
+      .doc(newId)
+      .collection("chatMessage")
+      .add({
+        message: ids.message,
+        timeStamp: firebase.firestore.Timestamp.now(),
+        uid: ids.myId,
+        partnerId: ids.partnerId,
+        newId: newId,
+      })
+      .then(() => {
+        allChatRef.add({
+          message: ids.message,
+          timeStamp: firebase.firestore.Timestamp.now(),
+          uid: ids.myId,
+          partnerId: ids.partnerId,
+          newId: newId,
+        });
+      });
   },
   changePartnerId(context, id) {
     context.commit("changePartnerId", id);
@@ -71,6 +81,22 @@ export const actions = {
         }
       });
   },
+  allChatSnapshot(context) {
+    allChatRef.onSnapshot((snapshot) => {
+      if (snapshot.docs === 0) {
+        return;
+      } else {
+        const allChatData = [];
+        snapshot.forEach((doc) => {
+          let id = doc.id;
+          let data = doc.data();
+          data.id = id;
+          allChatData.push(data);
+        });
+        context.commit("changeAllChatData", allChatData);
+      }
+    });
+  },
   getMutualFollowUserChatList(context, IdsArray) {
     function getData(id) {
       return new Promise((resolve, reject) => {
@@ -90,7 +116,7 @@ export const actions = {
                   let id = doc.id;
                   let data = doc.data();
                   data.id = id;
-                  console.log(data);
+                  // console.log(data);
                   resolve(data);
                 }
               });
@@ -101,23 +127,28 @@ export const actions = {
 
     (async () => {
       const array = IdsArray;
+      // console.log(array)
       await Promise.allSettled(
         array.map(async (id) => {
           const data = await getData(id);
           return data;
         })
-      ).then((result) => {
-        const resolveData = result.map((data) => {
-          if (data.status === "fulfilled") {
-            return data.value;
-          } else {
-            return;
-          }
+      )
+        .then((result) => {
+          const resolveData = result.map((data) => {
+            if (data.status === "fulfilled") {
+              return data.value;
+            } else {
+              return;
+            }
+          });
+          // console.log(resolveData);
+          // console.log("done");
+          context.commit("getMutualFollowUserChatList", resolveData);
+        })
+        .catch((error) => {
+          console.log(error);
         });
-        console.log(resolveData);
-        console.log("done");
-        context.commit("getMutualFollowUserChatList", resolveData);
-      });
     })();
   },
   unsubscribe(context) {
@@ -148,12 +179,18 @@ export const mutations = {
   },
 
   getMutualFollowUserChatList(state, mutualFollowUserChatLists) {
-    console.log("foo");
-    console.log(mutualFollowUserChatLists);
+    // console.log("foo");
+    // console.log(mutualFollowUserChatLists);
     state.mutualFollowUserChatLists = [];
     // console.log(mutualFollowUserChatLists);
     mutualFollowUserChatLists.forEach((mutualFollowUserChat) => {
       state.mutualFollowUserChatLists.push(mutualFollowUserChat);
+    });
+  },
+  changeAllChatData(state, allChatData) {
+    state.allChatDatas = [];
+    allChatData.forEach((data) => {
+      state.allChatDatas.push(data);
     });
   },
 };
