@@ -184,7 +184,7 @@ export const actions = {
                 // console.log("return");
                 return;
               } else {
-                console.log(doc.id);
+                // console.log(doc.id);
                 allChatRef
                   .doc(doc.id)
                   .update({
