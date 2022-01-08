@@ -46,7 +46,11 @@
             }}</v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn class="mb-5" color="primary" text @click="expandChange"
+              <v-btn
+                class="mb-5"
+                color="primary"
+                text
+                @click="openPrivateChatDialog(mutualFollowUserChatList)"
                 >詳細</v-btn
               >
             </v-card-actions>
@@ -152,10 +156,9 @@ export default {
       }
     },
     allChatDatas() {
-      if(this.mutualFollowUserIds === null){
-        return
-      }else{
-
+      if (this.mutualFollowUserIds === null) {
+        return;
+      } else {
         this.$store.dispatch(
           "privateChat/getMutualFollowUserChatList",
           this.mutualFollowUserIds
@@ -164,8 +167,19 @@ export default {
     },
   },
   methods: {
-    expandChange() {
+    openPrivateChatDialog(mutualFollowUserChatList) {
       this.expand = true;
+      // console.log(mutualFollowUserChatList);
+      const ids = [];
+      ids.push(mutualFollowUserChatList.uid);
+      ids.push(mutualFollowUserChatList.partnerId);
+      let partnerId = ids.find((id) => {
+        return id !== this.$router.currentRoute.params.id;
+      });
+      // console.log(partnerId);
+
+      this.$store.dispatch("privateChat/changePartnerId", partnerId);
+      this.$store.dispatch("privateChat/changePrivateChatDialog");
     },
     onClickOutside() {
       this.expand = false;
