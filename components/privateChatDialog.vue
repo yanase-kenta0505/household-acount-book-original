@@ -4,7 +4,7 @@
       v-model="privateChatDialog"
       @click:outside="changePrivateChatDialog"
     >
-      <v-card width="700px" height="500px" color="#E3F2FD" >
+      <v-card width="700px" height="500px" color="#E3F2FD">
         <v-card
           width="100%"
           height="12%"
@@ -18,7 +18,7 @@
             class="ml-3"
             :style="{ backgroundImage: `url(${partnerImg})` }"
           ></v-avatar>
-          <span class="ml-3 white--text">{{partnerName}}</span>
+          <span class="ml-3 white--text">{{ partnerName }}</span>
         </v-card>
         <v-card id="chatBox" width="90%" height="65%" class="mx-auto pt-8 pb-8">
           <div
@@ -145,6 +145,25 @@ export default {
       this.partnerImg = selectedUserData.mainImg;
       this.partnerName = selectedUserData.nickname;
       this.myImg = myData.mainImg;
+    },
+    chatDatas() {
+      if (this.privateChatDialog === false) {
+        return;
+      } else {
+        const unreadDatas = this.chatDatas.filter((data) => {
+          return (
+            data.alreadyRead === false &&
+            data.uid !== this.$router.currentRoute.params.id
+          );
+        });
+        // console.log(unreadDatas);
+
+        if (unreadDatas.length === 0) {
+          return;
+        } else {
+          this.$store.dispatch("privateChat/alreadyRead", unreadDatas);
+        }
+      }
     },
   },
 

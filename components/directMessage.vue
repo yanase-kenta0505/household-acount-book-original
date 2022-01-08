@@ -11,6 +11,11 @@
             <v-list-item-content>
               <v-list-item-title>DM</v-list-item-title>
             </v-list-item-content>
+            <v-list-item-content class="ml-auto">
+              <v-avatar size="24" color="pink" class="white--text"
+                >{{unreadMessageLength}}</v-avatar
+              >
+            </v-list-item-content>
           </v-list-item>
         </template>
 
@@ -101,6 +106,14 @@ export default {
       );
       // console.log(a)
       return a;
+    },
+    unreadMessageLength() {
+      // console.log(this.allChatDatas)
+      let unreadMessages = this.allChatDatas.filter(data=>{
+        return data.alreadyRead === false
+      })
+      // console.log(unreadMessages)
+      return unreadMessages.length
     },
     partnerName() {
       return function (mutualFollowUserChatList) {

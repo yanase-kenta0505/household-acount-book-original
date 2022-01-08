@@ -38,14 +38,18 @@ export const actions = {
         uid: ids.myId,
         partnerId: ids.partnerId,
         newId: newId,
+        alreadyRead: false,
       })
-      .then(() => {
+      .then((result) => {
+        console.log(result.id);
         allChatRef.add({
           message: ids.message,
           timeStamp: firebase.firestore.Timestamp.now(),
           uid: ids.myId,
           partnerId: ids.partnerId,
           newId: newId,
+          alreadyRead: false,
+          privateChatMessageId: result.id,
         });
       });
   },
@@ -155,6 +159,45 @@ export const actions = {
     unsubscribe();
     context.commit("changeEmptyChatData");
     // console.log("foo");
+  },
+
+  alreadyRead(context, unreadDatas) {
+    // console.log(unreadDatas);
+    unreadDatas.forEach((unreadData) => {
+      console.log(unreadData);
+      privateChatRef
+        .doc(unreadData.newId)
+        .collection("chatMessage")
+        .doc(unreadData.id)
+        .update({
+          alreadyRead: true,
+        })
+        .then(() => {
+          // allChatRef.doc(unreadData.id).update({
+          //   alreadyRead: true,
+          // });
+          allChatRef.get().then((snap) => {
+            snap.docs.forEach((doc) => {
+              // console.log(doc.data().privateChatMessageId);
+              // console.log(unreadData.id);
+              if (doc.data().privateChatMessageId !== unreadData.id) {
+                // console.log("return");
+                return;
+              } else {
+                console.log(doc.id);
+                allChatRef
+                  .doc(doc.id)
+                  .update({
+                    alreadyRead: true,
+                  })
+                  .then(() => {
+                    console.log("done");
+                  });
+              }
+            });
+          });
+        });
+    });
   },
 };
 
