@@ -2,7 +2,8 @@
   {
     "origin": [
       "https://household-acount-book-9ce45.firebaseapp.com",
-      "http://localhost:3000"
+      "http://localhost:3000",
+      "https://household-acount-book-9ce45.web.app"
     ],
     "responseHeader": ["*"],
     "method": ["GET"],
