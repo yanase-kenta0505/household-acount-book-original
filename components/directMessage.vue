@@ -107,10 +107,21 @@ export default {
       // console.log(a)
       return a;
     },
+    chatDatas() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.privateChat.chatDatas)
+      );
+      // console.log(a)
+      return a;
+    },
     unreadMessageLength() {
-      // console.log(this.allChatDatas)
+      console.log(this.allChatDatas);
+      // console.log(this.chatDatas)
       let unreadMessages = this.allChatDatas.filter((data) => {
-        return data.alreadyRead === false;
+        return (
+          data.alreadyRead === false &&
+          data.partnerId === this.$router.currentRoute.params.id
+        );
       });
       // console.log(unreadMessages);
       let othersPostUnreadMessages = unreadMessages.filter((message) => {
