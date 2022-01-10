@@ -5,6 +5,13 @@
         <v-icon large class="ml-5" @click="drawer = !drawer">mdi-menu</v-icon>
         <v-spacer></v-spacer>
         <p
+          id="gestLogin"
+          @click="gestLogin"
+          class="mr-10 mt-5 pa-5 white--text text-subtitle-1"
+        >
+          ゲストログイン
+        </p>
+        <p
           class="mr-10 mt-5 pa-5 white--text text-subtitle-1"
           id="moveLogin"
           @click="moveLogin"
@@ -21,15 +28,6 @@
         </v-sheet>
 
         <v-divider></v-divider>
-
-        <!-- <v-list>
-          <household-acount-book />
-          <post-dialog />
-          <follow-dialog />
-          <like-dialog />
-          <direct-message />
-          <acount-edit-dialog/>
-        </v-list> -->
       </v-navigation-drawer>
 
       <v-main id="main" style="height: 100%"> </v-main>
@@ -68,7 +66,7 @@ export default {
     LikeDialog,
     DirectMessage,
     AcountEditDialog,
-    HouseholdAcountBook
+    HouseholdAcountBook,
   },
   data: () => ({
     cards: ["Today", "Yesterday"],
@@ -76,6 +74,8 @@ export default {
     userName: ["kenta0505@gmai....", "非ログインユーザー"],
     expand: true,
     index: 1,
+    gestMail: "gest@gmail.com",
+    gestPassword: "gestgest",
   }),
 
   created() {
@@ -86,6 +86,13 @@ export default {
   methods: {
     moveLogin() {
       this.$router.push("/login");
+    },
+    gestLogin() {
+      this.$store.dispatch("login/login", {
+        mail: this.gestMail,
+        password: this.gestPassword,
+        router: this.$router,
+      });
     },
   },
 };
@@ -120,5 +127,11 @@ export default {
 
 .v-list ::v-deep .v-application--wrap {
   min-height: unset !important;
+}
+
+#gestLogin {
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>

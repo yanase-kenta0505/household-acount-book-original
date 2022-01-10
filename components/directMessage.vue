@@ -115,7 +115,7 @@ export default {
       return a;
     },
     unreadMessageLength() {
-      console.log(this.allChatDatas);
+      // console.log(this.allChatDatas);
       // console.log(this.chatDatas)
       let unreadMessages = this.allChatDatas.filter((data) => {
         return (
