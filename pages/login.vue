@@ -30,6 +30,7 @@
     <nuxt-link to="/signUp" class="mx-auto mt-10"
       >会員登録はこちらから</nuxt-link
     >
+   
   </v-app>
 </template>
 <script>
@@ -43,6 +44,7 @@ export default {
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+/.test(v) || "E-mail must be valid",
       ],
+      
     };
   },
   methods: {
@@ -53,6 +55,9 @@ export default {
         router: this.$router,
       });
     },
+    
   },
 };
 </script>
+
+
