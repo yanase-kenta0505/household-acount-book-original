@@ -32,22 +32,7 @@
 
       <v-main id="main" style="height: 100%"> </v-main>
 
-      <v-expand-transition>
-        <v-card
-          v-if="expand"
-          height="100%"
-          width="100%"
-          class="
-            mx-auto
-            secondary
-            d-flex
-            transition-fast-in-fast-out
-            black
-            darken-2
-            v-card--reveal
-          "
-        ></v-card>
-      </v-expand-transition>
+     
     </div>
   </v-app>
 </template>
@@ -78,11 +63,7 @@ export default {
     gestPassword: "gestgest",
   }),
 
-  created() {
-    setTimeout(() => {
-      this.expand = false;
-    }, 500);
-  },
+  
   methods: {
     moveLogin() {
       this.$router.push("/login");
