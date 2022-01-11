@@ -20,6 +20,7 @@
             color="grey"
             :style="{ backgroundImage: `url(${message.img})` }"
             @click="openDialog(index)"
+            
           ></v-avatar>
           <span class="text-subtitle-1 ml-5"></span>
         </v-card-title>
@@ -30,20 +31,6 @@
             <v-icon class="mr-8" color="grey">mdi-chat-outline </v-icon>
           </div>
           <div class="mr-7">
-            <!-- <v-icon
-              v-if="chack_liking(message)"
-              color="pink"
-              class="mb-1"
-              @click="changeLikeCount(index)"
-              >mdi-hand-heart
-            </v-icon>
-            <v-icon
-              v-else
-              color="grey"
-              class="mb-1"
-              @click="changeLikeCount(index)"
-              >mdi-hand-heart
-            </v-icon> -->
             <v-icon
               :class="[chack_liking(message) ? 'pink' : 'grey']"
               class="mb-1"
@@ -104,18 +91,11 @@ export default {
     },
     chack_liking() {
       return function (message) {
-        // console.log('jpopopop')
-        // console.log(this.likingPostIds.includes(message.id))
-        // console.log(this.likingPostIds);
         return this.likingPostIds.includes(message.id);
       };
     },
   },
-  watch: {
-    //  chack_liking(){
-    //    console.log(this.chack_liking)
-    //  }
-  },
+
   methods: {
     openDialog(index) {
       if (
@@ -148,6 +128,10 @@ export default {
 
 ::v-deep .v-avatar {
   background-size: cover;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
 }
 
 ::v-deep .theme--light.v-icon.pink {

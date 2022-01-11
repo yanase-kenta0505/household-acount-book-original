@@ -24,22 +24,33 @@
             width="90%"
             height="auto"
             class="mx-auto mt-10"
+            v-for="othersLikingPost in otherslikingPostMessages"
+            :key="othersLikingPost.id"
           >
             <v-card-title>
               <v-avatar size="50" color="grey"></v-avatar>
-              <span class="text-subtitle-1 ml-5">けんたけんた</span>
+              <span class="text-subtitle-1 ml-5">{{
+                othersLikingPost.name
+              }}</span>
             </v-card-title>
             <v-card-text class="mb-5"
-              >ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
+              >{{ othersLikingPost.message }}
             </v-card-text>
-            <v-card-actions>
+
+            <v-card-actions class="d-flex align-start">
               <v-spacer></v-spacer>
-              <v-icon @click="dialog = false" class="mr-10 mb-5" color="pink"
+              <v-icon @click="dialog = false" class="mr-10 mb-5m" color="grey"
                 >mdi-chat-outline
               </v-icon>
-              <v-icon @click="dialog = false" class="mr-10 mb-5" color="pink"
+              <!-- <v-icon @click="dialog = false" class="mr-10 mb-5" color="pink"
                 >mdi-hand-heart
-              </v-icon>
+              </v-icon> -->
+
+              <div class="mr-7 ">
+                <v-icon class="mb-1 pink">mdi-hand-heart </v-icon>
+
+                <span>{{ othersLikingPost.likeCount }}</span>
+              </div>
             </v-card-actions>
           </v-card>
         </v-card>
@@ -55,11 +66,42 @@ export default {
       dialog: false,
     };
   },
+  computed: {
+    likingPostIds() {
+      const a = JSON.parse(
+        JSON.stringify(this.$store.state.like.likingPostIds)
+      );
+      return a;
+    },
+    othersPostMessages() {
+      const allPostMessages = JSON.parse(
+        JSON.stringify(this.$store.state.postDB.postMessages)
+      );
+      const othersPostMessages = allPostMessages.filter((message) => {
+        return message.uid !== this.$router.currentRoute.params.id;
+      });
+      return othersPostMessages;
+    },
+    otherslikingPostMessages() {
+      const otherPosts = this.othersPostMessages;
+      const othersLikingPosts = otherPosts.filter((post) => {
+        return this.likingPostIds.find((id) => {
+          return post.id === id.likingPostId;
+        });
+      });
+      return othersLikingPosts;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .v-list-item__content {
   flex: initial;
+}
+
+::v-deep .theme--light.v-icon.pink {
+  color: rgb(236, 61, 90);
+  background-color: transparent !important;
 }
 </style>
