@@ -41,22 +41,7 @@
         <all-post-message class="transparent" />
       </v-main>
 
-      <v-expand-transition>
-        <v-card
-          v-if="expand"
-          height="100%"
-          width="100%"
-          class="
-            mx-auto
-            secondary
-            d-flex
-            transition-fast-in-fast-out
-            black
-            darken-2
-            v-card--reveal
-          "
-        ></v-card>
-      </v-expand-transition>
+     
     </div>
   </v-app>
 </template>
@@ -84,7 +69,7 @@ export default {
     cards: ["Today", "Yesterday"],
     drawer: false,
     userName: "",
-    expand: true,
+   
     index: 1,
     userMainImg: null,
   }),
@@ -92,9 +77,7 @@ export default {
   created() {
     this.$store.dispatch("profile/usersSnapshot");
 
-    setTimeout(() => {
-      this.expand = false;
-    }, 500);
+   
     this.$store.dispatch("login/stateChange");
   },
 
