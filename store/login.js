@@ -16,20 +16,43 @@ export const actions = {
       .auth()
       .signInWithEmailAndPassword(key.mail, key.password)
       .then((res) => {
-        usersRef.doc(res.user.uid).set({
-          uid: res.user.uid,
-          loginStatus: true,
-          headerImg: null,
-          headerImgFileName: null,
-          mainImg: null,
-          mainImgFileName: null,
-          nickname: res.user.displayName,
-          selfIntroduction: null,
-        });
-        key.router.push({ name: "users-id", params: { id: res.user.uid } });
-      })
-      .catch(() => {
-        alert("新規登録をしてください。");
+        // console.log(res.user.uid);
+        usersRef
+          .doc(res.user.uid)
+          .get()
+          .then((snap) => {
+            // console.log(snap.data());
+            if (snap.data() === undefined) {
+              usersRef
+                .doc(res.user.uid)
+                .set({
+                  uid: res.user.uid,
+                  loginStatus: true,
+                  headerImg: null,
+                  headerImgFileName: null,
+                  mainImg: null,
+                  mainImgFileName: null,
+                  nickname: res.user.displayName,
+                  selfIntroduction: null,
+                })
+                .then(() => {
+                  key.router.push({
+                    name: "users-id",
+                    params: { id: res.user.uid },
+                  });
+                });
+            } else {
+              console.log(snap.data().uid);
+              let uid = snap.data().uid;
+              key.router.push({
+                name: "users-id",
+                params: { id: uid },
+              });
+            }
+          })
+          .catch(() => {
+            alert("新規登録をしてください。");
+          });
       });
   },
   signOut(context, router) {
@@ -37,7 +60,7 @@ export const actions = {
       .auth()
       .signOut()
       .then(() => {
-        router.push("/login");
+        router.push("/initialMyPage");
       });
   },
   signUp(context, key) {
@@ -55,5 +78,3 @@ export const actions = {
       });
   },
 };
-
-
