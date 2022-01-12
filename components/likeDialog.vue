@@ -42,12 +42,13 @@
               <v-icon @click="dialog = false" class="mr-10 mb-5m" color="grey"
                 >mdi-chat-outline
               </v-icon>
-              <!-- <v-icon @click="dialog = false" class="mr-10 mb-5" color="pink"
-                >mdi-hand-heart
-              </v-icon> -->
 
-              <div class="mr-7 ">
-                <v-icon class="mb-1 pink">mdi-hand-heart </v-icon>
+              <div class="mr-7">
+                <v-icon
+                  class="mb-1 pink"
+                  @click="changeLikeCount(othersLikingPost)"
+                  >mdi-hand-heart
+                </v-icon>
 
                 <span>{{ othersLikingPost.likeCount }}</span>
               </div>
@@ -90,6 +91,16 @@ export default {
         });
       });
       return othersLikingPosts;
+    },
+  },
+  methods: {
+    changeLikeCount(othersLikingPost) {
+      // console.log(othersLikingPost);
+
+      this.$store.dispatch("postDB/changeLikeCount", {
+        id: othersLikingPost.id,
+        uid: this.$router.currentRoute.params.id,
+      });
     },
   },
 };

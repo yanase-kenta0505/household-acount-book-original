@@ -20,7 +20,6 @@
             color="grey"
             :style="{ backgroundImage: `url(${message.img})` }"
             @click="openDialog(index)"
-            
           ></v-avatar>
           <span class="text-subtitle-1 ml-5"></span>
         </v-card-title>
@@ -38,7 +37,7 @@
               >mdi-hand-heart
             </v-icon>
 
-            <span>{{ message.likeCount }}</span>
+            <span v-if="message.likeCount > 0">{{ message.likeCount }}</span>
           </div>
         </v-card-actions>
       </v-card>
@@ -108,6 +107,7 @@ export default {
       }
     },
     changeLikeCount(index) {
+      // console.log(this.allPostMessages[index])
       this.$store.dispatch("postDB/changeLikeCount", {
         id: this.allPostMessages[index].id,
         uid: this.$router.currentRoute.params.id,
