@@ -142,26 +142,7 @@ export const actions = {
         }
       });
 
-    // if (doc.data().likedUserId === ids.uid) {
-    //   postRef
-    //     .doc(ids.id)
-    //     .collection("likedUserId")
-    //     .doc(doc.id)
-    //     .delete()
-    //     .then(() => {
-    //       console.log("delete");
-    //     });
-    // } else {
-    //   postRef
-    //     .doc(ids.id)
-    //     .collection("likedUserId")
-    //     .add({
-    //       likedUserId: ids.uid,
-    //     })
-    //     .then(() => {
-    //       console.log("add");
-    //     });
-    // }
+    
   },
 };
 export const mutations = {
