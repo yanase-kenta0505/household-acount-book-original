@@ -21,7 +21,7 @@
             :style="{ backgroundImage: `url(${message.img})` }"
             @click="openDialog(index)"
           ></v-avatar>
-          <span class="text-subtitle-1 ml-5"></span>
+          <span class="text-subtitle-1 ml-5">{{message.name}}</span>
         </v-card-title>
         <v-card-text class="mb-5"> {{ message.message }}</v-card-text>
         <v-card-actions>

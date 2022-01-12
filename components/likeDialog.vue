@@ -28,7 +28,11 @@
             :key="othersLikingPost.id"
           >
             <v-card-title>
-              <v-avatar size="50" color="grey"></v-avatar>
+              <v-avatar
+                size="50"
+                color="grey"
+                :style="{ backgroundImage: `url(${othersLikingPost.img})` }"
+              ></v-avatar>
               <span class="text-subtitle-1 ml-5">{{
                 othersLikingPost.name
               }}</span>
@@ -114,5 +118,13 @@ export default {
 ::v-deep .theme--light.v-icon.pink {
   color: rgb(236, 61, 90);
   background-color: transparent !important;
+}
+
+::v-deep .v-avatar {
+  background-size: cover;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
 }
 </style>
