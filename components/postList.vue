@@ -27,7 +27,7 @@
           width="90%"
           height="auto"
           class="mx-auto mt-10"
-          v-for="(message, index) in myPostMessages"
+          v-for="(message) in myPostMessages"
           :key="message.id"
         >
           <v-card-title>
@@ -37,7 +37,7 @@
               :style="{ backgroundImage: `url(${message.img})` }"
             ></v-avatar>
             <span class="text-subtitle-1 ml-5"></span>
-            <v-icon class="ml-auto" @click="deleteMessage(index)"
+            <v-icon class="ml-auto" @click="deleteMessage(message)"
               >mdi-close-thick</v-icon
             >
           </v-card-title>
@@ -82,10 +82,11 @@ export default {
   },
 
   methods: {
-    deleteMessage(index) {
+    deleteMessage(message) {
+      // console.log(message)
       this.$store.dispatch("postDB/deleteMessage", {
         uid: this.$router.currentRoute.params.id,
-        id: this.myPostMessages[index].id,
+        id: message.id,
       });
     },
   },
