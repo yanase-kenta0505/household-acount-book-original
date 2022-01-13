@@ -45,12 +45,16 @@ export const actions = {
     async function likedUserIdDelete() {
       const snap = await postRef.doc(ids.id).collection("likedUserId").get();
       const likedUserIds = [];
-      snap.docs.forEach((doc) => {
-        likedUserIds.push(doc.data().likedUserId);
-        postRef.doc(ids.id).collection("likedUserId").doc(doc.id).delete();
+      if (snap.docs.length > 0) {
+        snap.docs.forEach((doc) => {
+          likedUserIds.push(doc.data().likedUserId);
+          postRef.doc(ids.id).collection("likedUserId").doc(doc.id).delete();
+          postRef.doc(ids.id).delete();
+        });
+        return likedUserIds;
+      } else {
         postRef.doc(ids.id).delete();
-      });
-      return likedUserIds;
+      }
     }
 
     function likingDelete(likedUserIds) {
@@ -72,13 +76,17 @@ export const actions = {
       });
     }
 
-    async function a() {
+    async function deleteMessage() {
       const likedUserIds = await likedUserIdDelete();
       console.log(likedUserIds);
-      likingDelete(likedUserIds);
+      if (likedUserIds === undefined) {
+        return;
+      } else {
+        likingDelete(likedUserIds);
+      }
     }
 
-    a();
+    deleteMessage();
 
     // .then((snap) => {
     //   const likedUserIds = [];
