@@ -2,6 +2,7 @@ import firebase from "~/plugins/firebase";
 
 const db = firebase.firestore();
 const postRef = db.collection("Post");
+const likeRef = db.collection("like");
 const increment = firebase.firestore.FieldValue.increment(1);
 const decrement = firebase.firestore.FieldValue.increment(-1);
 
@@ -41,16 +42,54 @@ export const actions = {
     });
   },
   deleteMessage(context, ids) {
-    console.log(ids);
-    postRef
-      .doc(ids.uid)
-      .collection("message")
-      .doc(ids.id)
-      .delete()
-      .then(() => {
-        console.log("delete");
+    async function likedUserIdDelete() {
+      const snap = await postRef.doc(ids.id).collection("likedUserId").get();
+      const likedUserIds = [];
+      snap.docs.forEach((doc) => {
+        likedUserIds.push(doc.data().likedUserId);
+        postRef.doc(ids.id).collection("likedUserId").doc(doc.id).delete();
+        postRef.doc(ids.id).delete();
       });
+      return likedUserIds;
+    }
+
+    function likingDelete(likedUserIds) {
+      likedUserIds.forEach((id) => {
+        console.log(id);
+        likeRef
+          .doc(id)
+          .collection("liking")
+          .get()
+          .then((snap) => {
+            snap.docs.forEach((doc) => {
+              if (doc.data().likingPostId !== ids.id) {
+                return;
+              } else {
+                likeRef.doc(id).collection("liking").doc(doc.id).delete();
+              }
+            });
+          });
+      });
+    }
+
+    async function a() {
+      const likedUserIds = await likedUserIdDelete();
+      console.log(likedUserIds);
+      likingDelete(likedUserIds);
+    }
+
+    a();
+
+    // .then((snap) => {
+    //   const likedUserIds = [];
+    //   snap.docs.forEach((doc) => {
+    //     likedUserIds.push(doc.data().likedUserId);
+    //     //サブコレクションのlikedUserIdを削除する
+    //     // postRef.doc(ids, id).collection("likedUserId").doc(doc.id).delete();
+    //   });
+    // })
   },
+
   setImg(context, items) {
     console.log(items);
     postRef.get().then((snapshot) => {
@@ -141,8 +180,6 @@ export const actions = {
           }
         }
       });
-
-    
   },
 };
 export const mutations = {
